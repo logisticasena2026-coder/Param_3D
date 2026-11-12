@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Paleta Cyan por defecto */
+  --brand-50: #ecfeff;
+  --brand-100: #cffafe;
+  --brand-200: #a5f3fc;
+  --brand-300: #67e8f9;
+  --brand-400: #22d3ee;
+  --brand-500: #06b6d4;
+  --brand-600: #0891b2;
+  --brand-700: #0e7490;
+  --brand-800: #155e75;
+  --brand-900: #164e63;
+  --brand-950: #083344;
+}
+
+/* Paleta Emerald */
+[data-palette="emerald"] {
+  --brand-50: #ecfdf5;
+  --brand-100: #d1fae5;
+  --brand-200: #a7f3d0;
+  --brand-300: #6ee7b7;
+  --brand-400: #34d399;
+  --brand-500: #10b981;
+  --brand-600: #059669;
+  --brand-700: #047857;
+  --brand-800: #065f46;
+  --brand-900: #064e3b;
+  --brand-950: #022c22;
+}
+
+/* Paleta Orange */
+[data-palette="orange"] {
+  --brand-50: #fff7ed;
+  --brand-100: #ffedd5;
+  --brand-200: #fed7aa;
+  --brand-300: #fdba74;
+  --brand-400: #fb923c;
+  --brand-500: #f97316;
+  --brand-600: #ea580c;
+  --brand-700: #c2410c;
+  --brand-800: #9a3412;
+  --brand-900: #7c2d12;
+  --brand-950: #431407;
+}
+
+/* Paleta Purple */
+[data-palette="purple"] {
+  --brand-50: #faf5ff;
+  --brand-100: #f3e8ff;
+  --brand-200: #e9d5ff;
+  --brand-300: #d8b4fe;
+  --brand-400: #c084fc;
+  --brand-500: #a855f7;
+  --brand-600: #9333ea;
+  --brand-700: #7e22ce;
+  --brand-800: #6b21a8;
+  --brand-900: #581c87;
+  --brand-950: #3b0764;
+}
+
+/* Paleta Amber */
+[data-palette="amber"] {
+  --brand-50: #fffbeb;
+  --brand-100: #fef3c7;
+  --brand-200: #fde68a;
+  --brand-300: #fcd34d;
+  --brand-400: #fbbf24;
+  --brand-500: #f59e0b;
+  --brand-600: #d97706;
+  --brand-700: #b45309;
+  --brand-800: #92400e;
+  --brand-900: #78350f;
+  --brand-950: #451a03;
+}
+
+/* Ajustes de tipografía */
+html[data-fontsize="sm"] {
+  font-size: 14px;
+}
+html[data-fontsize="md"] {
+  font-size: 16px;
+}
+html[data-fontsize="lg"] {
+  font-size: 18px;
+}
+
+/* Modo claro */
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+html.light .surface-card {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+html.light .surface-subtle {
+  background-color: #f1f5f9;
+}
+html.light .text-muted {
+  color: #64748b;
+}
+
+/* Modo oscuro */
+html.dark body {
+  background-color: #020617;
+  color: #f8fafc;
+}
+html.dark .surface-card {
+  background-color: #0f172a;
+  border-color: #1e293b;
+  color: #f8fafc;
+}
+html.dark .surface-subtle {
+  background-color: #1e293b;
+}
+html.dark .text-muted {
+  color: #94a3b8;
+}
+
+/* Textura y efecto de placa de laminador OrcaSlicer */
+.slicer-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(6, 182, 212, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
