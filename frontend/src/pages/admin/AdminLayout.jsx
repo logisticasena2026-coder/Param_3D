@@ -4,21 +4,24 @@ import { AdminProducts } from './AdminProducts';
 import { AdminOrders } from './AdminOrders';
 import { AdminSponsors } from './AdminSponsors';
 import { AdminQuotes } from './AdminQuotes';
+import { AdminProjects } from './AdminProjects';
 import {
   LayoutDashboard,
   Box,
   ShoppingCart,
   Users,
   FileCode,
+  FolderKanban,
   ArrowLeft,
   ShieldAlert
 } from 'lucide-react';
 
 export const AdminLayout = ({ onNavigate }) => {
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'orders' | 'sponsors' | 'quotes'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'orders' | 'sponsors' | 'quotes' | 'projects'
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'projects', label: 'Proyectos', icon: FolderKanban },
     { id: 'products', label: 'Productos y Modelos', icon: Box },
     { id: 'orders', label: 'Control de Pedidos', icon: ShoppingCart },
     { id: 'sponsors', label: 'Patrocinadores', icon: Users },
@@ -76,6 +79,7 @@ export const AdminLayout = ({ onNavigate }) => {
             onSelectAdminTab={(tab) => setActiveTab(tab)}
           />
         )}
+        {activeTab === 'projects' && <AdminProjects />}
         {activeTab === 'products' && <AdminProducts />}
         {activeTab === 'orders' && <AdminOrders />}
         {activeTab === 'sponsors' && <AdminSponsors />}

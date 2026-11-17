@@ -81,7 +81,14 @@ const defaultData = {
   orders: [],
   quotes: [],
   sponsors: [],
-  preferences: {}
+  preferences: {},
+  // Módulo de Proyectos (gestión de clientes, piezas, costos y pagos)
+  clients: [],
+  projects: [],
+  pieces: [],
+  costs: [],
+  projectFiles: [],
+  payments: []
 };
 
 class Database {

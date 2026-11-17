@@ -333,16 +333,229 @@ async function seed() {
     }
   ];
 
+  // 5. Módulo de Proyectos: clientes, proyectos, piezas, costos y pagos
+  const clients = [
+    {
+      id: 'cli-demo-1',
+      nombre: 'Carlos Mendoza',
+      email: 'cliente@maquinamos3d.com',
+      telefono: '3109876543',
+      direccion: 'Calle 10 # 43E-22, El Poblado, Medellín',
+      notas: 'Cliente frecuente de prototipos IoT.',
+      fechaRegistro: new Date(Date.now() - 86400000 * 20).toISOString()
+    },
+    {
+      id: 'cli-demo-2',
+      nombre: 'Laura Cifuentes',
+      email: 'laura.cifuentes@correo.com',
+      telefono: '3015558899',
+      direccion: 'Cra 70 # 32-15, Laureles, Medellín',
+      notas: 'Prefiere pago por transferencia Nequi.',
+      fechaRegistro: new Date(Date.now() - 86400000 * 12).toISOString()
+    },
+    {
+      id: 'cli-demo-3',
+      nombre: 'Arquitectura Viva SAS',
+      email: 'proyectos@arqviva.co',
+      telefono: '6044441020',
+      direccion: 'Av. Las Palmas # 120-30, Envigado',
+      notas: 'Cliente corporativo: maquetas y avisos.',
+      fechaRegistro: new Date(Date.now() - 86400000 * 40).toISOString()
+    }
+  ];
+
+  const projects = [
+    {
+      id: 'prj-demo-1',
+      clientId: 'cli-demo-1',
+      tipoProyecto: 'impresion_3d',
+      nombreProyecto: 'Carcasas para sensores IoT',
+      descripcion: 'Lote de gabinetes ventilados para red de monitoreo ambiental.',
+      fechaInicio: new Date(Date.now() - 86400000 * 10).toISOString().slice(0, 10),
+      fechaEntrega: new Date(Date.now() + 86400000 * 5).toISOString().slice(0, 10),
+      fechaCompletado: null,
+      estado: 'en_proceso',
+      prioridad: 'alta',
+      notas: 'Imprimir en PETG por resistencia térmica.',
+      createdAt: new Date(Date.now() - 86400000 * 10).toISOString()
+    },
+    {
+      id: 'prj-demo-2',
+      clientId: 'cli-demo-2',
+      tipoProyecto: 'diseno_parametrico',
+      nombreProyecto: 'Jarrón generativo Voronoi',
+      descripcion: 'Diseño paramétrico único para regalo corporativo.',
+      fechaInicio: new Date(Date.now() - 86400000 * 2).toISOString().slice(0, 10),
+      fechaEntrega: new Date(Date.now() + 86400000 * 8).toISOString().slice(0, 10),
+      fechaCompletado: null,
+      estado: 'pendiente',
+      prioridad: 'media',
+      notas: 'Cliente aprobará render antes de fabricar.',
+      createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+    },
+    {
+      id: 'prj-demo-3',
+      clientId: 'cli-demo-3',
+      tipoProyecto: 'avisos',
+      nombreProyecto: 'Aviso neón lobby torre empresarial',
+      descripcion: 'Letrero neón flex azul hielo 120x50 cm para recepción.',
+      fechaInicio: new Date(Date.now() - 86400000 * 30).toISOString().slice(0, 10),
+      fechaEntrega: new Date(Date.now() - 86400000 * 7).toISOString().slice(0, 10),
+      fechaCompletado: new Date(Date.now() - 86400000 * 7).toISOString(),
+      estado: 'completado',
+      prioridad: 'urgente',
+      notas: 'Instalado y facturado.',
+      createdAt: new Date(Date.now() - 86400000 * 30).toISOString()
+    },
+    {
+      id: 'prj-demo-4',
+      clientId: 'cli-demo-3',
+      tipoProyecto: 'router_cnc',
+      nombreProyecto: 'Celosía divisoria sala juntas',
+      descripcion: 'Panel en MDF lacado blanco, patrón geométrico hexagonal 95x70 cm.',
+      fechaInicio: new Date(Date.now() - 86400000 * 15).toISOString().slice(0, 10),
+      fechaEntrega: new Date(Date.now() - 86400000 * 2).toISOString().slice(0, 10),
+      fechaCompletado: null,
+      estado: 'cancelado',
+      prioridad: 'baja',
+      notas: 'Cancelado por rediseño del cliente.',
+      createdAt: new Date(Date.now() - 86400000 * 15).toISOString()
+    }
+  ];
+
+  const pieces = [
+    {
+      id: 'pza-demo-1',
+      projectId: 'prj-demo-1',
+      nombrePieza: 'Gabinete enclosure ventilado',
+      cantidad: 12,
+      dimensionesX: 11, dimensionesY: 8, dimensionesZ: 4,
+      volumenCm3: 95.5, pesoGramos: 55,
+      material: 'PETG', color: 'Negro', alturaCapa: 0.2,
+      rellenoPorcentaje: 25, soportes: false, tiempoImpresionMin: 170,
+      archivoStl: '/uploads/models3d/enclosure.stl',
+      archivoGcode: '/uploads/models3d/enclosure.gcode',
+      notas: 'Riel DIN interno incluido.',
+      createdAt: new Date(Date.now() - 86400000 * 9).toISOString()
+    },
+    {
+      id: 'pza-demo-2',
+      projectId: 'prj-demo-1',
+      nombrePieza: 'Tapa superior con rejilla',
+      cantidad: 12,
+      dimensionesX: 11, dimensionesY: 8, dimensionesZ: 0.8,
+      volumenCm3: 22.1, pesoGramos: 14.5,
+      material: 'PETG', color: 'Negro', alturaCapa: 0.2,
+      rellenoPorcentaje: 20, soportes: false, tiempoImpresionMin: 45,
+      archivoStl: '/uploads/models3d/tapa.stl',
+      archivoGcode: '',
+      notas: 'Rejilla de ventilación pasiva.',
+      createdAt: new Date(Date.now() - 86400000 * 9).toISOString()
+    },
+    {
+      id: 'pza-demo-3',
+      projectId: 'prj-demo-2',
+      nombrePieza: 'Jarrón Voronoi 22cm',
+      cantidad: 1,
+      dimensionesX: 12, dimensionesY: 12, dimensionesZ: 22,
+      volumenCm3: 310.75, pesoGramos: 95,
+      material: 'PLA', color: 'Azul Eléctrico', alturaCapa: 0.16,
+      rellenoPorcentaje: 15, soportes: false, tiempoImpresionMin: 260,
+      archivoStl: '/uploads/models3d/voronoi.stl',
+      archivoGcode: '',
+      notas: 'Modo espiral (vase mode).',
+      createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+    },
+    {
+      id: 'pza-demo-4',
+      projectId: 'prj-demo-3',
+      nombrePieza: 'Base acrílico cristal 5mm',
+      cantidad: 1,
+      dimensionesX: 120, dimensionesY: 50, dimensionesZ: 0.5,
+      volumenCm3: null, pesoGramos: 4200,
+      material: 'Acrílico 5mm', color: 'Cristal', alturaCapa: null,
+      rellenoPorcentaje: 0, soportes: false, tiempoImpresionMin: null,
+      archivoStl: '',
+      archivoGcode: '',
+      notas: 'Corte láser + pulido de bordes.',
+      createdAt: new Date(Date.now() - 86400000 * 28).toISOString()
+    },
+    {
+      id: 'pza-demo-5',
+      projectId: 'prj-demo-3',
+      nombrePieza: 'Letrero neón flex 12V',
+      cantidad: 1,
+      dimensionesX: 110, dimensionesY: 45, dimensionesZ: 1.2,
+      volumenCm3: null, pesoGramos: 850,
+      material: 'Neón Flex', color: 'Azul Hielo', alturaCapa: null,
+      rellenoPorcentaje: 0, soportes: false, tiempoImpresionMin: null,
+      archivoStl: '',
+      archivoGcode: '',
+      notas: 'Fuente 12V 5A incluida.',
+      createdAt: new Date(Date.now() - 86400000 * 28).toISOString()
+    }
+  ];
+
+  // Costos con totales calculados (equivalentes a las columnas GENERADAS del SQL)
+  const buildCost = (id, pieceId, { costoMaterialKg, materialUsadoGramos, costoEnergiaKwh, precioKwh, horasDiseno, costoHoraDiseno, costoManoObra, otrosCostos, precioVenta }) => {
+    const round2 = (v) => Math.round(v * 100) / 100;
+    const costoMaterialTotal = round2(costoMaterialKg * materialUsadoGramos / 1000);
+    const costoEnergiaTotal = round2(costoEnergiaKwh * precioKwh);
+    const costoDisenoTotal = round2(horasDiseno * costoHoraDiseno);
+    const costoTotal = round2(costoMaterialTotal + costoEnergiaTotal + costoDisenoTotal + costoManoObra + otrosCostos);
+    return {
+      id,
+      pieceId,
+      costoMaterialKg, materialUsadoGramos, costoMaterialTotal,
+      costoEnergiaKwh, precioKwh, costoEnergiaTotal,
+      horasDiseno, costoHoraDiseno, costoDisenoTotal,
+      costoManoObra, otrosCostos,
+      costoTotal, precioVenta,
+      ganancia: round2(precioVenta - costoTotal),
+      updatedAt: new Date().toISOString()
+    };
+  };
+
+  const costs = [
+    buildCost('cst-demo-1', 'pza-demo-1', { costoMaterialKg: 150000, materialUsadoGramos: 55, costoEnergiaKwh: 1.2, precioKwh: 900, horasDiseno: 2.5, costoHoraDiseno: 40000, costoManoObra: 12000, otrosCostos: 3000, precioVenta: 185000 }),
+    buildCost('cst-demo-2', 'pza-demo-2', { costoMaterialKg: 150000, materialUsadoGramos: 14.5, costoEnergiaKwh: 0.35, precioKwh: 900, horasDiseno: 0, costoHoraDiseno: 40000, costoManoObra: 4000, otrosCostos: 1000, precioVenta: 12000 }),
+    buildCost('cst-demo-3', 'pza-demo-3', { costoMaterialKg: 120000, materialUsadoGramos: 95, costoEnergiaKwh: 1.8, precioKwh: 900, horasDiseno: 3, costoHoraDiseno: 40000, costoManoObra: 8000, otrosCostos: 5000, precioVenta: 185000 }),
+    buildCost('cst-demo-4', 'pza-demo-4', { costoMaterialKg: 380000, materialUsadoGramos: 4200, costoEnergiaKwh: 0.5, precioKwh: 900, horasDiseno: 1, costoHoraDiseno: 55000, costoManoObra: 45000, otrosCostos: 22000, precioVenta: 1950000 }),
+    buildCost('cst-demo-5', 'pza-demo-5', { costoMaterialKg: 520000, materialUsadoGramos: 850, costoEnergiaKwh: 0.2, precioKwh: 900, horasDiseno: 0.5, costoHoraDiseno: 55000, costoManoObra: 60000, otrosCostos: 35000, precioVenta: 720000 })
+  ];
+
+  const projectFiles = [
+    { id: 'fil-demo-1', pieceId: 'pza-demo-1', tipoArchivo: 'render', descripcion: 'Render del gabinete en visor OrcaSlicer', rutaArchivo: '/uploads/images/enclosure-render.webp', fechaSubida: new Date(Date.now() - 86400000 * 8).toISOString() },
+    { id: 'fil-demo-2', pieceId: 'pza-demo-1', tipoArchivo: 'foto', descripcion: 'Primera unidad impresa en PETG negro', rutaArchivo: '/uploads/images/enclosure-foto.jpg', fechaSubida: new Date(Date.now() - 86400000 * 6).toISOString() },
+    { id: 'fil-demo-3', pieceId: 'pza-demo-3', tipoArchivo: 'render', descripcion: 'Vista previa del jarrón en modo espiral', rutaArchivo: '/uploads/images/voronoi-render.png', fechaSubida: new Date(Date.now() - 86400000 * 1).toISOString() },
+    { id: 'fil-demo-4', pieceId: 'pza-demo-4', tipoArchivo: 'plano', descripcion: 'Plano de corte del acrílico cristal', rutaArchivo: '/uploads/images/aviso-plano.png', fechaSubida: new Date(Date.now() - 86400000 * 25).toISOString() },
+    { id: 'fil-demo-5', pieceId: 'pza-demo-5', tipoArchivo: 'foto', descripcion: 'Prueba de encendido del neón flex', rutaArchivo: '/uploads/images/neon-prueba.jpg', fechaSubida: new Date(Date.now() - 86400000 * 20).toISOString() }
+  ];
+
+  const payments = [
+    { id: 'pag-demo-1', proyectoId: 'prj-demo-1', monto: 250000, fechaPago: new Date(Date.now() - 86400000 * 9).toISOString(), metodoPago: 'transferencia', referencia: 'NEQUI-88231', estado: 'completado', createdAt: new Date(Date.now() - 86400000 * 9).toISOString() },
+    { id: 'pag-demo-2', proyectoId: 'prj-demo-1', monto: 200000, fechaPago: new Date(Date.now() - 86400000 * 1).toISOString(), metodoPago: 'transferencia', referencia: 'BANC-00981234', estado: 'pendiente', createdAt: new Date(Date.now() - 86400000 * 1).toISOString() },
+    { id: 'pag-demo-3', proyectoId: 'prj-demo-3', monto: 1130000, fechaPago: new Date(Date.now() - 86400000 * 20).toISOString(), metodoPago: 'tarjeta', referencia: 'VISA-****4582', estado: 'completado', createdAt: new Date(Date.now() - 86400000 * 20).toISOString() },
+    { id: 'pag-demo-4', proyectoId: 'prj-demo-4', monto: 180000, fechaPago: new Date(Date.now() - 86400000 * 14).toISOString(), metodoPago: 'efectivo', referencia: 'REC-CAJA-045', estado: 'completado', createdAt: new Date(Date.now() - 86400000 * 14).toISOString() }
+  ];
+
   db.setCollection('users', users);
   db.setCollection('products', products);
   db.setCollection('sponsors', sponsors);
   db.setCollection('orders', orders);
+  db.setCollection('clients', clients);
+  db.setCollection('projects', projects);
+  db.setCollection('pieces', pieces);
+  db.setCollection('costs', costs);
+  db.setCollection('projectFiles', projectFiles);
+  db.setCollection('payments', payments);
 
   console.log('✅ Base de datos sembrada con éxito:');
   console.log(` - Usuarios: ${users.length} (Admin: mmontalvova@gmail.com / Admin123*)`);
   console.log(` - Productos: ${products.length} con subcategorías y combinaciones material+color`);
   console.log(` - Patrocinadores: ${sponsors.length}`);
   console.log(` - Pedidos: ${orders.length}`);
+  console.log(` - Proyectos: ${projects.length} (tipos: impresión 3D, CNC, avisos, metal, paramétrico) | Clientes: ${clients.length} | Piezas: ${pieces.length} | Costos: ${costs.length} | Pagos: ${payments.length}`);
 }
 
 seed();

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { PORT, CONTACT } = require('./config/env');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -11,6 +12,7 @@ const quoteRoutes = require('./routes/quoteRoutes');
 const sponsorRoutes = require('./routes/sponsorRoutes');
 const preferenceRoutes = require('./routes/preferenceRoutes');
 const aiRoutes = require('./routes/aiRoutes');
+const projectRoutes = require('./routes/projectRoutes');
 
 const app = express();
 
@@ -45,6 +47,19 @@ app.use('/api/quotes', quoteRoutes);
 app.use('/api/sponsors', sponsorRoutes);
 app.use('/api/preferences', preferenceRoutes);
 app.use('/api/ai-parametric', aiRoutes);
+app.use('/api/projects', projectRoutes);
+
+// Servir el frontend compilado (producción / Docker todo-en-uno).
+// En desarrollo el frontend corre aparte con Vite (npm run dev, puerto 3000).
+const FRONTEND_DIST = process.env.FRONTEND_DIST || path.join(__dirname, '..', 'public');
+if (fs.existsSync(FRONTEND_DIST)) {
+  app.use(express.static(FRONTEND_DIST));
+  // Fallback SPA: cualquier GET que no sea /api ni /uploads devuelve index.html
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) return next();
+    res.sendFile(path.join(FRONTEND_DIST, 'index.html'));
+  });
+}
 
 // Manejador centralizado de errores
 app.use(errorHandler);

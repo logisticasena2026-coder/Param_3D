@@ -1,0 +1,185 @@
+// =====================================================================
+//  MAQUINAMOS 3D — schema.prisma
+//  Esquema Prisma equivalente al script PostgreSQL (schema_proyectos.sql)
+//  Requiere: npm install prisma @prisma/client
+//  Variable de entorno: DATABASE_URL="postgresql://user:pass@host:5432/maquinamos3d"
+// =====================================================================
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ---------- ENUMs ----------
+enum TipoProyecto {
+  impresion_3d
+  router_cnc
+  avisos
+  metal
+  diseno_parametrico
+  otro
+}
+
+enum EstadoProyecto {
+  pendiente
+  en_proceso
+  completado
+  cancelado
+}
+
+enum Prioridad {
+  baja
+  media
+  alta
+  urgente
+}
+
+enum TipoArchivo {
+  foto
+  render
+  plano
+  otro
+}
+
+enum MetodoPago {
+  efectivo
+  transferencia
+  tarjeta
+  otro
+}
+
+enum EstadoPago {
+  pendiente
+  parcial
+  completado
+}
+
+// ---------- MODELOS ----------
+
+// Clientes del taller de fabricación digital.
+model Cliente {
+  clienteId     BigInt     @id @default(autoincrement()) @map("cliente_id")
+  nombre        String     @db.VarChar(120)
+  email         String     @unique @db.VarChar(160)
+  telefono      String?    @db.VarChar(25)
+  direccion     String?    @db.VarChar(255)
+  fechaRegistro DateTime   @default(now()) @map("fecha_registro") @db.Timestamptz(6)
+  notas         String?
+
+  proyectos     Proyecto[]
+
+  @@map("clientes")
+}
+
+// Proyectos de fabricación contratados por los clientes.
+model Proyecto {
+  proyectoId      BigInt         @id @default(autoincrement()) @map("proyecto_id")
+  clienteId       BigInt         @map("cliente_id")
+  tipoProyecto    TipoProyecto   @default(impresion_3d) @map("tipo_proyecto")
+  nombreProyecto  String         @map("nombre_proyecto") @db.VarChar(160)
+  descripcion     String?
+  fechaInicio     DateTime       @default(now()) @map("fecha_inicio") @db.Date
+  fechaEntrega    DateTime?      @map("fecha_entrega") @db.Date
+  fechaCompletado DateTime?      @map("fecha_completado") @db.Timestamptz(6)
+  estado          EstadoProyecto @default(pendiente)
+  prioridad       Prioridad      @default(media)
+  notas           String?
+
+  cliente         Cliente        @relation(fields: [clienteId], references: [clienteId], onDelete: Restrict, onUpdate: Cascade)
+  piezas          Pieza[]
+  pagos           Pago[]
+
+  @@index([estado])
+  @@index([tipoProyecto])
+  @@index([prioridad])
+  @@index([fechaEntrega])
+  @@map("proyectos")
+}
+
+// Piezas individuales que componen un proyecto.
+model Pieza {
+  piezaId            BigInt   @id @default(autoincrement()) @map("pieza_id")
+  proyectoId         BigInt   @map("proyecto_id")
+  nombrePieza        String   @map("nombre_pieza") @db.VarChar(160)
+  cantidad           Int      @default(1)
+  dimensionesX       Decimal? @map("dimensiones_x") @db.Decimal(10, 2)
+  dimensionesY       Decimal? @map("dimensiones_y") @db.Decimal(10, 2)
+  dimensionesZ       Decimal? @map("dimensiones_z") @db.Decimal(10, 2)
+  volumenCm3         Decimal? @map("volumen_cm3") @db.Decimal(12, 3)
+  pesoGramos         Decimal? @map("peso_gramos") @db.Decimal(10, 2)
+  material           String   @default("PLA") @db.VarChar(40)
+  color              String?  @db.VarChar(60)
+  alturaCapa         Decimal? @map("altura_capa") @db.Decimal(4, 2)
+  rellenoPorcentaje  Int      @default(20) @map("relleno_porcentaje") @db.SmallInt
+  soportes           Boolean  @default(false)
+  tiempoImpresionMin Int?     @map("tiempo_impresion_min")
+  archivoStl         String?  @map("archivo_stl") @db.VarChar(255)
+  archivoGcode       String?  @map("archivo_gcode") @db.VarChar(255)
+  notas              String?
+
+  proyecto           Proyecto @relation(fields: [proyectoId], references: [proyectoId], onDelete: Restrict, onUpdate: Cascade)
+  costo              Costo?
+  archivos           ArchivoMultimedia[]
+
+  @@index([material])
+  @@map("piezas")
+}
+
+// Estructura de costos y rentabilidad por pieza (relación 1:1).
+// NOTA: En PostgreSQL los totales (costo_material_total, costo_energia_total,
+// costo_diseno_total, costo_total, ganancia) son columnas GENERADAS STORED.
+// Prisma no soporta columnas generadas de forma nativa; la capa de
+// aplicación debe calcularlas antes de guardar, o leerlas con $queryRaw.
+model Costo {
+  costoId             BigInt  @id @default(autoincrement()) @map("costo_id")
+  piezaId             BigInt  @unique @map("pieza_id")
+  costoMaterialKg     Decimal @default(0) @map("costo_material_kg") @db.Decimal(10, 2)
+  materialUsadoGramos Decimal @default(0) @map("material_usado_gramos") @db.Decimal(10, 2)
+  costoEnergiaKwh     Decimal @default(0) @map("costo_energia_kwh") @db.Decimal(10, 2)
+  precioKwh           Decimal @default(0) @map("precio_kwh") @db.Decimal(10, 2)
+  horasDiseno         Decimal @default(0) @map("horas_diseno") @db.Decimal(6, 2)
+  costoHoraDiseno     Decimal @default(0) @map("costo_hora_diseno") @db.Decimal(10, 2)
+  costoManoObra       Decimal @default(0) @map("costo_mano_obra") @db.Decimal(10, 2)
+  otrosCostos         Decimal @default(0) @map("otros_costos") @db.Decimal(10, 2)
+  precioVenta         Decimal @default(0) @map("precio_venta") @db.Decimal(10, 2)
+
+  pieza               Pieza   @relation(fields: [piezaId], references: [piezaId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("costos")
+}
+
+// Fotos, renders y planos asociados a las piezas fabricadas.
+model ArchivoMultimedia {
+  archivoId   BigInt      @id @default(autoincrement()) @map("archivo_id")
+  piezaId     BigInt      @map("pieza_id")
+  tipoArchivo TipoArchivo @default(foto) @map("tipo_archivo")
+  descripcion String?     @db.VarChar(255)
+  rutaArchivo String      @map("ruta_archivo") @db.VarChar(255)
+  fechaSubida DateTime    @default(now()) @map("fecha_subida") @db.Timestamptz(6)
+
+  pieza       Pieza       @relation(fields: [piezaId], references: [piezaId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([tipoArchivo])
+  @@map("archivos_multimedia")
+}
+
+// Abonos y pagos realizados por los clientes a cada proyecto.
+model Pago {
+  pagoId     BigInt     @id @default(autoincrement()) @map("pago_id")
+  proyectoId BigInt     @map("proyecto_id")
+  monto      Decimal    @db.Decimal(10, 2)
+  fechaPago  DateTime   @default(now()) @map("fecha_pago") @db.Timestamptz(6)
+  metodoPago MetodoPago @default(transferencia) @map("metodo_pago")
+  referencia String?    @db.VarChar(120)
+  estado     EstadoPago @default(pendiente)
+
+  proyecto   Proyecto   @relation(fields: [proyectoId], references: [proyectoId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([fechaPago])
+  @@index([estado])
+  @@map("pagos")
+}

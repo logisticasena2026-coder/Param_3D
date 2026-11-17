@@ -4,21 +4,21 @@
       "id": "usr-admin-1",
       "name": "Mauricio Montalvo (Admin)",
       "email": "mmontalvova@gmail.com",
-      "password": "$2a$10$c75unS1CHOqvkAVopAO6WuQXImJVddggHmn0hmeBMtfd6rwVnViKG",
+      "password": "$2a$10$aSNfWmX5XArdJlAQQypFKuqPNC4UgqQq1TjlAlD7AZE281La2sPpG",
       "phone": "3005076700",
       "role": "admin",
       "preferences": {
         "theme": "dark",
-        "palette": "emerald",
+        "palette": "cyan",
         "fontSize": "md"
       },
-      "createdAt": "2026-11-05T10:39:36.740Z"
+      "createdAt": "2026-11-14T04:01:49.001Z"
     },
     {
       "id": "usr-client-1",
       "name": "Carlos Mendoza",
       "email": "cliente@maquinamos3d.com",
-      "password": "$2a$10$HmS1r9R0EV6dLassaEBhteKlhOW2NrcBqVWiyNl6DM/kT339v6fB.",
+      "password": "$2a$10$pJWYXwcIZ7QHn6Yaz53O3e9wKONbTpldX5fTBoEJ3bJ1rc1sIRa/O",
       "phone": "3109876543",
       "role": "client",
       "preferences": {
@@ -26,7 +26,7 @@
         "palette": "orange",
         "fontSize": "md"
       },
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     }
   ],
   "categories": [
@@ -206,7 +206,7 @@
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       "model3dUrl": "",
       "meshGeometry": "vase",
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-3d-trofeo",
@@ -243,7 +243,7 @@
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
       "model3dUrl": "",
       "meshGeometry": "trophy",
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-3d-arbol-navidad",
@@ -284,7 +284,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "tree",
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-3d-enclosure",
@@ -321,7 +321,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-3d-robot",
@@ -359,7 +359,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "robot",
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-3d-escultura-busto",
@@ -400,7 +400,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "bust",
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-cnc-celosia",
@@ -441,7 +441,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-05T10:39:36.741Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-aviso-neon",
@@ -478,7 +478,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-05T10:39:36.742Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "prod-metal-placa",
@@ -514,7 +514,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-05T10:39:36.742Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     }
   ],
   "orders": [
@@ -549,19 +549,286 @@
       "statusHistory": [
         {
           "status": "Pedido",
-          "timestamp": "2026-11-05T05:39:36.742Z",
+          "timestamp": "2026-11-13T23:01:49.002Z",
           "note": "Pedido recibido exitosamente en Maquinamos 3D."
         },
         {
           "status": "Preparado",
-          "timestamp": "2026-11-05T08:39:36.742Z",
+          "timestamp": "2026-11-14T02:01:49.002Z",
           "note": "Laminado en OrcaSlicer completado. Calibración de cama y extrusor a 240°C para PETG."
         }
       ],
-      "createdAt": "2026-11-05T05:39:36.742Z"
+      "createdAt": "2026-11-13T23:01:49.002Z"
     }
   ],
-  "quotes": [],
+  "quotes": [
+    {
+      "id": "cot-1794630174813",
+      "fileName": "customerFile-1794630174809-806486390.3mf",
+      "originalName": "Figura Mazinger Z.3mf",
+      "filePath": "/uploads/quotes/customerFile-1794630174809-806486390.3mf",
+      "material": "ABS",
+      "color": "Blanco",
+      "infillPercent": 35,
+      "dimensions": {
+        "x": 10,
+        "y": 10,
+        "z": 12
+      },
+      "estimation": {
+        "material": "ABS",
+        "filamentGrams": 5.3,
+        "printTimeMinutes": 44,
+        "printTimeFormatted": "0h 44m",
+        "dimensions": {
+          "x": 10,
+          "y": 10,
+          "z": 12,
+          "unit": "cm"
+        },
+        "infillPercent": 35,
+        "estimatedVolumeCm3": 5.1,
+        "breakdown": {
+          "materialCost": 742,
+          "machineCost": 3667,
+          "preparationCost": 7000,
+          "totalPrice": 15000
+        }
+      },
+      "userId": null,
+      "customerEmail": null,
+      "customerName": null,
+      "createdAt": "2026-11-14T04:22:54.813Z"
+    },
+    {
+      "id": "cot-1794630174175",
+      "fileName": "customerFile-1794630174170-400627097.3mf",
+      "originalName": "Figura Mazinger Z.3mf",
+      "filePath": "/uploads/quotes/customerFile-1794630174170-400627097.3mf",
+      "material": "ABS",
+      "color": "Blanco",
+      "infillPercent": 35,
+      "dimensions": {
+        "x": 10,
+        "y": 10,
+        "z": 12
+      },
+      "estimation": {
+        "material": "ABS",
+        "filamentGrams": 5.3,
+        "printTimeMinutes": 44,
+        "printTimeFormatted": "0h 44m",
+        "dimensions": {
+          "x": 10,
+          "y": 10,
+          "z": 12,
+          "unit": "cm"
+        },
+        "infillPercent": 35,
+        "estimatedVolumeCm3": 5.1,
+        "breakdown": {
+          "materialCost": 742,
+          "machineCost": 3667,
+          "preparationCost": 7000,
+          "totalPrice": 15000
+        }
+      },
+      "userId": null,
+      "customerEmail": null,
+      "customerName": null,
+      "createdAt": "2026-11-14T04:22:54.175Z"
+    },
+    {
+      "id": "cot-1794630171572",
+      "fileName": "customerFile-1794630171562-519971358.3mf",
+      "originalName": "Figura Mazinger Z.3mf",
+      "filePath": "/uploads/quotes/customerFile-1794630171562-519971358.3mf",
+      "material": "ABS",
+      "color": "Blanco",
+      "infillPercent": 20,
+      "dimensions": {
+        "x": 10,
+        "y": 10,
+        "z": 12
+      },
+      "estimation": {
+        "material": "ABS",
+        "filamentGrams": 4.2,
+        "printTimeMinutes": 39,
+        "printTimeFormatted": "0h 39m",
+        "dimensions": {
+          "x": 10,
+          "y": 10,
+          "z": 12,
+          "unit": "cm"
+        },
+        "infillPercent": 20,
+        "estimatedVolumeCm3": 4,
+        "breakdown": {
+          "materialCost": 588,
+          "machineCost": 3250,
+          "preparationCost": 7000,
+          "totalPrice": 15000
+        }
+      },
+      "userId": null,
+      "customerEmail": null,
+      "customerName": null,
+      "createdAt": "2026-11-14T04:22:51.572Z"
+    },
+    {
+      "id": "cot-1794630168311",
+      "fileName": "customerFile-1794630168306-282155412.3mf",
+      "originalName": "Figura Mazinger Z.3mf",
+      "filePath": "/uploads/quotes/customerFile-1794630168306-282155412.3mf",
+      "material": "ABS",
+      "color": "Negro",
+      "infillPercent": 20,
+      "dimensions": {
+        "x": 10,
+        "y": 10,
+        "z": 12
+      },
+      "estimation": {
+        "material": "ABS",
+        "filamentGrams": 4.2,
+        "printTimeMinutes": 39,
+        "printTimeFormatted": "0h 39m",
+        "dimensions": {
+          "x": 10,
+          "y": 10,
+          "z": 12,
+          "unit": "cm"
+        },
+        "infillPercent": 20,
+        "estimatedVolumeCm3": 4,
+        "breakdown": {
+          "materialCost": 588,
+          "machineCost": 3250,
+          "preparationCost": 7000,
+          "totalPrice": 15000
+        }
+      },
+      "userId": null,
+      "customerEmail": null,
+      "customerName": null,
+      "createdAt": "2026-11-14T04:22:48.311Z"
+    },
+    {
+      "id": "cot-1794630164305",
+      "fileName": "customerFile-1794630164295-181906242.3mf",
+      "originalName": "Figura Mazinger Z.3mf",
+      "filePath": "/uploads/quotes/customerFile-1794630164295-181906242.3mf",
+      "material": "TPU",
+      "color": "Negro Mate",
+      "infillPercent": 20,
+      "dimensions": {
+        "x": 10,
+        "y": 10,
+        "z": 12
+      },
+      "estimation": {
+        "material": "TPU",
+        "filamentGrams": 4.8,
+        "printTimeMinutes": 42,
+        "printTimeFormatted": "0h 42m",
+        "dimensions": {
+          "x": 10,
+          "y": 10,
+          "z": 12,
+          "unit": "cm"
+        },
+        "infillPercent": 20,
+        "estimatedVolumeCm3": 4,
+        "breakdown": {
+          "materialCost": 912,
+          "machineCost": 3500,
+          "preparationCost": 7000,
+          "totalPrice": 15000
+        }
+      },
+      "userId": null,
+      "customerEmail": null,
+      "customerName": null,
+      "createdAt": "2026-11-14T04:22:44.305Z"
+    },
+    {
+      "id": "cot-1794630155987",
+      "fileName": "customerFile-1794630155978-263696637.3mf",
+      "originalName": "Figura Mazinger Z.3mf",
+      "filePath": "/uploads/quotes/customerFile-1794630155978-263696637.3mf",
+      "material": "PETG",
+      "color": "Azul Translúcido",
+      "infillPercent": 20,
+      "dimensions": {
+        "x": 10,
+        "y": 10,
+        "z": 12
+      },
+      "estimation": {
+        "material": "PETG",
+        "filamentGrams": 5.1,
+        "printTimeMinutes": 43,
+        "printTimeFormatted": "0h 43m",
+        "dimensions": {
+          "x": 10,
+          "y": 10,
+          "z": 12,
+          "unit": "cm"
+        },
+        "infillPercent": 20,
+        "estimatedVolumeCm3": 4,
+        "breakdown": {
+          "materialCost": 765,
+          "machineCost": 3583,
+          "preparationCost": 7000,
+          "totalPrice": 15000
+        }
+      },
+      "userId": null,
+      "customerEmail": null,
+      "customerName": null,
+      "createdAt": "2026-11-14T04:22:35.987Z"
+    },
+    {
+      "id": "cot-1794630097562",
+      "fileName": "customerFile-1794630097349-291801723.3mf",
+      "originalName": "Tapa_Boquillas_FlashForge_5M_MazingerZ.3mf",
+      "filePath": "/uploads/quotes/customerFile-1794630097349-291801723.3mf",
+      "material": "PETG",
+      "color": "Azul Translúcido",
+      "infillPercent": 20,
+      "dimensions": {
+        "x": 10,
+        "y": 10,
+        "z": 12
+      },
+      "estimation": {
+        "material": "PETG",
+        "filamentGrams": 227.6,
+        "printTimeMinutes": 996,
+        "printTimeFormatted": "16h 36m",
+        "dimensions": {
+          "x": 10,
+          "y": 10,
+          "z": 12,
+          "unit": "cm"
+        },
+        "infillPercent": 20,
+        "estimatedVolumeCm3": 179.2,
+        "breakdown": {
+          "materialCost": 34140,
+          "machineCost": 83000,
+          "preparationCost": 7000,
+          "totalPrice": 124000
+        }
+      },
+      "userId": null,
+      "customerEmail": null,
+      "customerName": null,
+      "createdAt": "2026-11-14T04:21:37.562Z"
+    }
+  ],
   "sponsors": [
     {
       "id": "spon-1",
@@ -571,7 +838,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Ing. Rodrigo Cárdenas",
       "status": "active",
-      "createdAt": "2026-11-05T10:39:36.742Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "spon-2",
@@ -581,7 +848,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Diana Salazar",
       "status": "active",
-      "createdAt": "2026-11-05T10:39:36.742Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     },
     {
       "id": "spon-3",
@@ -591,8 +858,383 @@
       "logoUrl": "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Carlos Mario Vélez",
       "status": "active",
-      "createdAt": "2026-11-05T10:39:36.742Z"
+      "createdAt": "2026-11-14T04:01:49.002Z"
     }
   ],
-  "preferences": {}
+  "preferences": {},
+  "clients": [
+    {
+      "id": "cli-demo-1",
+      "nombre": "Carlos Mendoza",
+      "email": "cliente@maquinamos3d.com",
+      "telefono": "3109876543",
+      "direccion": "Calle 10 # 43E-22, El Poblado, Medellín",
+      "notas": "Cliente frecuente de prototipos IoT.",
+      "fechaRegistro": "2026-10-25T04:01:49.002Z"
+    },
+    {
+      "id": "cli-demo-2",
+      "nombre": "Laura Cifuentes",
+      "email": "laura.cifuentes@correo.com",
+      "telefono": "3015558899",
+      "direccion": "Cra 70 # 32-15, Laureles, Medellín",
+      "notas": "Prefiere pago por transferencia Nequi.",
+      "fechaRegistro": "2026-11-02T04:01:49.002Z"
+    },
+    {
+      "id": "cli-demo-3",
+      "nombre": "Arquitectura Viva SAS",
+      "email": "proyectos@arqviva.co",
+      "telefono": "6044441020",
+      "direccion": "Av. Las Palmas # 120-30, Envigado",
+      "notas": "Cliente corporativo: maquetas y avisos.",
+      "fechaRegistro": "2026-10-05T04:01:49.002Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "prj-demo-1",
+      "clientId": "cli-demo-1",
+      "tipoProyecto": "impresion_3d",
+      "nombreProyecto": "Carcasas para sensores IoT",
+      "descripcion": "Lote de gabinetes ventilados para red de monitoreo ambiental.",
+      "fechaInicio": "2026-11-04",
+      "fechaEntrega": "2026-11-19",
+      "fechaCompletado": null,
+      "estado": "en_proceso",
+      "prioridad": "alta",
+      "notas": "Imprimir en PETG por resistencia térmica.",
+      "createdAt": "2026-11-04T04:01:49.002Z"
+    },
+    {
+      "id": "prj-demo-2",
+      "clientId": "cli-demo-2",
+      "tipoProyecto": "diseno_parametrico",
+      "nombreProyecto": "Jarrón generativo Voronoi",
+      "descripcion": "Diseño paramétrico único para regalo corporativo.",
+      "fechaInicio": "2026-11-12",
+      "fechaEntrega": "2026-11-22",
+      "fechaCompletado": null,
+      "estado": "pendiente",
+      "prioridad": "media",
+      "notas": "Cliente aprobará render antes de fabricar.",
+      "createdAt": "2026-11-12T04:01:49.002Z"
+    },
+    {
+      "id": "prj-demo-3",
+      "clientId": "cli-demo-3",
+      "tipoProyecto": "avisos",
+      "nombreProyecto": "Aviso neón lobby torre empresarial",
+      "descripcion": "Letrero neón flex azul hielo 120x50 cm para recepción.",
+      "fechaInicio": "2026-10-15",
+      "fechaEntrega": "2026-11-07",
+      "fechaCompletado": "2026-11-07T04:01:49.002Z",
+      "estado": "completado",
+      "prioridad": "urgente",
+      "notas": "Instalado y facturado.",
+      "createdAt": "2026-10-15T04:01:49.002Z"
+    },
+    {
+      "id": "prj-demo-4",
+      "clientId": "cli-demo-3",
+      "tipoProyecto": "router_cnc",
+      "nombreProyecto": "Celosía divisoria sala juntas",
+      "descripcion": "Panel en MDF lacado blanco, patrón geométrico hexagonal 95x70 cm.",
+      "fechaInicio": "2026-10-30",
+      "fechaEntrega": "2026-11-12",
+      "fechaCompletado": null,
+      "estado": "cancelado",
+      "prioridad": "baja",
+      "notas": "Cancelado por rediseño del cliente.",
+      "createdAt": "2026-10-30T04:01:49.002Z"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "pza-demo-1",
+      "projectId": "prj-demo-1",
+      "nombrePieza": "Gabinete enclosure ventilado",
+      "cantidad": 12,
+      "dimensionesX": 11,
+      "dimensionesY": 8,
+      "dimensionesZ": 4,
+      "volumenCm3": 95.5,
+      "pesoGramos": 55,
+      "material": "PETG",
+      "color": "Negro",
+      "alturaCapa": 0.2,
+      "rellenoPorcentaje": 25,
+      "soportes": false,
+      "tiempoImpresionMin": 170,
+      "archivoStl": "/uploads/models3d/enclosure.stl",
+      "archivoGcode": "/uploads/models3d/enclosure.gcode",
+      "notas": "Riel DIN interno incluido.",
+      "createdAt": "2026-11-05T04:01:49.002Z"
+    },
+    {
+      "id": "pza-demo-2",
+      "projectId": "prj-demo-1",
+      "nombrePieza": "Tapa superior con rejilla",
+      "cantidad": 12,
+      "dimensionesX": 11,
+      "dimensionesY": 8,
+      "dimensionesZ": 0.8,
+      "volumenCm3": 22.1,
+      "pesoGramos": 14.5,
+      "material": "PETG",
+      "color": "Negro",
+      "alturaCapa": 0.2,
+      "rellenoPorcentaje": 20,
+      "soportes": false,
+      "tiempoImpresionMin": 45,
+      "archivoStl": "/uploads/models3d/tapa.stl",
+      "archivoGcode": "",
+      "notas": "Rejilla de ventilación pasiva.",
+      "createdAt": "2026-11-05T04:01:49.002Z"
+    },
+    {
+      "id": "pza-demo-3",
+      "projectId": "prj-demo-2",
+      "nombrePieza": "Jarrón Voronoi 22cm",
+      "cantidad": 1,
+      "dimensionesX": 12,
+      "dimensionesY": 12,
+      "dimensionesZ": 22,
+      "volumenCm3": 310.75,
+      "pesoGramos": 95,
+      "material": "PLA",
+      "color": "Azul Eléctrico",
+      "alturaCapa": 0.16,
+      "rellenoPorcentaje": 15,
+      "soportes": false,
+      "tiempoImpresionMin": 260,
+      "archivoStl": "/uploads/models3d/voronoi.stl",
+      "archivoGcode": "",
+      "notas": "Modo espiral (vase mode).",
+      "createdAt": "2026-11-12T04:01:49.002Z"
+    },
+    {
+      "id": "pza-demo-4",
+      "projectId": "prj-demo-3",
+      "nombrePieza": "Base acrílico cristal 5mm",
+      "cantidad": 1,
+      "dimensionesX": 120,
+      "dimensionesY": 50,
+      "dimensionesZ": 0.5,
+      "volumenCm3": null,
+      "pesoGramos": 4200,
+      "material": "Acrílico 5mm",
+      "color": "Cristal",
+      "alturaCapa": null,
+      "rellenoPorcentaje": 0,
+      "soportes": false,
+      "tiempoImpresionMin": null,
+      "archivoStl": "",
+      "archivoGcode": "",
+      "notas": "Corte láser + pulido de bordes.",
+      "createdAt": "2026-10-17T04:01:49.002Z"
+    },
+    {
+      "id": "pza-demo-5",
+      "projectId": "prj-demo-3",
+      "nombrePieza": "Letrero neón flex 12V",
+      "cantidad": 1,
+      "dimensionesX": 110,
+      "dimensionesY": 45,
+      "dimensionesZ": 1.2,
+      "volumenCm3": null,
+      "pesoGramos": 850,
+      "material": "Neón Flex",
+      "color": "Azul Hielo",
+      "alturaCapa": null,
+      "rellenoPorcentaje": 0,
+      "soportes": false,
+      "tiempoImpresionMin": null,
+      "archivoStl": "",
+      "archivoGcode": "",
+      "notas": "Fuente 12V 5A incluida.",
+      "createdAt": "2026-10-17T04:01:49.002Z"
+    }
+  ],
+  "costs": [
+    {
+      "id": "cst-demo-1",
+      "pieceId": "pza-demo-1",
+      "costoMaterialKg": 150000,
+      "materialUsadoGramos": 55,
+      "costoMaterialTotal": 8250,
+      "costoEnergiaKwh": 1.2,
+      "precioKwh": 900,
+      "costoEnergiaTotal": 1080,
+      "horasDiseno": 2.5,
+      "costoHoraDiseno": 40000,
+      "costoDisenoTotal": 100000,
+      "costoManoObra": 12000,
+      "otrosCostos": 3000,
+      "costoTotal": 124330,
+      "precioVenta": 185000,
+      "ganancia": 60670,
+      "updatedAt": "2026-11-14T04:01:49.003Z"
+    },
+    {
+      "id": "cst-demo-2",
+      "pieceId": "pza-demo-2",
+      "costoMaterialKg": 150000,
+      "materialUsadoGramos": 14.5,
+      "costoMaterialTotal": 2175,
+      "costoEnergiaKwh": 0.35,
+      "precioKwh": 900,
+      "costoEnergiaTotal": 315,
+      "horasDiseno": 0,
+      "costoHoraDiseno": 40000,
+      "costoDisenoTotal": 0,
+      "costoManoObra": 4000,
+      "otrosCostos": 1000,
+      "costoTotal": 7490,
+      "precioVenta": 12000,
+      "ganancia": 4510,
+      "updatedAt": "2026-11-14T04:01:49.003Z"
+    },
+    {
+      "id": "cst-demo-3",
+      "pieceId": "pza-demo-3",
+      "costoMaterialKg": 120000,
+      "materialUsadoGramos": 95,
+      "costoMaterialTotal": 11400,
+      "costoEnergiaKwh": 1.8,
+      "precioKwh": 900,
+      "costoEnergiaTotal": 1620,
+      "horasDiseno": 3,
+      "costoHoraDiseno": 40000,
+      "costoDisenoTotal": 120000,
+      "costoManoObra": 8000,
+      "otrosCostos": 5000,
+      "costoTotal": 146020,
+      "precioVenta": 185000,
+      "ganancia": 38980,
+      "updatedAt": "2026-11-14T04:01:49.003Z"
+    },
+    {
+      "id": "cst-demo-4",
+      "pieceId": "pza-demo-4",
+      "costoMaterialKg": 380000,
+      "materialUsadoGramos": 4200,
+      "costoMaterialTotal": 1596000,
+      "costoEnergiaKwh": 0.5,
+      "precioKwh": 900,
+      "costoEnergiaTotal": 450,
+      "horasDiseno": 1,
+      "costoHoraDiseno": 55000,
+      "costoDisenoTotal": 55000,
+      "costoManoObra": 45000,
+      "otrosCostos": 22000,
+      "costoTotal": 1718450,
+      "precioVenta": 1950000,
+      "ganancia": 231550,
+      "updatedAt": "2026-11-14T04:01:49.003Z"
+    },
+    {
+      "id": "cst-demo-5",
+      "pieceId": "pza-demo-5",
+      "costoMaterialKg": 520000,
+      "materialUsadoGramos": 850,
+      "costoMaterialTotal": 442000,
+      "costoEnergiaKwh": 0.2,
+      "precioKwh": 900,
+      "costoEnergiaTotal": 180,
+      "horasDiseno": 0.5,
+      "costoHoraDiseno": 55000,
+      "costoDisenoTotal": 27500,
+      "costoManoObra": 60000,
+      "otrosCostos": 35000,
+      "costoTotal": 564680,
+      "precioVenta": 720000,
+      "ganancia": 155320,
+      "updatedAt": "2026-11-14T04:01:49.003Z"
+    }
+  ],
+  "projectFiles": [
+    {
+      "id": "fil-demo-1",
+      "pieceId": "pza-demo-1",
+      "tipoArchivo": "render",
+      "descripcion": "Render del gabinete en visor OrcaSlicer",
+      "rutaArchivo": "/uploads/images/enclosure-render.webp",
+      "fechaSubida": "2026-11-06T04:01:49.003Z"
+    },
+    {
+      "id": "fil-demo-2",
+      "pieceId": "pza-demo-1",
+      "tipoArchivo": "foto",
+      "descripcion": "Primera unidad impresa en PETG negro",
+      "rutaArchivo": "/uploads/images/enclosure-foto.jpg",
+      "fechaSubida": "2026-11-08T04:01:49.003Z"
+    },
+    {
+      "id": "fil-demo-3",
+      "pieceId": "pza-demo-3",
+      "tipoArchivo": "render",
+      "descripcion": "Vista previa del jarrón en modo espiral",
+      "rutaArchivo": "/uploads/images/voronoi-render.png",
+      "fechaSubida": "2026-11-13T04:01:49.003Z"
+    },
+    {
+      "id": "fil-demo-4",
+      "pieceId": "pza-demo-4",
+      "tipoArchivo": "plano",
+      "descripcion": "Plano de corte del acrílico cristal",
+      "rutaArchivo": "/uploads/images/aviso-plano.png",
+      "fechaSubida": "2026-10-20T04:01:49.003Z"
+    },
+    {
+      "id": "fil-demo-5",
+      "pieceId": "pza-demo-5",
+      "tipoArchivo": "foto",
+      "descripcion": "Prueba de encendido del neón flex",
+      "rutaArchivo": "/uploads/images/neon-prueba.jpg",
+      "fechaSubida": "2026-10-25T04:01:49.003Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "pag-demo-1",
+      "proyectoId": "prj-demo-1",
+      "monto": 250000,
+      "fechaPago": "2026-11-05T04:01:49.003Z",
+      "metodoPago": "transferencia",
+      "referencia": "NEQUI-88231",
+      "estado": "completado",
+      "createdAt": "2026-11-05T04:01:49.003Z"
+    },
+    {
+      "id": "pag-demo-2",
+      "proyectoId": "prj-demo-1",
+      "monto": 200000,
+      "fechaPago": "2026-11-13T04:01:49.003Z",
+      "metodoPago": "transferencia",
+      "referencia": "BANC-00981234",
+      "estado": "pendiente",
+      "createdAt": "2026-11-13T04:01:49.003Z"
+    },
+    {
+      "id": "pag-demo-3",
+      "proyectoId": "prj-demo-3",
+      "monto": 1130000,
+      "fechaPago": "2026-10-25T04:01:49.003Z",
+      "metodoPago": "tarjeta",
+      "referencia": "VISA-****4582",
+      "estado": "completado",
+      "createdAt": "2026-10-25T04:01:49.003Z"
+    },
+    {
+      "id": "pag-demo-4",
+      "proyectoId": "prj-demo-4",
+      "monto": 180000,
+      "fechaPago": "2026-10-31T04:01:49.003Z",
+      "metodoPago": "efectivo",
+      "referencia": "REC-CAJA-045",
+      "estado": "completado",
+      "createdAt": "2026-10-31T04:01:49.003Z"
+    }
+  ]
 }

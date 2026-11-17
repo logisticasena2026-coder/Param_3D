@@ -1,0 +1,22 @@
+# Excluir del contexto de build de Docker
+.git
+.gitignore
+
+# Dependencias (se instalan dentro de la imagen)
+**/node_modules
+
+# Build del frontend (se recompila en la etapa 1 del Dockerfile)
+frontend/dist
+
+# Datos locales: el contenedor arranca con BD limpia y se siembra con
+# `docker exec <nombre> npm run seed`
+backend/database.json
+backend/uploads
+
+# Archivos de entorno y logs
+**/.env
+**/.env.*
+**/*.log
+Dockerfile
+.dockerignore
+README.md

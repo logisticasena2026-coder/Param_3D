@@ -6,6 +6,7 @@ import {
   ShoppingCart,
   Users,
   FileCode,
+  FolderKanban,
   ArrowRight,
   Clock,
   TrendingUp,
@@ -19,7 +20,9 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
     ordersCount: 0,
     pendingOrdersCount: 0,
     sponsorsCount: 0,
-    quotesCount: 0
+    quotesCount: 0,
+    projectsCount: 0,
+    activeProjectsCount: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -29,11 +32,12 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
 
   const fetchStats = async () => {
     try {
-      const [products, orders, sponsors, quotes] = await Promise.all([
+      const [products, orders, sponsors, quotes, projectsSummary] = await Promise.all([
         apiClient.request('/products'),
         apiClient.request('/orders/admin/all'),
         apiClient.request('/sponsors'),
-        apiClient.request('/quotes/admin/all')
+        apiClient.request('/quotes/admin/all'),
+        apiClient.request('/projects/summary')
       ]);
 
       const pending = orders.filter(o => o.status !== 'Entregado').length;
@@ -43,7 +47,9 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
         ordersCount: orders.length,
         pendingOrdersCount: pending,
         sponsorsCount: sponsors.length,
-        quotesCount: quotes.length
+        quotesCount: quotes.length,
+        projectsCount: projectsSummary.totalProjects || 0,
+        activeProjectsCount: projectsSummary.activeProjects || 0
       });
     } catch (err) {
       console.error('Error cargando estadísticas admin:', err);
@@ -53,6 +59,14 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
   };
 
   const cards = [
+    {
+      title: 'Proyectos del Taller',
+      value: stats.projectsCount,
+      sub: `${stats.activeProjectsCount} activos (impresión 3D, CNC, avisos, metal)`,
+      icon: FolderKanban,
+      color: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+      tab: 'projects'
+    },
     {
       title: 'Órdenes en Taller',
       value: stats.ordersCount,
@@ -110,7 +124,7 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
       </div>
 
       {/* Tarjetas de Métricas */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
