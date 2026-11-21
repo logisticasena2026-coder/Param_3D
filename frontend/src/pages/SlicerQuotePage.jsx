@@ -129,7 +129,7 @@ export const SlicerQuotePage = ({ onNavigate }) => {
               <div className="relative border-2 border-dashed border-slate-700 hover:border-brand-500 rounded-2xl p-6 text-center surface-subtle transition-colors group cursor-pointer">
                 <input
                   type="file"
-                  accept=".stl,.obj,.step,.stp,.3mf"
+                  accept="image/*,video/*,.stl,.obj,.step,.stp,.3mf,.gcode"
                   onChange={handleFileChange}
                   className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                 />

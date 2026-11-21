@@ -303,9 +303,9 @@ const addPiece = (req, res, next) => {
     const {
       nombrePieza,
       cantidad = 1,
-      dimensionesX = null,
-      dimensionesY = null,
-      dimensionesZ = null,
+      largo = null,
+      ancho = null,
+      alto = null,
       volumenCm3 = null,
       pesoGramos = null,
       material = 'PLA',
@@ -336,7 +336,7 @@ const addPiece = (req, res, next) => {
       projectId,
       nombrePieza: nombrePieza.trim(),
       cantidad: Number(cantidad),
-      dimensionesX, dimensionesY, dimensionesZ,
+      largo, ancho, alto,
       volumenCm3, pesoGramos,
       material, color, alturaCapa,
       rellenoPorcentaje: infill,
@@ -365,7 +365,7 @@ const updatePiece = (req, res, next) => {
     }
 
     const fields = [
-      'nombrePieza', 'cantidad', 'dimensionesX', 'dimensionesY', 'dimensionesZ',
+      'nombrePieza', 'cantidad', 'largo', 'ancho', 'alto',
       'volumenCm3', 'pesoGramos', 'material', 'color', 'alturaCapa',
       'rellenoPorcentaje', 'soportes', 'tiempoImpresionMin',
       'archivoStl', 'archivoGcode', 'notas'

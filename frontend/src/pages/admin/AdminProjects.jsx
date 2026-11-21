@@ -18,7 +18,8 @@ import {
   Banknote,
   Paperclip,
   Filter,
-  Wallet
+  Wallet,
+  Image
 } from 'lucide-react';
 
 // Etiquetas y colores de los ENUM del módulo
@@ -40,6 +41,14 @@ const PRIORITY_COLORS = {
 const fmtMoney = (n) => `$${Number(n || 0).toLocaleString('es-CO')}`;
 const fmtDate = (d) => (d ? new Date(d).toLocaleDateString('es-CO') : '—');
 
+// Paleta de colores predefinidos para las piezas
+const COLORS = [
+  'Blanco', 'Negro', 'Gris Plata', 'Gris Humo', 'Gris Oscuro',
+  'Rojo Ferrari', 'Rojo', 'Verde Limón', 'Verde Esmeralda',
+  'Naranja', 'Amarillo Oro', 'Azul Eléctrico', 'Azul Brillo',
+  'Azul Translúcido', 'Azul Neón', 'Morado'
+];
+
 const EMPTY_PROJECT_FORM = {
   clientId: '',
   tipoProyecto: 'impresion_3d',
@@ -54,9 +63,9 @@ const EMPTY_PROJECT_FORM = {
 const EMPTY_PIECE_FORM = {
   nombrePieza: '',
   cantidad: 1,
-  dimensionesX: '',
-  dimensionesY: '',
-  dimensionesZ: '',
+  largo: '',
+  ancho: '',
+  alto: '',
   pesoGramos: '',
   material: 'PLA',
   color: '',
@@ -93,6 +102,8 @@ export const AdminProjects = () => {
   const [paymentForm, setPaymentForm] = useState(EMPTY_PAYMENT_FORM);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [costForms, setCostForms] = useState({}); // pieceId -> form de costos
+  const [uploadingFile, setUploadingFile] = useState(null);
+  const [colorOtro, setColorOtro] = useState(false);
 
   const showMsg = (type, text) => {
     setMsg({ type, text });
@@ -204,6 +215,26 @@ export const AdminProjects = () => {
     }
   };
 
+  // Subir imagen/video de una pieza (multipart a /pieces/:pieceId/files)
+  const handleUploadPieceFile = async (pieceId, file) => {
+    if (uploadingFile) return;
+    setUploadingFile(pieceId);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const tipoArchivo = file.type.startsWith('video/') ? 'otro' : 'foto';
+      fd.append('tipoArchivo', tipoArchivo);
+      fd.append('descripcion', `Archivo subido a la pieza: ${file.name}`);
+      await apiClient.request(`/projects/pieces/${pieceId}/files`, { method: 'POST', body: fd });
+      showMsg('success', `Archivo subido a la pieza (${file.name})`);
+      loadProjectDetail(expandedId);
+    } catch (err) {
+      showMsg('error', err.message);
+    } finally {
+      setUploadingFile(null);
+    }
+  };
+
   const toggleProjectDetail = async (projectId) => {
     if (expandedId === projectId) {
       setExpandedId(null);
@@ -250,9 +281,9 @@ export const AdminProjects = () => {
         body: JSON.stringify({
           ...pieceForm,
           cantidad: Number(pieceForm.cantidad) || 1,
-          dimensionesX: pieceForm.dimensionesX !== '' ? Number(pieceForm.dimensionesX) : null,
-          dimensionesY: pieceForm.dimensionesY !== '' ? Number(pieceForm.dimensionesY) : null,
-          dimensionesZ: pieceForm.dimensionesZ !== '' ? Number(pieceForm.dimensionesZ) : null,
+          largo: pieceForm.largo !== '' ? Number(pieceForm.largo) : null,
+          ancho: pieceForm.ancho !== '' ? Number(pieceForm.ancho) : null,
+          alto: pieceForm.alto !== '' ? Number(pieceForm.alto) : null,
           pesoGramos: pieceForm.pesoGramos !== '' ? Number(pieceForm.pesoGramos) : null,
           tiempoImpresionMin: pieceForm.tiempoImpresionMin !== '' ? Number(pieceForm.tiempoImpresionMin) : null
         })
@@ -260,6 +291,7 @@ export const AdminProjects = () => {
       showMsg('success', 'Pieza agregada al proyecto');
       setShowPieceForm(false);
       setPieceForm(EMPTY_PIECE_FORM);
+      setColorOtro(false);
       loadProjectDetail(expandedId);
       fetchProjects();
       fetchSummary();
@@ -699,7 +731,7 @@ export const AdminProjects = () => {
                             <span>Piezas del Proyecto ({detail.pieces.length})</span>
                           </h5>
                           <button
-                            onClick={() => setShowPieceForm(!showPieceForm)}
+                            onClick={() => { setColorOtro(false); setShowPieceForm(!showPieceForm); }}
                             className="px-2.5 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold flex items-center space-x-1 hover:bg-cyan-500/20 transition-colors"
                           >
                             <Plus className="w-3.5 h-3.5" />
@@ -716,24 +748,64 @@ export const AdminProjects = () => {
                               <input type="number" min="1" placeholder="Cantidad" value={pieceForm.cantidad}
                                 onChange={(e) => setPieceForm({ ...pieceForm, cantidad: e.target.value })}
                                 className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
-                              <input type="text" placeholder="Material (PLA, PETG...)" value={pieceForm.material}
+                              <input type="text" placeholder="Tipo de material (PLA, PETG, ABS, TPU)" value={pieceForm.material}
                                 onChange={(e) => setPieceForm({ ...pieceForm, material: e.target.value })}
                                 className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
-                              <input type="number" step="0.01" placeholder="Dim X (cm)" value={pieceForm.dimensionesX}
-                                onChange={(e) => setPieceForm({ ...pieceForm, dimensionesX: e.target.value })}
+                              <input type="number" step="0.01" placeholder="Largo (cm)" value={pieceForm.largo}
+                                onChange={(e) => setPieceForm({ ...pieceForm, largo: e.target.value })}
                                 className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
-                              <input type="number" step="0.01" placeholder="Dim Y (cm)" value={pieceForm.dimensionesY}
-                                onChange={(e) => setPieceForm({ ...pieceForm, dimensionesY: e.target.value })}
+                              <input type="number" step="0.01" placeholder="Ancho (cm)" value={pieceForm.ancho}
+                                onChange={(e) => setPieceForm({ ...pieceForm, ancho: e.target.value })}
                                 className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
-                              <input type="number" step="0.01" placeholder="Dim Z (cm)" value={pieceForm.dimensionesZ}
-                                onChange={(e) => setPieceForm({ ...pieceForm, dimensionesZ: e.target.value })}
+                              <input type="number" step="0.01" placeholder="Alto (cm)" value={pieceForm.alto}
+                                onChange={(e) => setPieceForm({ ...pieceForm, alto: e.target.value })}
                                 className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
                               <input type="number" step="0.1" placeholder="Peso (g)" value={pieceForm.pesoGramos}
                                 onChange={(e) => setPieceForm({ ...pieceForm, pesoGramos: e.target.value })}
                                 className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
-                              <input type="text" placeholder="Color" value={pieceForm.color}
-                                onChange={(e) => setPieceForm({ ...pieceForm, color: e.target.value })}
-                                className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
+                              <div className="col-span-2 space-y-1">
+                                <label className="text-[9px] text-muted uppercase block">Color *</label>
+                                {colorOtro ? (
+                                  <input
+                                    type="text"
+                                    placeholder="Escribe el color exacto (ej. Rojo Ferrari, Azul Translúcido)"
+                                    value={pieceForm.color}
+                                    autoFocus
+                                    onBlur={(e) => { if (!e.target.value.trim()) setColorOtro(false); }}
+                                    onChange={(e) => setPieceForm({ ...pieceForm, color: e.target.value })}
+                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
+                                  />
+                                ) : (
+                                  <select
+                                    value={pieceForm.color}
+                                    onChange={(e) => {
+                                      const v = e.target.value;
+                                      if (v === 'otro') {
+                                        setColorOtro(true);
+                                        setPieceForm({ ...pieceForm, color: '' });
+                                      } else {
+                                        setColorOtro(false);
+                                        setPieceForm({ ...pieceForm, color: v });
+                                      }
+                                    }}
+                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
+                                  >
+                                    <option value="">Sin definir</option>
+                                    {COLORS.map((c) => (
+                                      <option key={c} value={c}>{c}</option>
+                                    ))}
+                                    <option value="otro">Otro (personalizado)</option>
+                                  </select>
+                                )}
+                                {!colorOtro && pieceForm.color && (
+                                  <span className="text-[10px] text-cyan-400 block">
+                                    Seleccionado: <strong className="text-white">{pieceForm.color}</strong>
+                                  </span>
+                                )}
+                                {pieceForm.color === 'Otro' ? (
+                                  <span className="text-[10px] text-muted block">Abre el <strong>select de color</strong> y elige “Otro (personalizado)”.</span>
+                                ) : null}
+                              </div>
                               <input type="number" min="0" max="100" placeholder="Relleno %" value={pieceForm.rellenoPorcentaje}
                                 onChange={(e) => setPieceForm({ ...pieceForm, rellenoPorcentaje: e.target.value })}
                                 className="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500" />
@@ -770,7 +842,7 @@ export const AdminProjects = () => {
                                     <span className="text-xs font-bold text-white">{pz.nombrePieza}</span>
                                     <span className="text-[10px] text-muted block">
                                       ×{pz.cantidad} · {pz.material} {pz.color && `· ${pz.color}`}
-                                      {pz.dimensionesX && ` · ${pz.dimensionesX}×${pz.dimensionesY}×${pz.dimensionesZ} cm`}
+                                      {pz.largo && ` · Largo: ${pz.largo} · Ancho: ${pz.ancho} · Alto: ${pz.alto} cm`}
                                       {pz.tiempoImpresionMin ? ` · ${pz.tiempoImpresionMin} min máquina` : ''}
                                       {pz.soportes ? ' · Con soportes' : ''}
                                     </span>
@@ -807,6 +879,29 @@ export const AdminProjects = () => {
                                     ))}
                                   </div>
                                 )}
+
+                                {/* Subida de imagen / video de la pieza */}
+                                <div className="pt-1">
+                                  <label className="text-[10px] font-bold text-muted uppercase flex items-center space-x-1 mb-1">
+                                    <Image className="w-3.5 h-3.5" />
+                                    <span>Imagen / Video del proceso</span>
+                                  </label>
+                                  <input
+                                    type="file"
+                                    accept="image/*,video/*"
+                                    onChange={(e) => {
+                                      if (e.target.files && e.target.files[0]) {
+                                        handleUploadPieceFile(pz.id, e.target.files[0]);
+                                      }
+                                      e.target.value = '';
+                                    }}
+                                    disabled={uploadingFile === pz.id}
+                                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 cursor-pointer file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:bg-purple-500/10 file:text-purple-400 file:text-[10px] file:font-bold hover:file:bg-purple-500/20 disabled:opacity-50 transition-colors"
+                                  />
+                                  <span className="text-[10px] text-muted block mt-0.5">
+                                    Sube fotos, render o video del proceso de esta pieza (máx. 50 MB).
+                                  </span>
+                                </div>
 
                                 {/* Editor de costos de la pieza */}
                                 {costForms[pz.id] && (

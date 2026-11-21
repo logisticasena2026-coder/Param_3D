@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
     } else if (file.fieldname === 'video') {
       folder = 'images';
     }
+    // default (campos genéricos como 'file', 'image', etc.): /uploads/images/
     const dest = path.join(__dirname, '..', '..', 'uploads', folder);
     createDirIfNotExists(dest);
     cb(null, dest);
@@ -31,8 +32,9 @@ const fileFilter = (req, file, cb) => {
   const allowedExts = [
     // 3D files
     '.stl', '.obj', '.step', '.stp', '.3mf', '.gcode',
-    // Media files
-    '.png', '.jpg', '.jpeg', '.webp', '.mp4', '.webm'
+    // Media files (imágenes y videos)
+    '.png', '.jpg', '.jpeg', '.webp', '.gif',
+    '.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v', '.flv'
   ];
   const ext = path.extname(file.originalname).toLowerCase();
   if (allowedExts.includes(ext)) {
