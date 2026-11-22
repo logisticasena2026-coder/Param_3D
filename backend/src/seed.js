@@ -39,7 +39,15 @@ async function seed() {
     }
   ];
 
-  // 2. Productos
+  // 6. Módulo ERP — Proveedores
+  const proveedores = [
+    { id: 'prov-1', nombre: 'Polímeros Industriales del Valle', email: 'contacto@polimerosvalle.com', telefono: '6015551234', webpage: 'https://ejemplo-polimeros.com', ubicacion: 'Medellín, Antioquia', categoria: 'filamentos', descripcion: 'Filamentos técnicos: PETG, ABS ignífugo, TPU y Nylon grado industrial.', nota: '¡Mejores precios para volúmenes grandes!', fechaAlta: new Date(Date.now() - 86400000 * 90).toISOString(), estado: 'activo' },
+    { id: 'prov-2', nombre: 'Koken Gaskets de Colombia S.A.', email: 'ventas@kokengaskets.com.co', telefono: '6015556789', webpage: 'https://ejemplo-kokengaskets.co', ubicacion: 'Cali, Valle del Cauca', categoria: 'moldes', descripcion: 'Moldes para placas de malla, embudos y tuercas de timón para impresoras FDM tamaño mediano.', nota: 'Requiere pedido mínimo de 12 unidades.', fechaAlta: new Date(Date.now() - 86400000 * 120).toISOString(), estado: 'activo' },
+    { id: 'prov-3', nombre: 'Uttermost Matter S.A.S.', email: 'contacto@uttermost.com.co', telefono: '6015559988', webpage: 'https://ejemplo-uttermost.com', ubicacion: 'Bogotá, Cundinamarca', categoria: 'utensilios', descripcion: 'Boquillas de carburo, superes ER20 y lubricantes para routers CNC de impresión.', nota: 'Tiempo de entrega 5-10 días.', fechaAlta: new Date(Date.now() - 86400000 * 60).toISOString(), estado: 'activo' },
+    { id: 'prov-4', nombre: 'Maquinamos Supply', email: 'supply@maquinamos3d.com', telefono: '3001234567', webpage: '', ubicacion: 'Medellín, Antioquia', categoria: 'servicios', descripcion: 'Suministro interno de Productos: filamentos y accesorios del taller.', nota: '', fechaAlta: new Date(Date.now() - 86400000 * 180).toISOString(), estado: 'activo' }
+  ];
+
+  // 2. Productos (con campos de inventario: stockActual, stockMin, stockMax, proveedor)
   const products = [
     // Subcategoría: Artesanales (Impresión 3D)
     {
@@ -52,6 +60,11 @@ async function seed() {
       printTime: '4h 20m',
       filamentWeight: '95g',
       dimensions: { largo: 12, ancho: 12, alto: 22, unit: 'cm' },
+      stockActual: 60,
+      stockMin: 10,
+      stockMax: 30,
+      proveedorId: 'prov-1',
+      proveedor: 'Polímeros Industriales del Valle',
       isFree: false,
       availableMaterials: ['PLA', 'PETG'],
       colorOptionsPerMaterial: {
@@ -75,6 +88,11 @@ async function seed() {
       printTime: '6h 45m',
       filamentWeight: '140g',
       dimensions: { largo: 14, ancho: 14, alto: 28, unit: 'cm' },
+      stockActual: 5,
+      stockMin: 2,
+      stockMax: 10,
+      proveedorId: 'prov-2',
+      proveedor: 'Koken Gaskets de Colombia S.A.',
       isFree: false,
       availableMaterials: ['PLA', 'ABS'],
       colorOptionsPerMaterial: {
@@ -98,6 +116,11 @@ async function seed() {
       printTime: '3h 10m',
       filamentWeight: '60g',
       dimensions: { largo: 10, ancho: 10, alto: 18, unit: 'cm' },
+      stockActual: 200,
+      stockMin: 5,
+      stockMax: 15,
+      proveedorId: 'prov-2',
+      proveedor: 'Koken Gaskets de Colombia S.A.',
       isFree: true, // Modelo gratuito: descarga permitida a todos
       availableMaterials: ['PLA', 'PETG', 'TPU'],
       colorOptionsPerMaterial: {
@@ -122,6 +145,11 @@ async function seed() {
       printTime: '2h 50m',
       filamentWeight: '55g',
       dimensions: { largo: 11, ancho: 8, alto: 4, unit: 'cm' },
+      stockActual: 50,
+      stockMin: 10,
+      stockMax: 20,
+      proveedorId: 'prov-3',
+      proveedor: 'Uttermost Matter S.A.S.',
       isFree: false,
       availableMaterials: ['PETG', 'ABS'],
       colorOptionsPerMaterial: {
@@ -145,6 +173,11 @@ async function seed() {
       printTime: '3h 30m',
       filamentWeight: '75g',
       dimensions: { largo: 9, ancho: 5, alto: 15, unit: 'cm' },
+      stockActual: 0,
+      stockMin: 5,
+      stockMax: 15,
+      proveedorId: 'prov-2',
+      proveedor: 'Koken Gaskets de Colombia S.A.',
       isFree: false,
       availableMaterials: ['PLA', 'TPU'],
       colorOptionsPerMaterial: {
@@ -168,6 +201,11 @@ async function seed() {
       printTime: '5h 15m',
       filamentWeight: '110g',
       dimensions: { largo: 15, ancho: 12, alto: 24, unit: 'cm' },
+      stockActual: 25,
+      stockMin: 8,
+      stockMax: 20,
+      proveedorId: 'prov-2',
+      proveedor: 'Koken Gaskets de Colombia S.A.',
       isFree: false,
       availableMaterials: ['PLA', 'PETG', 'ABS'],
       colorOptionsPerMaterial: {
@@ -192,6 +230,11 @@ async function seed() {
       printTime: '3h mecanizado',
       filamentWeight: 'N/A (Madera 8.5 kg)',
       dimensions: { largo: 95, ancho: 70, alto: 4, unit: 'cm' },
+      stockActual: 3,
+      stockMin: 5,
+      stockMax: 10,
+      proveedorId: 'prov-3',
+      proveedor: 'Uttermost Matter S.A.S.',
       isFree: false,
       availableMaterials: ['Roble', 'Cedro', 'MDF Hidrófugo'],
       colorOptionsPerMaterial: {
@@ -216,6 +259,11 @@ async function seed() {
       printTime: '48h fabricación y ensamble',
       filamentWeight: 'Acrílico 4mm + LED 6x12mm',
       dimensions: { largo: 80, ancho: 40, alto: 5, unit: 'cm (A medida)' },
+      stockActual: 150,
+      stockMin: 8,
+      stockMax: 30,
+      proveedorId: 'prov-3',
+      proveedor: 'Uttermost Matter S.A.S.',
       isFree: false,
       availableMaterials: ['Acrílico 3mm', 'Acrílico 5mm'],
       colorOptionsPerMaterial: {
@@ -239,6 +287,11 @@ async function seed() {
       printTime: '45m corte plasma',
       filamentWeight: 'Metal 12.4 kg',
       dimensions: { largo: 120, ancho: 80, alto: 2.5, unit: 'cm' },
+      stockActual: 0,
+      stockMin: 5,
+      stockMax: 10,
+      proveedorId: 'prov-3',
+      proveedor: 'Uttermost Matter S.A.S.',
       isFree: false,
       availableMaterials: ['Hierro al Carbón', 'Acero Inoxidable 304'],
       colorOptionsPerMaterial: {
@@ -549,13 +602,17 @@ async function seed() {
   db.setCollection('costs', costs);
   db.setCollection('projectFiles', projectFiles);
   db.setCollection('payments', payments);
+  db.setCollection('proveedores', proveedores);
+  db.setCollection('pedidos_compra', []);
+  db.setCollection('lotes', []);
 
   console.log('✅ Base de datos sembrada con éxito:');
   console.log(` - Usuarios: ${users.length} (Admin: mmontalvova@gmail.com / Admin123*)`);
-  console.log(` - Productos: ${products.length} con subcategorías y combinaciones material+color`);
+  console.log(` - Productos: ${products.length} con inventario integrado + proveedores`);
   console.log(` - Patrocinadores: ${sponsors.length}`);
   console.log(` - Pedidos: ${orders.length}`);
-  console.log(` - Proyectos: ${projects.length} (tipos: impresión 3D, CNC, avisos, metal, paramétrico) | Clientes: ${clients.length} | Piezas: ${pieces.length} | Costos: ${costs.length} | Pagos: ${payments.length}`);
+  console.log(` - Proyectos: ${projects.length} | Clientes: ${clients.length} | Piezas: ${pieces.length} | Costos: ${costs.length} | Pagos: ${payments.length}`);
+  console.log(` - Módulo ERP: ${proveedores.length} proveedores | 0 pedidos de compra | 0 lotes (vacíos por inventario nuevo)`);
 }
 
 seed();

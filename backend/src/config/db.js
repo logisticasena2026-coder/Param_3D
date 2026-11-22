@@ -88,7 +88,11 @@ const defaultData = {
   pieces: [],
   costs: [],
   projectFiles: [],
-  payments: []
+  payments: [],
+  // Módulos de Facturación / Inventario / Compras (Fase 0 + 1a)
+  proveedores: [],
+  pedidos_compra: [],
+  lotes: []
 };
 
 class Database {

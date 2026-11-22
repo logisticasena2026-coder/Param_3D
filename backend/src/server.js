@@ -14,6 +14,12 @@ const preferenceRoutes = require('./routes/preferenceRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 
+// Módulos ERP — Compras, Proveedores e Inventario (Fase 0 + 1a)
+const proveedoresRoutes = require('./routes/proveedoresRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
+const compraRoutes = require('./routes/compraRoutes');
+const { MODULE_MANAGER } = require('./erp');
+
 const app = express();
 
 // Configuración de CORS y parseo de peticiones
@@ -48,6 +54,11 @@ app.use('/api/sponsors', sponsorRoutes);
 app.use('/api/preferences', preferenceRoutes);
 app.use('/api/ai-parametric', aiRoutes);
 app.use('/api/projects', projectRoutes);
+
+// Módulos ERP
+app.use('/api/proveedores', proveedoresRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/compras', compraRoutes);
 
 // Servir el frontend compilado (producción / Docker todo-en-uno).
 // En desarrollo el frontend corre aparte con Vite (npm run dev, puerto 3000).

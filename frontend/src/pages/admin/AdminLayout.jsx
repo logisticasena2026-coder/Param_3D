@@ -5,6 +5,7 @@ import { AdminOrders } from './AdminOrders';
 import { AdminSponsors } from './AdminSponsors';
 import { AdminQuotes } from './AdminQuotes';
 import { AdminProjects } from './AdminProjects';
+import { AdminERPLayout } from '../../erp/AdminERPLayout';
 import {
   LayoutDashboard,
   Box,
@@ -13,14 +14,17 @@ import {
   FileCode,
   FolderKanban,
   ArrowLeft,
-  ShieldAlert
+  ShieldAlert,
+  Package,
+  Warehouse
 } from 'lucide-react';
 
 export const AdminLayout = ({ onNavigate }) => {
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'products' | 'orders' | 'sponsors' | 'quotes' | 'projects'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'erp' | 'projects' | 'products' | 'orders' | 'sponsors' | 'quotes'
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'erp', label: 'ERP — Compras & Inv.', icon: Package, badge: 'ERP' },
     { id: 'projects', label: 'Proyectos', icon: FolderKanban },
     { id: 'products', label: 'Productos y Modelos', icon: Box },
     { id: 'orders', label: 'Control de Pedidos', icon: ShoppingCart },
@@ -79,6 +83,7 @@ export const AdminLayout = ({ onNavigate }) => {
             onSelectAdminTab={(tab) => setActiveTab(tab)}
           />
         )}
+        {activeTab === 'erp' && <AdminERPLayout onNavigate={onNavigate} />}
         {activeTab === 'projects' && <AdminProjects />}
         {activeTab === 'products' && <AdminProducts />}
         {activeTab === 'orders' && <AdminOrders />}

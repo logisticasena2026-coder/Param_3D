@@ -11,7 +11,8 @@ import {
   Clock,
   TrendingUp,
   Layers,
-  CheckCircle2
+  CheckCircle2,
+  Package
 } from 'lucide-react';
 
 export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
@@ -32,12 +33,13 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
 
   const fetchStats = async () => {
     try {
-      const [products, orders, sponsors, quotes, projectsSummary] = await Promise.all([
+      const [products, orders, sponsors, quotes, projectsSummary, proveedores] = await Promise.all([
         apiClient.request('/products'),
         apiClient.request('/orders/admin/all'),
         apiClient.request('/sponsors'),
         apiClient.request('/quotes/admin/all'),
-        apiClient.request('/projects/summary')
+        apiClient.request('/projects/summary'),
+        apiClient.request('/proveedores/')
       ]);
 
       const pending = orders.filter(o => o.status !== 'Entregado').length;
@@ -49,7 +51,8 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
         sponsorsCount: sponsors.length,
         quotesCount: quotes.length,
         projectsCount: projectsSummary.totalProjects || 0,
-        activeProjectsCount: projectsSummary.activeProjects || 0
+        activeProjectsCount: projectsSummary.activeProjects || 0,
+        erpSummary: { proveedoresCount: (proveedores.proveedores || proveedores || []).length }
       });
     } catch (err) {
       console.error('Error cargando estadísticas admin:', err);
@@ -98,6 +101,14 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
       icon: Users,
       color: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
       tab: 'sponsors'
+    },
+    {
+      title: 'Proveedores ERP',
+      value: stats.erpSummary?.proveedoresCount || 0,
+      sub: 'Compras y comenzando el módulo de taller',
+      icon: Package,
+      color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+      tab: 'erp'
     }
   ];
 
