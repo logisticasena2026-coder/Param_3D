@@ -1281,6 +1281,32 @@ export const AdminProjects = () => {
               );
             })()}
 
+            {view === 'gallery' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {visibleProjects.map((p) => (
+                  <div key={p.id} className="surface-card rounded-2xl border border-slate-800 overflow-hidden shadow-lg">
+                    <div className="h-32 flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+                      <FolderKanban className="w-9 h-9 text-amber-500/50" />
+                    </div>
+                    <div className="p-4 space-y-2">
+                      <h4 className="text-sm font-bold text-white truncate">{p.nombreProyecto}</h4>
+                      <div className="flex flex-wrap items-center gap-2 text-[10px]">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${STATUS_COLORS[p.estado]}`}>{STATUS_LABELS[p.estado]}</span>
+                        <span className="text-slate-400">{p.clientName}</span>
+                      </div>
+                      <div className="text-[11px] text-slate-300">{typeLabel(p.tipoProyecto)}</div>
+                      <div className="text-[10px] text-slate-400">
+                        {fmtDate(p.fechaInicio)} → {fmtDate(p.fechaEntrega)}
+                      </div>
+                      <button onClick={() => toggleProjectDetail(p.id)} className="text-[11px] font-bold text-brand-400 hover:underline">
+                        Ver detalle
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {view !== 'grid' && expandedId && renderCompactDetail()}
         </>
       )}
@@ -1335,7 +1361,7 @@ export const AdminProjects = () => {
 
           {/* Toolbar para sección Clientes */}
           <ViewsBar
-            views={['grid', 'table']}
+            views={['grid', 'table', 'gallery']}
             view={clientView}
             onView={setClientView}
             search={clientSearch}
@@ -1397,6 +1423,21 @@ export const AdminProjects = () => {
                 </div>
               ))}
             </div>
+            )}
+
+            {clientView === 'gallery' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {visibleClients.map((c) => (
+                  <div key={c.id} className="surface-card p-4 rounded-2xl border border-slate-800 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white font-bold">{c.nombre}</span>
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-brand-500/10 text-brand-400 border border-brand-500/30">{c.projectsCount} proy.</span>
+                    </div>
+                    <div className="text-[10px] text-slate-300 font-mono">{c.email}</div>
+                    {c.telefono && <div className="text-[10px] text-muted">{c.telefono}</div>}
+                  </div>
+                ))}
+              </div>
             )}
 
             {clientView === 'table' && (

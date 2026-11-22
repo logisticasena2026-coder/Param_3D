@@ -1,10 +1,11 @@
 import React from 'react';
-import { Table, LayoutGrid, Kanban, GanttChart, Search, ArrowUpDown } from 'lucide-react';
+import { Table, LayoutGrid, Kanban, GanttChart, Images, Search, ArrowUpDown } from 'lucide-react';
 
 const VIEW_META = {
   table: { label: 'Tabla', Icon: Table },
   grid: { label: 'Grid', Icon: LayoutGrid },
   kanban: { label: 'Kanban', Icon: Kanban },
+  gallery: { label: 'Galería', Icon: Images },
   gantt: { label: 'Gantt', Icon: GanttChart }
 };
 
@@ -13,7 +14,7 @@ const VIEW_META = {
  * búsqueda, filtros, ordenamiento y botones de vistas (Kanban/Grid/Tabla/Gantt).
  */
 export const ViewsBar = ({
-  views = ['table', 'grid', 'kanban', 'gantt'],
+  views = ['table', 'grid', 'kanban', 'gallery', 'gantt'],
   view = 'table',
   onView,
   search = '',
@@ -87,7 +88,7 @@ export const ViewsBar = ({
           >
             <Icon className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{meta.label}</span>
-            <span className="sm:hidden">{v === 'table' ? 'Tab' : v === 'grid' ? 'G' : v === 'kanban' ? 'K' : 'Gan'}</span>
+            <span className="sm:hidden">{v === 'table' ? 'Tab' : v === 'grid' ? 'G' : v === 'kanban' ? 'K' : v === 'gallery' ? 'Gal' : 'Gan'}</span>
           </button>
         );
       })}

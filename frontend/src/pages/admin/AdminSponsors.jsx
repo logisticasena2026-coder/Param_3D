@@ -140,7 +140,7 @@ export const AdminSponsors = () => {
 
       {/* Toolbar: búsqueda, ordenamiento y botones de vistas */}
       <ViewsBar
-        views={['grid', 'table', 'kanban']}
+        views={['grid', 'table', 'gallery', 'kanban']}
         view={view}
         onView={setView}
         search={search}
@@ -293,6 +293,38 @@ export const AdminSponsors = () => {
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {view === 'gallery' && (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {visibleSponsors.map((s) => (
+                <div key={s.id} className="surface-card p-4 rounded-2xl border border-slate-800 shadow-lg flex items-center gap-3">
+                  <img
+                    src={s.logoUrl}
+                    alt={s.commercialName}
+                    className="w-12 h-12 rounded-xl object-cover border border-slate-800 bg-slate-900 shrink-0"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=300&auto=format&fit=crop&q=60';
+                    }}
+                  />
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-bold text-white">{s.commercialName}</h3>
+                    <span className="text-[10px] text-slate-400 block">{s.contactPerson || 'Sin contacto registrado'}</span>
+                  </div>
+                  {s.websiteUrl && (
+                    <a
+                      href={s.websiteUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[10px] font-semibold text-brand-400 hover:underline flex items-center space-x-1 shrink-0 ml-auto"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      <span>Sitio web</span>
+                    </a>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </>

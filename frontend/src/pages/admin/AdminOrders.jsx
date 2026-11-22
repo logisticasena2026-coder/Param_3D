@@ -137,7 +137,7 @@ export const AdminOrders = () => {
         <div className="lg:col-span-7 space-y-3">
           {/* Toolbar: búsqueda, filtros, ordenamiento y botones de vistas */}
           <ViewsBar
-            views={['table', 'grid', 'kanban']}
+            views={['table', 'gallery', 'grid', 'kanban']}
             view={view}
             onView={setView}
             search={search}
@@ -219,6 +219,24 @@ export const AdminOrders = () => {
                     </div>
                   );
                 })}
+              </div>
+            )}
+
+            {view === 'gallery' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {visibleOrders.map((o) => (
+                  <div key={o.id} className="surface-card p-4 rounded-2xl border border-slate-800 shadow-lg space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono font-bold text-white text-xs">{o.orderNumber}</span>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusColor(o.status)}`}>{o.status}</span>
+                    </div>
+                    <div className="text-[11px] text-slate-300">{o.customerName} · ${o.total?.toLocaleString('es-CO')}</div>
+                    <div className="text-[10px] text-muted font-mono">{new Date(o.createdAt).toLocaleString('es-CO')}</div>
+                    <button onClick={() => handleSelectOrder(o)} className="px-3 py-1.5 rounded-xl border border-slate-800 text-[11px] font-bold text-slate-300 hover:text-white hover:border-slate-600 transition-colors">
+                      Ver detalle
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
 

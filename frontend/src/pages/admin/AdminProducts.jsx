@@ -50,6 +50,7 @@ export const AdminProducts = () => {
   const [formData, setFormData] = useState(initialForm);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState(null);
+  const [previewMedia, setPreviewMedia] = useState(null); // { type: 'image'|'video', url }
 
   useEffect(() => {
     fetchProducts();
@@ -193,7 +194,7 @@ export const AdminProducts = () => {
 
       {/* Toolbar: búsqueda, filtros, ordenamiento y botones de vistas */}
       <ViewsBar
-        views={['table', 'grid', 'kanban']}
+        views={['table', 'grid', 'gallery', 'kanban']}
         view={view}
         onView={setView}
         search={search}
@@ -404,6 +405,47 @@ export const AdminProducts = () => {
         </div>
       )}
 
+      {view === 'gallery' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          {visibleProducts.map((p) => (
+            <div key={p.id} className="surface-card rounded-2xl border border-slate-800 overflow-hidden shadow-lg">
+              <div className="relative h-40 bg-slate-950 flex items-center justify-center">
+                <img
+                  src={p.imageUrl}
+                  alt={p.name}
+                  className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+                <span className="relative z-10 px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-white/10 text-white backdrop-blur">
+                  {p.isFree ? 'Gratis' : `$${Number(p.price).toLocaleString('es-CO')}`}
+                </span>
+              </div>
+              <div className="p-4 space-y-2.5">
+                <div>
+                  <h4 className="text-sm font-bold text-white truncate">{p.name}</h4>
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {p.availableMaterials?.slice(0, 4).map((m) => (
+                      <span key={m} className="px-1.5 py-0.2 rounded text-[9px] bg-brand-500/15 text-brand-300">{m}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400">{p.printTime || 'N/A'}</span>
+                  <div className="flex items-center space-x-1.5">
+                    <button onClick={() => handleOpenEdit(p)} className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" title="Editar">
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => handleDelete(p.id)} className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-950/20" title="Eliminar">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Modal de Crear/Editar Producto */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
@@ -587,32 +629,96 @@ export const AdminProducts = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted block mb-1">
+              {/* Campo de imagen: fila propia + botón de previsualización + previsualización en línea */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted block">
                     URL de Imagen
                   </label>
-                  <input
-                    type="url"
-                    value={formData.imageUrl}
-                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono"
-                  />
+                  <button
+                    type="button"
+                    disabled={!formData.imageUrl}
+                    onClick={() => formData.imageUrl && setPreviewMedia({ type: 'image', url: formData.imageUrl })}
+                    className="px-2.5 py-1.5 text-[10px] font-extrabold text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors disabled:opacity-50 shrink-0"
+                  >
+                    Ver Previsualización
+                  </button>
                 </div>
+                <input
+                  type="url"
+                  placeholder="https://ejemplo.com/imagen.jpg"
+                  value={formData.imageUrl}
+                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-brand-500"
+                />
+                {formData.imageUrl && (
+                  <div className="relative rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+                    <img
+                      src={formData.imageUrl}
+                      alt="Vista previa de la imagen"
+                      className="w-full h-44 object-cover"
+                      onError={(e) => { e.target.src = '/assets/placeholder.jpg'; }}
+                    />
+                  </div>
+                )}
+              </div>
 
-                <div>
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted block mb-1">
+              {/* Campo de video: fila propia + botón de previsualización + previsualización en línea */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted block">
                     URL Video de Proceso (MP4)
                   </label>
-                  <input
-                    type="url"
-                    placeholder="https://..."
-                    value={formData.videoUrl}
-                    onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono"
-                  />
+                  <button
+                    type="button"
+                    disabled={!formData.videoUrl}
+                    onClick={() => formData.videoUrl && setPreviewMedia({ type: 'video', url: formData.videoUrl })}
+                    className="px-2.5 py-1.5 text-[10px] font-extrabold text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors disabled:opacity-50 shrink-0"
+                  >
+                    Ver Previsualización
+                  </button>
                 </div>
+                <input
+                  type="url"
+                  placeholder="https://..."
+                  value={formData.videoUrl}
+                  onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-brand-500"
+                />
+                {formData.videoUrl && (
+                  <div className="relative rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+                    <video src={formData.videoUrl} controls className="w-full h-44 object-cover bg-black" />
+                  </div>
+                )}
               </div>
+
+              {/* Modal de previsualización (imagen y video) */}
+              {previewMedia && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+                  <div className="relative max-w-4xl w-full max-h-[85vh] flex items-center justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMedia(null)}
+                      className="absolute -top-3 -right-3 p-1.5 rounded-full bg-slate-800 text-white hover:bg-rose-500 transition-colors"
+                      title="Cerrar vista previa"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                    {previewMedia.type === 'image' ? (
+                      <img src={previewMedia.url} alt="Previsualización" className="w-full h-auto max-h-[80vh] object-cover rounded-2xl shadow-2xl" />
+                    ) : (
+                      <video
+                        src={previewMedia.url}
+                        controls
+                        autoPlay
+                        muted
+                        loop
+                        className="w-full h-auto max-h-[80vh] object-cover rounded-2xl shadow-2xl bg-black"
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Switch de Modelo Gratuito */}
               <div className="p-3.5 rounded-xl surface-subtle border border-slate-800 flex items-center justify-between">

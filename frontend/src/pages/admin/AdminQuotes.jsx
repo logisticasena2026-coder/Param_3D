@@ -61,7 +61,7 @@ export const AdminQuotes = () => {
 
       {/* Toolbar: búsqueda, ordenamiento y botones de vistas */}
       <ViewsBar
-        views={['grid', 'table']}
+        views={['grid', 'table', 'gallery']}
         view={view}
         onView={setView}
         search={search}
@@ -163,6 +163,37 @@ export const AdminQuotes = () => {
             </tbody>
           </table>
         )}
+
+      {view === 'gallery' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          {visibleQuotes.map((q) => (
+            <div key={q.id} className="surface-card p-5 rounded-2xl border border-slate-800 shadow-lg space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-white font-semibold text-xs">{q.originalName}</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-900 border border-slate-800 text-brand-400">{q.material}</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="p-2.5 rounded-xl surface-subtle border border-slate-800">
+                  <span className="text-[10px] text-muted block">Filamento</span>
+                  <span className="font-bold font-mono text-white mt-0.5 block">{q.estimation?.filamentGrams} g</span>
+                </div>
+                <div className="p-2.5 rounded-xl surface-subtle border border-slate-800">
+                  <span className="text-[10px] text-muted block">Tiempo</span>
+                  <span className="font-bold font-mono text-white mt-0.5 block">{q.estimation?.printTimeFormatted}</span>
+                </div>
+                <div className="p-2.5 rounded-xl surface-subtle border border-slate-800">
+                  <span className="text-[10px] text-muted block">Precio</span>
+                  <span className="font-bold font-mono text-brand-400 mt-0.5 block">${q.estimation?.breakdown?.totalPrice?.toLocaleString('es-CO')}</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                <span>Relleno: {q.infillPercent}% · {q.dimensions?.x}×{q.dimensions?.y}×{q.dimensions?.z} cm</span>
+                <span>{new Date(q.createdAt).toLocaleDateString('es-CO')}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
