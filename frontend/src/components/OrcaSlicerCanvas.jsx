@@ -77,11 +77,15 @@ export const OrcaSlicerCanvas = ({
   geometryType = 'vase',
   selectedColor = 'Blanco',
   material = 'PLA',
-  dimensions = { x: 12, y: 12, z: 22, unit: 'cm' },
+  dimensions = { largo: 12, ancho: 12, alto: 22, unit: 'cm' },
   customFile = null,
   height = '440px',
   interactive = true
 }) => {
+  // Soporta {largo, ancho, alto} (productos) y {x, y, z} (dev/quotes)
+  const dLargo = dimensions.largo ?? dimensions.x ?? 12;
+  const dAncho = dimensions.ancho ?? dimensions.y ?? 12;
+  const dAlto = dimensions.alto ?? dimensions.z ?? 22;
   const mountRef = useRef(null);
   const [wireframeMode, setWireframeMode] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
@@ -93,7 +97,7 @@ export const OrcaSlicerCanvas = ({
   const materialRef = useRef(null);
   const clippingPlaneRef = useRef(null);
 
-  const fitsBuildPlate = dimensions.x <= 36 && dimensions.y <= 36 && dimensions.z <= 36;
+  const fitsBuildPlate = dLargo <= 36 && dAncho <= 36 && dAlto <= 36;
 
   useEffect(() => {
     const container = mountRef.current;
@@ -199,9 +203,9 @@ export const OrcaSlicerCanvas = ({
       scene.add(mesh);
     };
 
-    const scaleFactor = Math.min(1.2, 14 / Math.max(dimensions.x || 10, dimensions.y || 10, dimensions.z || 10));
-    const h = (dimensions.z || 12) * scaleFactor;
-    const r = ((dimensions.x || 10) / 2) * scaleFactor;
+    const scaleFactor = Math.min(1.2, 14 / Math.max(dLargo || 10, dAncho || 10, dAlto || 10));
+    const h = (dAlto || 12) * scaleFactor;
+    const r = (dLargo || 10) / 2 * scaleFactor;
 
     if (customFile) {
       const fileReader = new FileReader();
@@ -334,15 +338,15 @@ export const OrcaSlicerCanvas = ({
         container.removeChild(renderer.domElement);
       }
     };
-  }, [geometryType, dimensions.x, dimensions.y, dimensions.z, material, customFile]);
+  }, [geometryType, dLargo, dAncho, dAlto, material, customFile]);
 
   useEffect(() => {
     if (clippingPlaneRef.current) {
-      const maxZ = dimensions.z || 15;
+      const maxZ = dAlto || 15;
       const currentCutZ = (layerHeightPercent / 100) * (maxZ * 1.2);
       clippingPlaneRef.current.constant = currentCutZ + 0.1;
     }
-  }, [layerHeightPercent, dimensions.z]);
+  }, [layerHeightPercent, dAlto]);
 
   useEffect(() => {
     if (materialRef.current) {
@@ -353,8 +357,8 @@ export const OrcaSlicerCanvas = ({
     }
   }, [selectedColor, wireframeMode]);
 
-  const currentLayerNumber = Math.max(1, Math.round((layerHeightPercent / 100) * ((dimensions.z || 15) * 50)));
-  const totalLayers = Math.round((dimensions.z || 15) * 50);
+  const currentLayerNumber = Math.max(1, Math.round((layerHeightPercent / 100) * ((dAlto || 15) * 50)));
+  const totalLayers = Math.round((dAlto || 15) * 50);
 
   return (
     <div
@@ -416,11 +420,11 @@ export const OrcaSlicerCanvas = ({
 
       <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
         <div className="bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 text-[11px] font-mono text-slate-300 space-x-2 pointer-events-auto">
-          <span>X: <strong className="text-rose-400">{dimensions.x} cm</strong></span>
-          <span>Y: <strong className="text-emerald-400">{dimensions.y} cm</strong></span>
-          <span>Z: <strong className="text-cyan-400">{dimensions.z} cm</strong></span>
+          <span>Largo: <strong className="text-rose-400">{dLargo} cm</strong></span>
+          <span>Ancho: <strong className="text-emerald-400">{dAncho} cm</strong></span>
+          <span>Alto: <strong className="text-cyan-400">{dAlto} cm</strong></span>
           <span className="text-slate-500 hidden sm:inline">|</span>
-          <span className="text-slate-400 hidden sm:inline">Z-Cut: {((layerHeightPercent / 100) * (dimensions.z || 15)).toFixed(1)} cm</span>
+          <span className="text-slate-400 hidden sm:inline">Z-Cut: {((layerHeightPercent / 100) * (dAlto || 15)).toFixed(1)} cm</span>
         </div>
 
         <div className="flex items-center space-x-1.5 bg-slate-900/90 backdrop-blur-md p-1 rounded-lg border border-slate-800 shadow-xl pointer-events-auto">

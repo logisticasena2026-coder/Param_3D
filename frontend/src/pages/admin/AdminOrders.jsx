@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { apiClient } from '../../api/client';
+import { ViewsBar } from '../../components/ViewsBar';
 import {
   ShoppingCart,
   Clock,
@@ -10,8 +11,16 @@ import {
   AlertCircle,
   FileText
 } from 'lucide-react';
+import { useMemo } from 'react';
 
 const ORDER_FLOW = ['Pedido', 'Preparado', 'Terminado', 'Entregado'];
+
+const statusColor = (s) =>
+  s === 'Pedido' ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' :
+  s === 'Preparado' ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' :
+  s === 'Terminado' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' :
+  s === 'Entregado' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
+  'bg-slate-500/20 text-slate-400 border-slate-500/30';
 
 export const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -21,6 +30,13 @@ export const AdminOrders = () => {
   const [statusNote, setStatusNote] = useState('');
   const [updating, setUpdating] = useState(false);
   const [msg, setMsg] = useState(null);
+
+  // Toolbar y vistas: Tabla, Grid, Kanban
+  const [view, setView] = useState('table');
+  const [search, setSearch] = useState('');
+  const [sortKey, setSortKey] = useState('createdAt');
+  const [sortDir, setSortDir] = useState(-1);
+  const [filters, setFilters] = useState({ estado: '', cliente: '' });
 
   useEffect(() => {
     fetchOrders();
@@ -37,6 +53,38 @@ export const AdminOrders = () => {
       setLoading(false);
     }
   };
+
+  const visibleOrders = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    let list = orders.filter((o) => {
+      const textMatch = !q ||
+        (o.orderNumber || '').toLowerCase().includes(q) ||
+        (o.customerName || '').toLowerCase().includes(q);
+      return textMatch &&
+        (!filters.estado || o.status === filters.estado) &&
+        (!filters.cliente || o.customerEmail === filters.cliente);
+    });
+    if (sortKey) {
+      const dir = sortDir;
+      list = [...list].sort((a, b) => {
+        let res = 0;
+        if (sortKey === 'total') res = (a.total || 0) - (b.total || 0);
+        else if (sortKey === 'status') res = ORDER_FLOW.indexOf(a.status) - ORDER_FLOW.indexOf(b.status);
+        else if (sortKey === 'customerName') res = (a.customerName || '').localeCompare(b.customerName || '');
+        else if (sortKey === 'orderNumber') res = (a.orderNumber || '').localeCompare(b.orderNumber || '');
+        else res = new Date(a.createdAt) - new Date(b.createdAt);
+        return res * dir;
+      });
+    }
+    return list;
+  }, [orders, search, sortKey, sortDir, filters]);
+
+  const clientOptions = [...new Map(
+    orders.map((o) => [o.customerEmail || o.customerName || '', {
+      value: o.customerEmail || '',
+      label: `${o.customerName} (${o.customerEmail || '—'})`
+    }])
+  ).values()];
 
   const handleSelectOrder = (order) => {
     setSelectedOrder(order);
@@ -87,6 +135,27 @@ export const AdminOrders = () => {
         
         {/* Lista de Pedidos */}
         <div className="lg:col-span-7 space-y-3">
+          {/* Toolbar: búsqueda, filtros, ordenamiento y botones de vistas */}
+          <ViewsBar
+            views={['table', 'grid', 'kanban']}
+            view={view}
+            onView={setView}
+            search={search}
+            onSearch={setSearch}
+            searchPlaceholder="Buscar orden..."
+            sortOptions={[
+              { value: 'createdAt', label: 'Fecha (más reciente primero)' },
+              { value: 'orderNumber', label: 'Número de orden' },
+              { value: 'total', label: 'Total (mayor primero)' },
+              { value: 'status', label: 'Estado (Avance)' }
+            ]}
+            sortValue={sortKey}
+            onSort={(v) => { setSortKey(v); setSortDir(1); }}
+            filters={[
+              { label: 'Estado', value: filters.estado, onChange: (v) => setFilters({ ...filters, estado: v }), options: ORDER_FLOW.map((s) => ({ value: s, label: s })) },
+              { label: 'Cliente', value: filters.cliente, onChange: (v) => setFilters({ ...filters, cliente: v }), options: clientOptions }
+            ]}
+          />
           {loading ? (
             <div className="min-h-[250px] flex items-center justify-center surface-card rounded-2xl border border-slate-800">
               <div className="w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
@@ -96,7 +165,64 @@ export const AdminOrders = () => {
               No hay pedidos registrados en el sistema.
             </div>
           ) : (
-            orders.map((ord) => {
+            <>
+            {view === 'table' && (
+              <table className="w-full text-left text-xs">
+                <thead className="surface-subtle border-b border-slate-800 text-[11px] font-mono text-muted uppercase">
+                  <tr>
+                    <th className="py-3 px-4">Orden</th>
+                    <th className="py-3 px-4">Cliente</th>
+                    <th className="py-3 px-4">Estado</th>
+                    <th className="py-3 px-4">Total</th>
+                    <th className="py-3 px-4">Fecha</th>
+                    <th className="py-3 px-4 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {visibleOrders.map((o) => (
+                    <tr key={o.id} onClick={() => handleSelectOrder(o)} className="cursor-pointer hover:bg-slate-900/40 transition-colors">
+                      <td className="py-3 px-4 font-mono text-white">{o.orderNumber}</td>
+                      <td className="py-3 px-4 text-slate-300">{o.customerName}</td>
+                      <td className="py-3 px-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusColor(o.status)}`}>{o.status}</span></td>
+                      <td className="py-3 px-4 font-mono font-bold text-white">${o.total?.toLocaleString('es-CO')}</td>
+                      <td className="py-3 px-4 font-mono text-slate-300">{new Date(o.createdAt).toLocaleString('es-CO')}</td>
+                      <td className="py-3 px-4 text-right text-[11px] font-bold text-brand-400">Detalle</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {view === 'kanban' && (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {ORDER_FLOW.map((st) => {
+                  const items = visibleOrders.filter((o) => o.status === st);
+                  return (
+                    <div key={st} className="space-y-2">
+                      <h5 className="text-[11px] font-bold text-white px-1">{st} ({items.length})</h5>
+                      <div className="space-y-2">
+                        {items.length === 0 && <p className="text-[11px] text-muted px-1">Vacío</p>}
+                        {items.map((o) => (
+                          <button
+                            key={o.id}
+                            onClick={() => handleSelectOrder(o)}
+                            className="w-full text-left p-3 rounded-xl surface-card border border-slate-800 hover:border-slate-700 transition-colors space-y-1.5"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-mono font-bold text-white text-xs">{o.orderNumber}</span>
+                              <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold border ${statusColor(o.status)}`}>{o.status}</span>
+                            </div>
+                            <div className="text-[11px] text-slate-300">{o.customerName} · ${o.total?.toLocaleString('es-CO')}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {view === 'grid' && visibleOrders.map((ord) => {
               const isSelected = selectedOrder?.id === ord.id;
               return (
                 <div
@@ -139,7 +265,8 @@ export const AdminOrders = () => {
                   </div>
                 </div>
               );
-            })
+            })}
+            </>
           )}
         </div>
 

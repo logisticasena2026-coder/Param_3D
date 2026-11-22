@@ -94,7 +94,7 @@ const createProduct = (req, res, next) => {
       price: Number(price),
       printTime: printTime || '3h 15m',
       filamentWeight: filamentWeight ? `${filamentWeight}g` : '65g',
-      dimensions: dimensions || { x: 10, y: 10, z: 10, unit: 'cm' },
+      dimensions: dimensions || { largo: 10, ancho: 10, alto: 10, unit: 'cm' },
       isFree: isFree === 'true' || isFree === true,
       availableMaterials: availableMaterials || ['PLA', 'PETG', 'ABS', 'TPU'],
       colorOptionsPerMaterial: colorOptionsPerMaterial || {

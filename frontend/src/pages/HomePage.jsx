@@ -125,7 +125,7 @@ export const HomePage = ({ onNavigate }) => {
                 geometryType="vase"
                 selectedColor="Azul Translúcido"
                 material="PETG"
-                dimensions={{ x: 12, y: 12, z: 22, unit: 'cm' }}
+                dimensions={{ largo: 12, ancho: 12, alto: 22, unit: 'cm' }}
                 height="440px"
               />
               <div className="mt-3 text-center">

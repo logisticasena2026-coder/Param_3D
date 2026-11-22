@@ -4,7 +4,7 @@
       "id": "usr-admin-1",
       "name": "Mauricio Montalvo (Admin)",
       "email": "mmontalvova@gmail.com",
-      "password": "$2a$10$rEQ0Tuys1H.WdACRTHn6Q.JlRf8X71jqoLDV7ewhkA39BsA8XDFgG",
+      "password": "$2a$10$buRi1XrTVzyut/tT5a.BuO/w3t5WLetbc0Mqqo/QyB6EHKnSibjz.",
       "phone": "3005076700",
       "role": "admin",
       "preferences": {
@@ -12,13 +12,13 @@
         "palette": "cyan",
         "fontSize": "md"
       },
-      "createdAt": "2026-11-20T06:05:58.975Z"
+      "createdAt": "2026-11-21T23:01:44.130Z"
     },
     {
       "id": "usr-client-1",
       "name": "Carlos Mendoza",
       "email": "cliente@maquinamos3d.com",
-      "password": "$2a$10$3KpFTUKxgxCm/l1j3Se9vuUL49VLQprVN8pY8bEuuIz2UWYuDdC4C",
+      "password": "$2a$10$MtHAheZl8aJd3Iwrfr3nquUQJKMa.S6iZe68LSGhCWlGIyutYxeMa",
       "phone": "3109876543",
       "role": "client",
       "preferences": {
@@ -26,7 +26,7 @@
         "palette": "orange",
         "fontSize": "md"
       },
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.130Z"
     }
   ],
   "categories": [
@@ -178,9 +178,9 @@
       "printTime": "4h 20m",
       "filamentWeight": "95g",
       "dimensions": {
-        "x": 12,
-        "y": 12,
-        "z": 22,
+        "largo": 12,
+        "ancho": 12,
+        "alto": 22,
         "unit": "cm"
       },
       "isFree": false,
@@ -206,7 +206,7 @@
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       "model3dUrl": "",
       "meshGeometry": "vase",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.130Z"
     },
     {
       "id": "prod-3d-trofeo",
@@ -218,9 +218,9 @@
       "printTime": "6h 45m",
       "filamentWeight": "140g",
       "dimensions": {
-        "x": 14,
-        "y": 14,
-        "z": 28,
+        "largo": 14,
+        "ancho": 14,
+        "alto": 28,
         "unit": "cm"
       },
       "isFree": false,
@@ -243,7 +243,7 @@
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
       "model3dUrl": "",
       "meshGeometry": "trophy",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.130Z"
     },
     {
       "id": "prod-3d-arbol-navidad",
@@ -255,9 +255,9 @@
       "printTime": "3h 10m",
       "filamentWeight": "60g",
       "dimensions": {
-        "x": 10,
-        "y": 10,
-        "z": 18,
+        "largo": 10,
+        "ancho": 10,
+        "alto": 18,
         "unit": "cm"
       },
       "isFree": true,
@@ -284,7 +284,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "tree",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "prod-3d-enclosure",
@@ -296,9 +296,9 @@
       "printTime": "2h 50m",
       "filamentWeight": "55g",
       "dimensions": {
-        "x": 11,
-        "y": 8,
-        "z": 4,
+        "largo": 11,
+        "ancho": 8,
+        "alto": 4,
         "unit": "cm"
       },
       "isFree": false,
@@ -321,7 +321,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "prod-3d-robot",
@@ -333,9 +333,9 @@
       "printTime": "3h 30m",
       "filamentWeight": "75g",
       "dimensions": {
-        "x": 9,
-        "y": 5,
-        "z": 15,
+        "largo": 9,
+        "ancho": 5,
+        "alto": 15,
         "unit": "cm"
       },
       "isFree": false,
@@ -359,7 +359,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "robot",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "prod-3d-escultura-busto",
@@ -371,9 +371,9 @@
       "printTime": "5h 15m",
       "filamentWeight": "110g",
       "dimensions": {
-        "x": 15,
-        "y": 12,
-        "z": 24,
+        "largo": 15,
+        "ancho": 12,
+        "alto": 24,
         "unit": "cm"
       },
       "isFree": false,
@@ -400,7 +400,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "bust",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "prod-cnc-celosia",
@@ -412,9 +412,9 @@
       "printTime": "3h mecanizado",
       "filamentWeight": "N/A (Madera 8.5 kg)",
       "dimensions": {
-        "x": 95,
-        "y": 70,
-        "z": 4,
+        "largo": 95,
+        "ancho": 70,
+        "alto": 4,
         "unit": "cm"
       },
       "isFree": false,
@@ -441,7 +441,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "prod-aviso-neon",
@@ -453,9 +453,9 @@
       "printTime": "48h fabricación y ensamble",
       "filamentWeight": "Acrílico 4mm + LED 6x12mm",
       "dimensions": {
-        "x": 80,
-        "y": 40,
-        "z": 5,
+        "largo": 80,
+        "ancho": 40,
+        "alto": 5,
         "unit": "cm (A medida)"
       },
       "isFree": false,
@@ -478,7 +478,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "prod-metal-placa",
@@ -490,9 +490,9 @@
       "printTime": "45m corte plasma",
       "filamentWeight": "Metal 12.4 kg",
       "dimensions": {
-        "x": 120,
-        "y": 80,
-        "z": 2.5,
+        "largo": 120,
+        "ancho": 80,
+        "alto": 2.5,
         "unit": "cm"
       },
       "isFree": false,
@@ -514,7 +514,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     }
   ],
   "orders": [
@@ -549,16 +549,16 @@
       "statusHistory": [
         {
           "status": "Pedido",
-          "timestamp": "2026-11-20T01:05:58.977Z",
+          "timestamp": "2026-11-21T18:01:44.131Z",
           "note": "Pedido recibido exitosamente en Maquinamos 3D."
         },
         {
           "status": "Preparado",
-          "timestamp": "2026-11-20T04:05:58.977Z",
+          "timestamp": "2026-11-21T21:01:44.131Z",
           "note": "Laminado en OrcaSlicer completado. Calibración de cama y extrusor a 240°C para PETG."
         }
       ],
-      "createdAt": "2026-11-20T01:05:58.977Z"
+      "createdAt": "2026-11-21T18:01:44.131Z"
     }
   ],
   "quotes": [
@@ -838,7 +838,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Ing. Rodrigo Cárdenas",
       "status": "active",
-      "createdAt": "2026-11-20T06:05:58.976Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "spon-2",
@@ -848,7 +848,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Diana Salazar",
       "status": "active",
-      "createdAt": "2026-11-20T06:05:58.977Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "spon-3",
@@ -858,7 +858,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Carlos Mario Vélez",
       "status": "active",
-      "createdAt": "2026-11-20T06:05:58.977Z"
+      "createdAt": "2026-11-21T23:01:44.131Z"
     }
   ],
   "preferences": {},
@@ -870,7 +870,7 @@
       "telefono": "3109876543",
       "direccion": "Calle 10 # 43E-22, El Poblado, Medellín",
       "notas": "Cliente frecuente de prototipos IoT.",
-      "fechaRegistro": "2026-10-31T06:05:58.977Z"
+      "fechaRegistro": "2026-11-01T23:01:44.131Z"
     },
     {
       "id": "cli-demo-2",
@@ -879,7 +879,7 @@
       "telefono": "3015558899",
       "direccion": "Cra 70 # 32-15, Laureles, Medellín",
       "notas": "Prefiere pago por transferencia Nequi.",
-      "fechaRegistro": "2026-11-08T06:05:58.977Z"
+      "fechaRegistro": "2026-11-09T23:01:44.131Z"
     },
     {
       "id": "cli-demo-3",
@@ -888,7 +888,7 @@
       "telefono": "6044441020",
       "direccion": "Av. Las Palmas # 120-30, Envigado",
       "notas": "Cliente corporativo: maquetas y avisos.",
-      "fechaRegistro": "2026-10-11T06:05:58.977Z"
+      "fechaRegistro": "2026-10-12T23:01:44.131Z"
     }
   ],
   "projects": [
@@ -898,13 +898,13 @@
       "tipoProyecto": "impresion_3d",
       "nombreProyecto": "Carcasas para sensores IoT",
       "descripcion": "Lote de gabinetes ventilados para red de monitoreo ambiental.",
-      "fechaInicio": "2026-11-10",
-      "fechaEntrega": "2026-11-25",
+      "fechaInicio": "2026-11-11",
+      "fechaEntrega": "2026-11-26",
       "fechaCompletado": null,
       "estado": "en_proceso",
       "prioridad": "alta",
       "notas": "Imprimir en PETG por resistencia térmica.",
-      "createdAt": "2026-11-10T06:05:58.977Z"
+      "createdAt": "2026-11-11T23:01:44.131Z"
     },
     {
       "id": "prj-demo-2",
@@ -912,13 +912,13 @@
       "tipoProyecto": "diseno_parametrico",
       "nombreProyecto": "Jarrón generativo Voronoi",
       "descripcion": "Diseño paramétrico único para regalo corporativo.",
-      "fechaInicio": "2026-11-18",
-      "fechaEntrega": "2026-11-28",
+      "fechaInicio": "2026-11-19",
+      "fechaEntrega": "2026-11-29",
       "fechaCompletado": null,
       "estado": "pendiente",
       "prioridad": "media",
       "notas": "Cliente aprobará render antes de fabricar.",
-      "createdAt": "2026-11-18T06:05:58.977Z"
+      "createdAt": "2026-11-19T23:01:44.131Z"
     },
     {
       "id": "prj-demo-3",
@@ -926,13 +926,13 @@
       "tipoProyecto": "avisos",
       "nombreProyecto": "Aviso neón lobby torre empresarial",
       "descripcion": "Letrero neón flex azul hielo 120x50 cm para recepción.",
-      "fechaInicio": "2026-10-21",
-      "fechaEntrega": "2026-11-13",
-      "fechaCompletado": "2026-11-13T06:05:58.977Z",
+      "fechaInicio": "2026-10-22",
+      "fechaEntrega": "2026-11-14",
+      "fechaCompletado": "2026-11-14T23:01:44.131Z",
       "estado": "completado",
       "prioridad": "urgente",
       "notas": "Instalado y facturado.",
-      "createdAt": "2026-10-21T06:05:58.977Z"
+      "createdAt": "2026-10-22T23:01:44.131Z"
     },
     {
       "id": "prj-demo-4",
@@ -940,13 +940,13 @@
       "tipoProyecto": "router_cnc",
       "nombreProyecto": "Celosía divisoria sala juntas",
       "descripcion": "Panel en MDF lacado blanco, patrón geométrico hexagonal 95x70 cm.",
-      "fechaInicio": "2026-11-05",
-      "fechaEntrega": "2026-11-18",
+      "fechaInicio": "2026-11-06",
+      "fechaEntrega": "2026-11-19",
       "fechaCompletado": null,
       "estado": "cancelado",
       "prioridad": "baja",
       "notas": "Cancelado por rediseño del cliente.",
-      "createdAt": "2026-11-05T06:05:58.977Z"
+      "createdAt": "2026-11-06T23:01:44.131Z"
     }
   ],
   "pieces": [
@@ -969,7 +969,7 @@
       "archivoStl": "/uploads/models3d/enclosure.stl",
       "archivoGcode": "/uploads/models3d/enclosure.gcode",
       "notas": "Riel DIN interno incluido.",
-      "createdAt": "2026-11-11T06:05:58.977Z"
+      "createdAt": "2026-11-12T23:01:44.131Z"
     },
     {
       "id": "pza-demo-2",
@@ -990,7 +990,7 @@
       "archivoStl": "/uploads/models3d/tapa.stl",
       "archivoGcode": "",
       "notas": "Rejilla de ventilación pasiva.",
-      "createdAt": "2026-11-11T06:05:58.977Z"
+      "createdAt": "2026-11-12T23:01:44.131Z"
     },
     {
       "id": "pza-demo-3",
@@ -1011,7 +1011,7 @@
       "archivoStl": "/uploads/models3d/voronoi.stl",
       "archivoGcode": "",
       "notas": "Modo espiral (vase mode).",
-      "createdAt": "2026-11-18T06:05:58.977Z"
+      "createdAt": "2026-11-19T23:01:44.131Z"
     },
     {
       "id": "pza-demo-4",
@@ -1032,7 +1032,7 @@
       "archivoStl": "",
       "archivoGcode": "",
       "notas": "Corte láser + pulido de bordes.",
-      "createdAt": "2026-10-23T06:05:58.977Z"
+      "createdAt": "2026-10-24T23:01:44.131Z"
     },
     {
       "id": "pza-demo-5",
@@ -1053,7 +1053,7 @@
       "archivoStl": "",
       "archivoGcode": "",
       "notas": "Fuente 12V 5A incluida.",
-      "createdAt": "2026-10-23T06:05:58.977Z"
+      "createdAt": "2026-10-24T23:01:44.131Z"
     }
   ],
   "costs": [
@@ -1074,7 +1074,7 @@
       "costoTotal": 124330,
       "precioVenta": 185000,
       "ganancia": 60670,
-      "updatedAt": "2026-11-20T06:05:58.977Z"
+      "updatedAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "cst-demo-2",
@@ -1093,7 +1093,7 @@
       "costoTotal": 7490,
       "precioVenta": 12000,
       "ganancia": 4510,
-      "updatedAt": "2026-11-20T06:05:58.977Z"
+      "updatedAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "cst-demo-3",
@@ -1112,7 +1112,7 @@
       "costoTotal": 146020,
       "precioVenta": 185000,
       "ganancia": 38980,
-      "updatedAt": "2026-11-20T06:05:58.977Z"
+      "updatedAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "cst-demo-4",
@@ -1131,7 +1131,7 @@
       "costoTotal": 1718450,
       "precioVenta": 1950000,
       "ganancia": 231550,
-      "updatedAt": "2026-11-20T06:05:58.977Z"
+      "updatedAt": "2026-11-21T23:01:44.131Z"
     },
     {
       "id": "cst-demo-5",
@@ -1150,7 +1150,7 @@
       "costoTotal": 564680,
       "precioVenta": 720000,
       "ganancia": 155320,
-      "updatedAt": "2026-11-20T06:05:58.977Z"
+      "updatedAt": "2026-11-21T23:01:44.131Z"
     }
   ],
   "projectFiles": [
@@ -1160,7 +1160,7 @@
       "tipoArchivo": "render",
       "descripcion": "Render del gabinete en visor OrcaSlicer",
       "rutaArchivo": "/uploads/images/enclosure-render.webp",
-      "fechaSubida": "2026-11-12T06:05:58.977Z"
+      "fechaSubida": "2026-11-13T23:01:44.131Z"
     },
     {
       "id": "fil-demo-2",
@@ -1168,7 +1168,7 @@
       "tipoArchivo": "foto",
       "descripcion": "Primera unidad impresa en PETG negro",
       "rutaArchivo": "/uploads/images/enclosure-foto.jpg",
-      "fechaSubida": "2026-11-14T06:05:58.977Z"
+      "fechaSubida": "2026-11-15T23:01:44.131Z"
     },
     {
       "id": "fil-demo-3",
@@ -1176,7 +1176,7 @@
       "tipoArchivo": "render",
       "descripcion": "Vista previa del jarrón en modo espiral",
       "rutaArchivo": "/uploads/images/voronoi-render.png",
-      "fechaSubida": "2026-11-19T06:05:58.977Z"
+      "fechaSubida": "2026-11-20T23:01:44.131Z"
     },
     {
       "id": "fil-demo-4",
@@ -1184,7 +1184,7 @@
       "tipoArchivo": "plano",
       "descripcion": "Plano de corte del acrílico cristal",
       "rutaArchivo": "/uploads/images/aviso-plano.png",
-      "fechaSubida": "2026-10-26T06:05:58.977Z"
+      "fechaSubida": "2026-10-27T23:01:44.131Z"
     },
     {
       "id": "fil-demo-5",
@@ -1192,7 +1192,7 @@
       "tipoArchivo": "foto",
       "descripcion": "Prueba de encendido del neón flex",
       "rutaArchivo": "/uploads/images/neon-prueba.jpg",
-      "fechaSubida": "2026-10-31T06:05:58.977Z"
+      "fechaSubida": "2026-11-01T23:01:44.131Z"
     }
   ],
   "payments": [
@@ -1200,41 +1200,41 @@
       "id": "pag-demo-1",
       "proyectoId": "prj-demo-1",
       "monto": 250000,
-      "fechaPago": "2026-11-11T06:05:58.977Z",
+      "fechaPago": "2026-11-12T23:01:44.131Z",
       "metodoPago": "transferencia",
       "referencia": "NEQUI-88231",
       "estado": "completado",
-      "createdAt": "2026-11-11T06:05:58.977Z"
+      "createdAt": "2026-11-12T23:01:44.131Z"
     },
     {
       "id": "pag-demo-2",
       "proyectoId": "prj-demo-1",
       "monto": 200000,
-      "fechaPago": "2026-11-19T06:05:58.977Z",
+      "fechaPago": "2026-11-20T23:01:44.131Z",
       "metodoPago": "transferencia",
       "referencia": "BANC-00981234",
       "estado": "pendiente",
-      "createdAt": "2026-11-19T06:05:58.977Z"
+      "createdAt": "2026-11-20T23:01:44.131Z"
     },
     {
       "id": "pag-demo-3",
       "proyectoId": "prj-demo-3",
       "monto": 1130000,
-      "fechaPago": "2026-10-31T06:05:58.977Z",
+      "fechaPago": "2026-11-01T23:01:44.131Z",
       "metodoPago": "tarjeta",
       "referencia": "VISA-****4582",
       "estado": "completado",
-      "createdAt": "2026-10-31T06:05:58.977Z"
+      "createdAt": "2026-11-01T23:01:44.131Z"
     },
     {
       "id": "pag-demo-4",
       "proyectoId": "prj-demo-4",
       "monto": 180000,
-      "fechaPago": "2026-11-06T06:05:58.977Z",
+      "fechaPago": "2026-11-07T23:01:44.131Z",
       "metodoPago": "efectivo",
       "referencia": "REC-CAJA-045",
       "estado": "completado",
-      "createdAt": "2026-11-06T06:05:58.977Z"
+      "createdAt": "2026-11-07T23:01:44.131Z"
     }
   ]
 }

@@ -159,7 +159,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
                 geometryType={product.meshGeometry || 'vase'}
                 selectedColor={selectedColor}
                 material={selectedMaterial}
-                dimensions={product.dimensions || { x: 12, y: 12, z: 22, unit: 'cm' }}
+                dimensions={product.dimensions || { largo: 12, ancho: 12, alto: 22, unit: 'cm' }}
                 height="480px"
               />
             )}
@@ -255,7 +255,7 @@ export const ProductDetailPage = ({ productId, onNavigate }) => {
               <div className="p-2.5 rounded-xl surface-subtle border border-slate-800">
                 <span className="text-[10px] text-muted block">Dimensiones (XYZ)</span>
                 <span className="font-bold font-mono text-white text-[11px] block mt-0.5">
-                  {product.dimensions?.x}×{product.dimensions?.y}×{product.dimensions?.z} cm
+                  {product.dimensions?.largo}×{product.dimensions?.ancho}×{product.dimensions?.alto} cm
                 </span>
               </div>
             </div>

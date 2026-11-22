@@ -51,7 +51,7 @@ async function seed() {
       price: 45000,
       printTime: '4h 20m',
       filamentWeight: '95g',
-      dimensions: { x: 12, y: 12, z: 22, unit: 'cm' },
+      dimensions: { largo: 12, ancho: 12, alto: 22, unit: 'cm' },
       isFree: false,
       availableMaterials: ['PLA', 'PETG'],
       colorOptionsPerMaterial: {
@@ -74,7 +74,7 @@ async function seed() {
       price: 68000,
       printTime: '6h 45m',
       filamentWeight: '140g',
-      dimensions: { x: 14, y: 14, z: 28, unit: 'cm' },
+      dimensions: { largo: 14, ancho: 14, alto: 28, unit: 'cm' },
       isFree: false,
       availableMaterials: ['PLA', 'ABS'],
       colorOptionsPerMaterial: {
@@ -97,7 +97,7 @@ async function seed() {
       price: 0,
       printTime: '3h 10m',
       filamentWeight: '60g',
-      dimensions: { x: 10, y: 10, z: 18, unit: 'cm' },
+      dimensions: { largo: 10, ancho: 10, alto: 18, unit: 'cm' },
       isFree: true, // Modelo gratuito: descarga permitida a todos
       availableMaterials: ['PLA', 'PETG', 'TPU'],
       colorOptionsPerMaterial: {
@@ -121,7 +121,7 @@ async function seed() {
       price: 32000,
       printTime: '2h 50m',
       filamentWeight: '55g',
-      dimensions: { x: 11, y: 8, z: 4, unit: 'cm' },
+      dimensions: { largo: 11, ancho: 8, alto: 4, unit: 'cm' },
       isFree: false,
       availableMaterials: ['PETG', 'ABS'],
       colorOptionsPerMaterial: {
@@ -144,7 +144,7 @@ async function seed() {
       price: 38000,
       printTime: '3h 30m',
       filamentWeight: '75g',
-      dimensions: { x: 9, y: 5, z: 15, unit: 'cm' },
+      dimensions: { largo: 9, ancho: 5, alto: 15, unit: 'cm' },
       isFree: false,
       availableMaterials: ['PLA', 'TPU'],
       colorOptionsPerMaterial: {
@@ -167,7 +167,7 @@ async function seed() {
       price: 52000,
       printTime: '5h 15m',
       filamentWeight: '110g',
-      dimensions: { x: 15, y: 12, z: 24, unit: 'cm' },
+      dimensions: { largo: 15, ancho: 12, alto: 24, unit: 'cm' },
       isFree: false,
       availableMaterials: ['PLA', 'PETG', 'ABS'],
       colorOptionsPerMaterial: {
@@ -191,7 +191,7 @@ async function seed() {
       price: 340000,
       printTime: '3h mecanizado',
       filamentWeight: 'N/A (Madera 8.5 kg)',
-      dimensions: { x: 95, y: 70, z: 4, unit: 'cm' },
+      dimensions: { largo: 95, ancho: 70, alto: 4, unit: 'cm' },
       isFree: false,
       availableMaterials: ['Roble', 'Cedro', 'MDF Hidrófugo'],
       colorOptionsPerMaterial: {
@@ -215,7 +215,7 @@ async function seed() {
       price: 280000,
       printTime: '48h fabricación y ensamble',
       filamentWeight: 'Acrílico 4mm + LED 6x12mm',
-      dimensions: { x: 80, y: 40, z: 5, unit: 'cm (A medida)' },
+      dimensions: { largo: 80, ancho: 40, alto: 5, unit: 'cm (A medida)' },
       isFree: false,
       availableMaterials: ['Acrílico 3mm', 'Acrílico 5mm'],
       colorOptionsPerMaterial: {
@@ -238,7 +238,7 @@ async function seed() {
       price: 195000,
       printTime: '45m corte plasma',
       filamentWeight: 'Metal 12.4 kg',
-      dimensions: { x: 120, y: 80, z: 2.5, unit: 'cm' },
+      dimensions: { largo: 120, ancho: 80, alto: 2.5, unit: 'cm' },
       isFree: false,
       availableMaterials: ['Hierro al Carbón', 'Acero Inoxidable 304'],
       colorOptionsPerMaterial: {

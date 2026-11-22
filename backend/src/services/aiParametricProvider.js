@@ -25,7 +25,7 @@ class LocalProceduralAIProvider extends ParametricAIProviderInterface {
 
     // Detección heurística de tipología de producto
     let category = 'Artesanales';
-    let baseDimensions = { x: 12, y: 12, z: 10 };
+    let baseDimensions = { largo: 12, ancho: 12, alto: 10 };
     let shapeType = 'cylinder';
     let recommendedMaterial = 'PLA';
     let defaultInfill = 20;
@@ -34,32 +34,32 @@ class LocalProceduralAIProvider extends ParametricAIProviderInterface {
       category = 'Electrónica';
       shapeType = 'gear';
       recommendedMaterial = 'PETG';
-      baseDimensions = { x: 10, y: 10, z: 4 };
+      baseDimensions = { largo: 10, ancho: 10, alto: 4 };
       defaultInfill = 40;
     } else if (cleanPrompt.includes('balón') || cleanPrompt.includes('trofeo') || cleanPrompt.includes('fútbol')) {
       category = 'Fútbol';
       shapeType = 'trophy';
       recommendedMaterial = 'PLA';
-      baseDimensions = { x: 14, y: 14, z: 22 };
+      baseDimensions = { largo: 14, ancho: 14, alto: 22 };
     } else if (cleanPrompt.includes('árbol') || cleanPrompt.includes('navidad') || cleanPrompt.includes('estrella')) {
       category = 'Navidad';
       shapeType = 'star';
       recommendedMaterial = 'PETG';
-      baseDimensions = { x: 12, y: 12, z: 18 };
+      baseDimensions = { largo: 12, ancho: 12, alto: 18 };
     } else if (cleanPrompt.includes('juguete') || cleanPrompt.includes('robot') || cleanPrompt.includes('cubo')) {
       category = 'Juguetes';
       shapeType = 'robot';
       recommendedMaterial = 'PLA';
-      baseDimensions = { x: 9, y: 8, z: 14 };
+      baseDimensions = { largo: 9, ancho: 8, alto: 14 };
     } else if (cleanPrompt.includes('escultura') || cleanPrompt.includes('busto') || cleanPrompt.includes('cabeza')) {
       category = 'Esculturas';
       shapeType = 'bust';
       recommendedMaterial = 'PLA';
-      baseDimensions = { x: 15, y: 13, z: 20 };
+      baseDimensions = { largo: 15, ancho: 13, alto: 20 };
     }
 
     // Estimación física del prototipo generado
-    const volumeCm3 = baseDimensions.x * baseDimensions.y * baseDimensions.z * 0.42;
+    const volumeCm3 = baseDimensions.largo * baseDimensions.ancho * baseDimensions.alto * 0.42;
     const filamentGrams = Math.round(volumeCm3 * 1.24 * 10) / 10;
     const printTimeMinutes = Math.round((filamentGrams / 14) * 60) + 25;
 
@@ -90,8 +90,8 @@ class LocalProceduralAIProvider extends ParametricAIProviderInterface {
         wireframe: false,
         color: '#f97316',
         params: {
-          radius: baseDimensions.x / 2,
-          height: baseDimensions.z,
+          radius: baseDimensions.largo / 2,
+          height: baseDimensions.alto,
           detail: 24
         }
       },

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { apiClient } from '../../api/client';
+import { ViewsBar } from '../../components/ViewsBar';
 import {
   FolderKanban,
   Plus,
@@ -49,6 +50,10 @@ const COLORS = [
   'Azul Translúcido', 'Azul Neón', 'Morado'
 ];
 
+// Rank por prioridad para ordenamiento en Kanban/Tabla
+const PRIORITY_RANK = { baja: 0, media: 1, alta: 2, urgente: 3 };
+const STATUS_ORDER_INDEX = { pendiente: 0, en_proceso: 1, completado: 2, cancelado: 3 };
+
 const EMPTY_PROJECT_FORM = {
   clientId: '',
   tipoProyecto: 'impresion_3d',
@@ -84,7 +89,14 @@ export const AdminProjects = () => {
   const [summary, setSummary] = useState(null);
   const [projects, setProjects] = useState([]);
   const [clients, setClients] = useState([]);
+  const [clientView, setClientView] = useState('grid'); // grid | table
+  const [clientSearch, setClientSearch] = useState('');
+  const [clientSortKey, setClientSortKey] = useState('');
   const [filters, setFilters] = useState({ estado: '', tipo: '', prioridad: '' });
+  const [view, setView] = useState('grid'); // grid | table | kanban | gantt
+  const [search, setSearch] = useState('');
+  const [sortKey, setSortKey] = useState('');
+  const [sortDir, setSortDir] = useState(1);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState(null);
 
@@ -162,6 +174,54 @@ export const AdminProjects = () => {
   useEffect(() => {
     fetchProjects();
   }, [fetchProjects]);
+
+  // Proyectos filtrados por búsqueda + ordenados por orden alfabético según la vista
+  const visibleProjects = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    let list = projects.filter(p =>
+      !q ||
+      (p.nombreProyecto || '').toLowerCase().includes(q) ||
+      (p.clientName || '').toLowerCase().includes(q)
+    );
+    if (sortKey) {
+      const cmp = (a, b) => {
+        switch (sortKey) {
+          case 'nombre':
+            return (a.nombreProyecto || '').localeCompare(b.nombreProyecto || '');
+          case 'cliente':
+            return (a.clientName || '').localeCompare(b.clientName || '');
+          case 'prioridad':
+            return (PRIORITY_RANK[a.prioridad] || 0) - (PRIORITY_RANK[b.prioridad] || 0);
+          case 'estado':
+            return (STATUS_ORDER_INDEX[a.estado] || 0) - (STATUS_ORDER_INDEX[b.estado] || 0);
+          case 'fecha_inicio':
+            return (a.fechaInicio ? new Date(a.fechaInicio) : new Date(0)) - (b.fechaInicio ? new Date(b.fechaInicio) : new Date(0));
+          case 'fecha_entrega':
+            return (a.fechaEntrega ? new Date(a.fechaEntrega) : new Date(99, 0, 1)) - (b.fechaEntrega ? new Date(b.fechaEntrega) : new Date(99, 0, 1));
+          case 'recaudado':
+            return (a.totalPaid || 0) - (b.totalPaid || 0);
+          default:
+            return 0;
+        }
+      };
+      list = [...list].sort((a, b) => cmp(a, b) * sortDir);
+    }
+    return list;
+  }, [projects, search, sortKey, sortDir]);
+
+  // Clientes filtrados/ordenados según la vista de la sección Clientes
+  const visibleClients = useMemo(() => {
+    const q = clientSearch.trim().toLowerCase();
+    let list = clients.filter((c) =>
+      !q || c.nombre?.toLowerCase().includes(q) || c.email?.toLowerCase().includes(q)
+    );
+    if (clientSortKey === 'nombre') {
+      list = [...list].sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+    } else if (clientSortKey === 'fecha_registro') {
+      list = [...list].sort((a, b) => new Date(b.fechaRegistro) - new Date(a.fechaRegistro));
+    }
+    return list;
+  }, [clients, clientSearch, clientSortKey]);
 
   // -----------------------------------------------------------
   // Proyectos
@@ -410,6 +470,33 @@ export const AdminProjects = () => {
 
   const typeLabel = (value) => meta.types.find(t => t.value === value)?.label || value;
 
+  // Resumen compacto de detalle para vistas Kanban y Tabla
+  const renderCompactDetail = () => {
+    if (!detail || detail.id !== expandedId) return null;
+    const p = projects.find(x => x.id === expandedId);
+    if (!p) return null;
+    return (
+      <div className="surface-card p-4 rounded-2xl border border-slate-800/80 mt-4 animate-fadeIn">
+        <div className="flex flex-wrap items-center gap-3 text-[11px]">
+          <div className="font-bold text-white">{p.nombreProyecto}</div>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${STATUS_COLORS[p.estado]}`}>{p.estado}</span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${PRIORITY_COLORS[p.prioridad]}`}>{p.prioridad}</span>
+          <span className="text-slate-300">{p.clientName} · {typeLabel(p.tipoProyecto)}</span>
+          <span className="text-emerald-400 font-mono">Recaudado: {fmtMoney(p.totalPaid || 0)}</span>
+          <span className="text-cyan-400 font-mono">Piezas: {p.piecesCount || 0}</span>
+          <span className="text-slate-400">Inicio {fmtDate(p.fechaInicio)} · Entrega {fmtDate(p.fechaEntrega)}</span>
+        </div>
+        {detail.descripcion && <p className="text-[11px] text-slate-300 mt-2 italic">{detail.descripcion}</p>}
+        <button
+          onClick={() => toggleProjectDetail(expandedId)}
+          className="mt-3 px-3 py-1.5 rounded-xl border border-slate-800 text-[11px] font-bold text-slate-400 hover:text-white transition-colors"
+        >
+          Cerrar detalle
+        </button>
+      </div>
+    );
+  };
+
   // -----------------------------------------------------------
   // Render
   // -----------------------------------------------------------
@@ -489,42 +576,35 @@ export const AdminProjects = () => {
             </div>
           )}
 
-          {/* Barra de filtros y botón de nuevo proyecto */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-bold text-muted uppercase flex items-center space-x-1">
-                <Filter className="w-3.5 h-3.5" />
-                <span>Filtrar:</span>
-              </span>
-              <select
-                value={filters.tipo}
-                onChange={(e) => setFilters({ ...filters, tipo: e.target.value })}
-                className="bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500"
-              >
-                <option value="">Todos los tipos</option>
-                {meta.types.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-              </select>
-              <select
-                value={filters.estado}
-                onChange={(e) => setFilters({ ...filters, estado: e.target.value })}
-                className="bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500"
-              >
-                <option value="">Todos los estados</option>
-                {meta.status.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
-              </select>
-              <select
-                value={filters.prioridad}
-                onChange={(e) => setFilters({ ...filters, prioridad: e.target.value })}
-                className="bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500"
-              >
-                <option value="">Todas las prioridades</option>
-                {meta.priorities.map(p => <option key={p} value={p}>{PRIORITY_LABELS[p]}</option>)}
-              </select>
-            </div>
-
+          {/* Toolbar: búsqueda, filtros, ordenamiento y botones de vistas */}
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+            <ViewsBar
+              views={['grid', 'table', 'kanban', 'gantt']}
+              view={view}
+              onView={setView}
+              search={search}
+              onSearch={setSearch}
+              searchPlaceholder="Buscar proyecto / cliente..."
+              sortOptions={[
+                { value: 'fecha_entrega', label: 'Fecha de entrega (próximas primero)' },
+                { value: 'fecha_inicio', label: 'Fecha de inicio' },
+                { value: 'nombre', label: 'Nombre (A-Z)' },
+                { value: 'cliente', label: 'Cliente' },
+                { value: 'prioridad', label: 'Prioridad (alta primero)' },
+                { value: 'estado', label: 'Estado' },
+                { value: 'recaudado', label: 'Recaudado (mayor primero)' }
+              ]}
+              sortValue={sortKey}
+              onSort={(v) => { setSortKey(v); setSortDir(1); }}
+              filters={[
+                { label: 'Tipo', value: filters.tipo, onChange: (v) => setFilters({ ...filters, tipo: v }), options: meta.types.map((t) => ({ value: t.value, label: t.label })) },
+                { label: 'Estado', value: filters.estado, onChange: (v) => setFilters({ ...filters, estado: v }), options: meta.status.map((s) => ({ value: s, label: STATUS_LABELS[s] })) },
+                { label: 'Prioridad', value: filters.prioridad, onChange: (v) => setFilters({ ...filters, prioridad: v }), options: meta.priorities.map((p) => ({ value: p, label: PRIORITY_LABELS[p] })) }
+              ]}
+            />
             <button
               onClick={() => setShowProjectForm(!showProjectForm)}
-              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold flex items-center space-x-2 transition-colors w-fit"
+              className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold flex items-center space-x-2 transition-colors w-fit shrink-0"
             >
               <Plus className="w-4 h-4" />
               <span>Nuevo Proyecto</span>
@@ -634,13 +714,13 @@ export const AdminProjects = () => {
             <div className="min-h-[200px] flex items-center justify-center">
               <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-          ) : projects.length === 0 ? (
+          ) : visibleProjects.length === 0 ? (
             <div className="surface-card p-8 rounded-2xl border border-slate-800 text-center text-xs text-muted">
               No hay proyectos que coincidan con los filtros seleccionados.
             </div>
           ) : (
             <div className="space-y-4">
-              {projects.map((p) => (
+              {view === 'grid' && visibleProjects.map((p) => (
                 <div key={p.id} className="surface-card rounded-2xl border border-slate-800 overflow-hidden shadow-lg">
                   {/* Cabecera del proyecto */}
                   <div className="p-5 space-y-3">
@@ -1074,6 +1154,134 @@ export const AdminProjects = () => {
               ))}
             </div>
           )}
+
+            {view === 'table' && (
+              <table className="w-full text-left text-xs">
+                <thead className="surface-subtle border-b border-slate-800 text-[11px] font-mono text-muted uppercase">
+                  <tr>
+                    <th className="py-3 px-4">Nombre</th>
+                    <th className="py-3 px-4">Cliente</th>
+                    <th className="py-3 px-4">Tipo</th>
+                    <th className="py-3 px-4">Estado</th>
+                    <th className="py-3 px-4">Prioridad</th>
+                    <th className="py-3 px-4">Fecha Inicio</th>
+                    <th className="py-3 px-4">Fecha Entrega</th>
+                    <th className="py-3 px-4">Piezas</th>
+                    <th className="py-3 px-4">Recaudado</th>
+                    <th className="py-3 px-4 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {visibleProjects.map((p) => (
+                    <tr key={p.id} className={`hover:bg-slate-900/40 transition-colors ${expandedId === p.id ? 'bg-slate-900/60' : ''}`}>
+                      <td className="py-3 px-4 font-bold text-white">{p.nombreProyecto}</td>
+                      <td className="py-3 px-4 text-slate-300">{p.clientName}</td>
+                      <td className="py-3 px-4">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-500/10 text-brand-400 border border-brand-500/30">{typeLabel(p.tipoProyecto)}</span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${STATUS_COLORS[p.estado]}`}>{STATUS_LABELS[p.estado]}</span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${PRIORITY_COLORS[p.prioridad]}`}>{PRIORITY_LABELS[p.prioridad]}</span>
+                      </td>
+                      <td className="py-3 px-4 font-mono text-white">{fmtDate(p.fechaInicio)}</td>
+                      <td className="py-3 px-4 font-mono text-white">{fmtDate(p.fechaEntrega)}</td>
+                      <td className="py-3 px-4 font-mono text-cyan-400">{p.piecesCount || 0}</td>
+                      <td className="py-3 px-4 font-mono text-emerald-400">{fmtMoney(p.totalPaid || 0)}</td>
+                      <td className="py-3 px-4 text-right">
+                        <button
+                          onClick={() => toggleProjectDetail(p.id)}
+                          className="px-3 py-1.5 rounded-xl border border-slate-800 text-[11px] font-bold text-slate-300 hover:text-white hover:border-slate-600 transition-colors"
+                        >
+                          Detalle
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {view === 'kanban' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                {[
+                  { id: 'pendiente', label: 'Pendiente', color: STATUS_COLORS.pendiente },
+                  { id: 'en_proceso', label: 'En Proceso', color: STATUS_COLORS.en_proceso },
+                  { id: 'completado', label: 'Completado', color: STATUS_COLORS.completado },
+                  { id: 'cancelado', label: 'Cancelado', color: STATUS_COLORS.cancelado }
+                ].map((col) => {
+                  const items = visibleProjects.filter((p) => p.estado === col.id);
+                  return (
+                    <div key={col.id} className="space-y-3">
+                      <div className="flex items-center justify-between px-1">
+                        <span className="text-xs font-bold text-white">{col.label}</span>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${col.color}`}>{items.length}</span>
+                      </div>
+                      <div className="space-y-2">
+                        {items.length === 0 && <p className="text-[11px] text-muted px-1">Vacío</p>}
+                        {items.map((p) => (
+                          <div
+                            key={p.id}
+                            onClick={() => toggleProjectDetail(p.id)}
+                            className="p-3 rounded-xl surface-card border border-slate-800 hover:border-slate-700 transition-all cursor-pointer space-y-2"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-bold text-white">{p.nombreProyecto}</span>
+                              <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold border ${PRIORITY_COLORS[p.prioridad]}`}>{PRIORITY_LABELS[p.prioridad]}</span>
+                            </div>
+                            <div className="text-[11px] text-slate-300 space-y-1">
+                              <div>{p.clientName} · {typeLabel(p.tipoProyecto)}</div>
+                              <div className="flex justify-between text-[10px]">
+                                <span>{fmtDate(p.fechaInicio)} → {fmtDate(p.fechaEntrega)}</span>
+                                <span className="text-emerald-400 font-mono">{fmtMoney(p.totalPaid || 0)}</span>
+                              </div>
+                            </div>
+                            {expandedId === p.id && renderCompactDetail()}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {view === 'gantt' && (() => {
+              if (visibleProjects.length === 0) return null;
+              const starts = visibleProjects.map((p) => (p.fechaInicio ? new Date(p.fechaInicio) : new Date()));
+              const ends = visibleProjects.map((p, i) => (p.fechaEntrega ? new Date(p.fechaEntrega) : starts[i]));
+              const min = Math.min(...starts.map((d) => d.getTime()));
+              const max = Math.max(...ends.map((d) => d.getTime()));
+              const span = (max - min) || 1;
+              return (
+                <div className="space-y-2">
+                  {visibleProjects.map((p, i) => {
+                    const start = starts[i];
+                    const end = ends[i];
+                    const s = ((start - min) / span) * 100;
+                    const e = ((end - min) / span) * 100;
+                    return (
+                      <div key={p.id} className="flex items-center gap-2 text-[10px]">
+                        <span className="w-56 shrink-0 font-bold text-white truncate">{p.nombreProyecto}</span>
+                        <div className="relative flex-1 h-5 bg-slate-900/40 rounded-lg overflow-hidden border border-slate-800">
+                          <div
+                            className={`absolute inset-y-0 rounded-lg opacity-80 ${STATUS_COLORS[p.estado] || 'bg-slate-600/40'}`}
+                            style={{ left: `${Math.max(0, s)}%`, width: `${Math.max(1, e - s)}%` }}
+                            title={`${p.nombreProyecto}: ${fmtDate(p.fechaInicio)} → ${fmtDate(p.fechaEntrega)}`}
+                          />
+                        </div>
+                        <span className="w-36 shrink-0 text-[9px] text-slate-400 text-right">
+                          {fmtDate(p.fechaInicio)} → {fmtDate(p.fechaEntrega)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+
+            {view !== 'grid' && expandedId && renderCompactDetail()}
         </>
       )}
 
@@ -1125,13 +1333,31 @@ export const AdminProjects = () => {
             </form>
           )}
 
-          {clients.length === 0 ? (
+          {/* Toolbar para sección Clientes */}
+          <ViewsBar
+            views={['grid', 'table']}
+            view={clientView}
+            onView={setClientView}
+            search={clientSearch}
+            onSearch={setClientSearch}
+            searchPlaceholder="Buscar cliente..."
+            sortOptions={[
+              { value: 'nombre', label: 'Nombre (A-Z)' },
+              { value: 'fecha_registro', label: 'Fecha de registro (más reciente primero)' }
+            ]}
+            sortValue={clientSortKey}
+            onSort={setClientSortKey}
+          />
+
+          {visibleClients.length === 0 ? (
             <div className="surface-card p-8 rounded-2xl border border-slate-800 text-center text-xs text-muted">
-              No hay clientes registrados. Cree el primero para asociar proyectos.
+              No hay clientes que coincidan con la búsqueda.
             </div>
           ) : (
+            <>
+            {clientView === 'grid' && (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {clients.map((c) => (
+              {visibleClients.map((c) => (
                 <div key={c.id} className="surface-card p-5 rounded-2xl border border-slate-800 space-y-3 shadow-lg">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-2.5">
@@ -1171,6 +1397,36 @@ export const AdminProjects = () => {
                 </div>
               ))}
             </div>
+            )}
+
+            {clientView === 'table' && (
+              <table className="w-full text-left text-xs">
+                <thead className="surface-subtle border-b border-slate-800 text-[11px] font-mono text-muted uppercase">
+                  <tr>
+                    <th className="py-3 px-4">Nombre</th>
+                    <th className="py-3 px-4">Email</th>
+                    <th className="py-3 px-4">Teléfono</th>
+                    <th className="py-3 px-4">Dirección</th>
+                    <th className="py-3 px-4">Registrado</th>
+                    <th className="py-3 px-4">Proyectos</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {visibleClients.map((c) => (
+                    <tr key={c.id} className="hover:bg-slate-900/40 transition-colors">
+                      <td className="py-3 px-4 font-bold text-white">{c.nombre}</td>
+                      <td className="py-3 px-4 text-slate-300 font-mono">{c.email}</td>
+                      <td className="py-3 px-4 text-slate-300">{c.telefono || '—'}</td>
+                      <td className="py-3 px-4 text-slate-300 truncate" title={c.direccion}>{c.direccion || '—'}</td>
+                      <td className="py-3 px-4 font-mono text-white">{fmtDate(c.fechaRegistro)}</td>
+                      <td className="py-3 px-4 font-mono text-cyan-400">{c.projectsCount || 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            </>
           )}
         </div>
       )}

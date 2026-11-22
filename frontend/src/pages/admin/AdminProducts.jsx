@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { apiClient } from '../../api/client';
+import { ViewsBar } from '../../components/ViewsBar';
 import {
   Box,
   Plus,
@@ -23,6 +24,13 @@ export const AdminProducts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
+  // Toolbar y vistas: Tabla, Grid, Kanban
+  const [view, setView] = useState('table');
+  const [search, setSearch] = useState('');
+  const [sortKey, setSortKey] = useState('');
+  const [sortDir, setSortDir] = useState(1);
+  const [filters, setFilters] = useState({ category: '' });
+
   const initialForm = {
     name: '',
     category: 'Impresión 3D',
@@ -30,7 +38,7 @@ export const AdminProducts = () => {
     price: 35000,
     printTime: '3h 30m',
     filamentWeight: '70g',
-    dimensions: { x: 10, y: 10, z: 12, unit: 'cm' },
+    dimensions: { largo: 10, ancho: 10, alto: 12, unit: 'cm' },
     description: '',
     isFree: false,
     availableMaterials: ['PLA', 'PETG'],
@@ -59,6 +67,31 @@ export const AdminProducts = () => {
     }
   };
 
+  // Productos filtrados/ordenados por la vista
+  const visibleProducts = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    let list = products.filter((p) =>
+      !q || (p.name || '').toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q)
+    );
+    if (filters.category) {
+      list = list.filter((p) => p.category === filters.category);
+    }
+    if (sortKey) {
+      list = [...list].sort((a, b) => {
+        const A = a[sortKey];
+        const B = b[sortKey];
+        let cmp;
+        if (typeof A === 'string' || typeof B === 'string') {
+          cmp = String(A || '').localeCompare(String(B || ''));
+        } else {
+          cmp = (Number(A) || 0) - (Number(B) || 0);
+        }
+        return cmp * sortDir;
+      });
+    }
+    return list;
+  }, [products, search, sortKey, sortDir, filters.category]);
+
   const handleOpenCreate = () => {
     setEditingId(null);
     setFormData(initialForm);
@@ -74,7 +107,12 @@ export const AdminProducts = () => {
       price: p.price,
       printTime: p.printTime || '3h',
       filamentWeight: p.filamentWeight || '60g',
-      dimensions: p.dimensions || { x: 10, y: 10, z: 10, unit: 'cm' },
+      dimensions: {
+        largo: p.dimensions?.largo ?? p.dimensions?.x ?? 10,
+        ancho: p.dimensions?.ancho ?? p.dimensions?.y ?? 10,
+        alto: p.dimensions?.alto ?? p.dimensions?.z ?? 10,
+        unit: p.dimensions?.unit || 'cm'
+      },
       description: p.description || '',
       isFree: p.isFree || false,
       availableMaterials: p.availableMaterials || ['PLA', 'PETG'],
@@ -153,12 +191,43 @@ export const AdminProducts = () => {
         </div>
       )}
 
+      {/* Toolbar: búsqueda, filtros, ordenamiento y botones de vistas */}
+      <ViewsBar
+        views={['table', 'grid', 'kanban']}
+        view={view}
+        onView={setView}
+        search={search}
+        onSearch={setSearch}
+        searchPlaceholder="Buscar producto..."
+        sortOptions={[
+          { value: 'price_desc', label: 'Precio (mayor primero)' },
+          { value: 'price_asc', label: 'Precio (menor primero)' },
+          { value: 'name', label: 'Nombre (A-Z)' },
+          { value: 'name_desc', label: 'Nombre (Z-A)' },
+          { value: 'printTime', label: 'Tiempo de impresión' },
+          { value: 'category', label: 'Categoría' }
+        ]}
+        sortValue={sortKey}
+        onSort={(v) => { setSortKey(v.replace('_desc', '')); setSortDir(v.includes('_desc') ? -1 : 1); }}
+        filters={[
+          {
+            label: 'Categoría',
+            value: filters.category,
+            onChange: (v) => setFilters({ ...filters, category: v }),
+            options: [
+              { value: '', label: 'Todas las categorías' },
+              ...[...new Set(products.map((p) => p.category))].map((c) => ({ value: c, label: c }))
+            ]
+          }
+        ]}
+      />
+
       {/* Tabla de Productos */}
       {loading ? (
         <div className="min-h-[250px] flex items-center justify-center">
           <div className="w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
-      ) : (
+      ) : view === 'table' && (
         <div className="surface-card rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
@@ -174,7 +243,7 @@ export const AdminProducts = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800">
-                {products.map((p) => (
+                {visibleProducts.map((p) => (
                   <tr key={p.id} className="hover:bg-slate-900/40 transition-colors">
                     <td className="py-3 px-4">
                       <div className="flex items-center space-x-3">
@@ -250,6 +319,88 @@ export const AdminProducts = () => {
               </tbody>
             </table>
           </div>
+        </div>
+      )}
+
+      {view === 'grid' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          {visibleProducts.map((p) => (
+            <div key={p.id} className="surface-card p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-colors shadow-lg space-y-3">
+              <div className="flex items-center space-x-3">
+                <img
+                  src={p.imageUrl}
+                  alt={p.name}
+                  className="w-12 h-12 rounded-xl object-cover bg-slate-900 border border-slate-800 shrink-0"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=300&auto=format&fit=crop&q=60';
+                  }}
+                />
+                <div className="min-w-0">
+                  <strong className="text-white block font-semibold text-xs truncate">{p.name}</strong>
+                  <span className="text-[10px] text-muted block truncate">{p.category}</span>
+                </div>
+              </div>
+
+              <div className="text-[11px] text-slate-300 space-y-0.5">
+                <div className="font-mono font-bold text-white">${Number(p.price).toLocaleString('es-CO')} · {p.printTime}</div>
+                <div className="text-[10px] text-brand-400">{p.filamentWeight}</div>
+                {p.subcategory && <div className="text-[9px] text-muted">{p.subcategory}</div>}
+              </div>
+
+              <div className="flex items-center justify-between gap-2">
+                <span className="px-2 py-0.5 rounded text-[9px] bg-brand-500/15 text-brand-300">
+                  {p.availableMaterials?.[0] || 'Mat.'}
+                </span>
+                <div className="flex items-center space-x-1.5">
+                  <button
+                    onClick={() => handleOpenEdit(p)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                    title="Editar"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-950/20"
+                    title="Eliminar"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {view === 'kanban' && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {[...new Set(products.map((p) => p.category))].map((cat) => {
+            const items = visibleProducts.filter((p) => p.category === cat);
+            return (
+              <div key={cat} className="space-y-3">
+                <h5 className="text-[11px] font-bold text-white px-1">{cat} ({items.length})</h5>
+                <div className="space-y-2">
+                  {items.length === 0 && <p className="text-[11px] text-muted px-1">Vacío</p>}
+                  {items.map((p) => (
+                    <div key={p.id} className="surface-card p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition-colors space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-white truncate">{p.name}</span>
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${p.isFree ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-900 text-muted'}`}>
+                          {p.isFree ? 'Gratis' : `$${Number(p.price).toLocaleString('es-CO')}`}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {p.availableMaterials?.slice(0, 4).map((m) => (
+                          <span key={m} className="px-1.5 py-0.2 rounded text-[9px] bg-brand-500/15 text-brand-300">{m}</span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -378,6 +529,48 @@ export const AdminProducts = () => {
                     value={formData.filamentWeight}
                     onChange={(e) => setFormData({ ...formData, filamentWeight: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono"
+                  />
+                </div>
+              </div>
+
+              {/* Dimensiones del producto: Largo, Ancho y Alto */}
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted block mb-1">
+                    Largo (cm)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={formData.dimensions?.largo ?? 10}
+                    onChange={(e) => setFormData({ ...formData, dimensions: { ...formData.dimensions, largo: Number(e.target.value) || '' } })}
+                    className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted block mb-1">
+                    Ancho (cm)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={formData.dimensions?.ancho ?? 10}
+                    onChange={(e) => setFormData({ ...formData, dimensions: { ...formData.dimensions, ancho: Number(e.target.value) || '' } })}
+                    className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted block mb-1">
+                    Alto (cm)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={formData.dimensions?.alto ?? 12}
+                    onChange={(e) => setFormData({ ...formData, dimensions: { ...formData.dimensions, alto: Number(e.target.value) || '' } })}
+                    className="w-full px-3 py-2 rounded-xl surface-subtle border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-brand-500"
                   />
                 </div>
               </div>

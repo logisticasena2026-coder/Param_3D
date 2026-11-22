@@ -1,10 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { apiClient } from '../../api/client';
+import { ViewsBar } from '../../components/ViewsBar';
 import { Users, Plus, Trash2, Edit2, Save, X, ExternalLink, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export const AdminSponsors = () => {
   const [sponsors, setSponsors] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Toolbar y vistas: Tabla, Grid
+  const [view, setView] = useState('table');
+  const [search, setSearch] = useState('');
+  const [sortKey, setSortKey] = useState('commercialName');
+
+  const visibleSponsors = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    let list = sponsors.filter((s) =>
+      !q ||
+      (s.commercialName || '').toLowerCase().includes(q) ||
+      (s.activityDescription || '').toLowerCase().includes(q)
+    );
+    if (sortKey) {
+      list = [...list].sort((a, b) => {
+        if (sortKey === 'status') {
+          return (a.status || '').localeCompare(b.status || '');
+        }
+        return (a[sortKey] || '').localeCompare(b[sortKey] || '');
+      });
+    }
+    return list;
+  }, [sponsors, search, sortKey]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
@@ -114,6 +138,22 @@ export const AdminSponsors = () => {
         </button>
       </div>
 
+      {/* Toolbar: búsqueda, ordenamiento y botones de vistas */}
+      <ViewsBar
+        views={['grid', 'table', 'kanban']}
+        view={view}
+        onView={setView}
+        search={search}
+        onSearch={setSearch}
+        searchPlaceholder="Buscar patrocinador..."
+        sortOptions={[
+          { value: 'commercialName', label: 'Nombre comercial (A-Z)' },
+          { value: 'status', label: 'Estado' }
+        ]}
+        sortValue={sortKey}
+        onSort={setSortKey}
+      />
+
       {msg && (
         <div className={`p-3 rounded-xl text-xs flex items-center space-x-2 ${
           msg.type === 'success' ? 'bg-emerald-950/60 border border-emerald-800 text-emerald-300' : 'bg-rose-950/60 border border-rose-800 text-rose-300'
@@ -128,8 +168,10 @@ export const AdminSponsors = () => {
           <div className="w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sponsors.map((s) => (
+        <>
+          {view === 'grid' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {visibleSponsors.map((s) => (
             <div key={s.id} className="surface-card p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -184,6 +226,76 @@ export const AdminSponsors = () => {
             </div>
           ))}
         </div>
+      )}
+
+      {view === 'table' && (
+        <table className="w-full text-left text-xs">
+          <thead className="surface-subtle border-b border-slate-800 text-[11px] font-mono text-muted uppercase">
+            <tr>
+              <th className="py-3 px-4">Nombre Comercial</th>
+              <th className="py-3 px-4">Estado</th>
+              <th className="py-3 px-4">Contacto</th>
+              <th className="py-3 px-4">Sitio Web</th>
+              <th className="py-3 px-4">Descripción</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-800">
+            {visibleSponsors.map((s) => (
+              <tr key={s.id} className="hover:bg-slate-900/40 transition-colors">
+                <td className="py-3 px-4 font-bold text-white">{s.commercialName}</td>
+                <td className="py-3 px-4">
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                    s.status === 'active'
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                      : 'bg-slate-500/20 text-slate-400 border-slate-500/30'
+                  }`}>
+                    {s.status}
+                  </span>
+                </td>
+                <td className="py-3 px-4 text-slate-300">{s.contactPerson || '—'}</td>
+                <td className="py-3 px-4">
+                  {s.websiteUrl ? (
+                    <a href={s.websiteUrl} target="_blank" rel="noreferrer" className="text-brand-400 hover:underline text-[10px] flex items-center space-x-1">
+                      <span>{s.websiteUrl}</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : '—'}
+                </td>
+                <td className="py-3 px-4 text-[10px] text-slate-300 line-clamp-2" title={s.activityDescription}>
+                  {s.activityDescription}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+          {view === 'kanban' && (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {[...new Set(sponsors.map((s) => s.status || 'active'))].map((st) => {
+                const items = visibleSponsors.filter((s) => (s.status || 'active') === st);
+                return (
+                  <div key={st} className="space-y-3">
+                    <h5 className="text-[11px] font-bold text-white px-1">{st === 'active' ? 'Activos' : st} ({items.length})</h5>
+                    <div className="space-y-2">
+                      {items.length === 0 && <p className="text-[11px] text-muted px-1">Vacío</p>}
+                      {items.map((s) => (
+                        <div key={s.id} className="surface-card p-4 rounded-xl border border-slate-800 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-white">{s.commercialName}</span>
+                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${s.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-900 text-muted'}`}>{s.status}</span>
+                          </div>
+                          <div className="text-[11px] text-slate-300">Contacto: {s.contactPerson || '—'}</div>
+                          <div className="text-[10px] text-slate-400 truncate" title={s.websiteUrl}>{s.websiteUrl}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </>
       )}
 
       {/* Modal Crear / Editar Patrocinador */}
