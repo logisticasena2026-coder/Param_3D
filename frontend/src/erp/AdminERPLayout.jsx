@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useModules, MODULE_REGISTRY } from './registry';
-import { Package, Warehouse, ArrowLeft } from 'lucide-react';
+import { Package, Warehouse, ArrowLeft, Store, Users, Briefcase, HandHeart } from 'lucide-react';
 import { AdminProveedores } from './modules/compras/AdminProveedores';
 import { AdminInventario } from './modules/compras/AdminInventario';
 import { AdminCompras } from './modules/compras/AdminCompras';
+import { AdminVentas } from './modules/ventas/AdminVentas';
+import { AdminClientes } from './modules/ventas/AdminClientes';
+import { AdminCanales } from './modules/ventas/AdminCanales';
+import { AdminDevolucions } from './modules/ventas/AdminDevolucions';
 
 const MODULE_ICONS = {
   proveedores: Package,
   inventario: Warehouse,
-  compras: Package
+  compras: Package,
+  ventas: Store,
+  clientes: Users,
+  canales: Briefcase,
+  devoluciones: HandHeart
 };
 
 /**
@@ -27,7 +35,7 @@ export const AdminERPLayout = ({ onNavigate, initialModule = 'proveedores' }) =>
       icon: Package,
       version: '1.0.0',
       summary: 'Gestiona proveedores de insumos, materiales y servicios con contacto y categorización.',
-      dependsOn: ['base'],
+      dependsOn: [],
       component: AdminProveedores
     });
     registry.registerModule({
@@ -36,7 +44,7 @@ export const AdminERPLayout = ({ onNavigate, initialModule = 'proveedores' }) =>
       icon: Warehouse,
       version: '1.0.0',
       summary: ' stocks reales, alertas de nivel, registro de lotes con series y ciclos de vida.',
-      dependsOn: ['base', 'proveedores'],
+      dependsOn: ['proveedores'],
       component: AdminInventario
     });
     registry.registerModule({
@@ -45,8 +53,44 @@ export const AdminERPLayout = ({ onNavigate, initialModule = 'proveedores' }) =>
       icon: Package,
       version: '1.0.0',
       summary: 'Pedidos de Compra: Borrador → Aprobado → En tránsito → Recibido. El recibir actualiza stock.',
-      dependsOn: ['base', 'inventario', 'proveedores'],
+      dependsOn: ['inventario', 'proveedores'],
       component: AdminCompras
+    });
+    registry.registerModule({
+      id: 'ventas',
+      name: 'Ventas',
+      icon: Store,
+      version: '1.0.0',
+      summary: 'Pedidos de venta (Pedido → Preparado → Terminado → Entregado) con detalle de productos y validación de stocks.',
+      dependsOn: ['compras'],
+      component: AdminVentas
+    });
+    registry.registerModule({
+      id: 'clientes',
+      name: 'Clientes',
+      icon: Users,
+      version: '1.0.0',
+      summary: 'Clientes con lifecycle (Primera visita, Prometedor, Fiduciario), TQs y score de ventas.',
+      dependsOn: [],
+      component: AdminClientes
+    });
+    registry.registerModule({
+      id: 'canales',
+      name: 'Canales',
+      icon: Briefcase,
+      version: '1.0.0',
+      summary: 'Canales de venta (Store Web, API, WHL, CRM) y reporte de ventas por canal.',
+      dependsOn: [],
+      component: AdminCanales
+    });
+    registry.registerModule({
+      id: 'devoluciones',
+      name: 'Devoluciones',
+      icon: HandHeart,
+      version: '1.0.0',
+      summary: 'Devoluciones de productos con restitución de stock al completarse.',
+      dependsOn: ['compras'],
+      component: AdminDevolucions
     });
     registry.setActiveModule(initialModule);
   }, []);

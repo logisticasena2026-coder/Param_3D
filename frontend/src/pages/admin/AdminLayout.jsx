@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { AdminDashboard } from './AdminDashboard';
 import { AdminProducts } from './AdminProducts';
 import { AdminOrders } from './AdminOrders';
+import { AdminVentas } from '../../erp/modules/ventas/AdminVentas';
+import { AdminClientes } from '../../erp/modules/ventas/AdminClientes';
+import { AdminCanales } from '../../erp/modules/ventas/AdminCanales';
+import { AdminDevolucions } from '../../erp/modules/ventas/AdminDevolucions';
 import { AdminSponsors } from './AdminSponsors';
 import { AdminQuotes } from './AdminQuotes';
 import { AdminProjects } from './AdminProjects';
@@ -16,15 +20,23 @@ import {
   ArrowLeft,
   ShieldAlert,
   Package,
-  Warehouse
+  Warehouse,
+  Store,
+  Wallet,
+  Briefcase,
+  HandHeart
 } from 'lucide-react';
 
 export const AdminLayout = ({ onNavigate }) => {
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'erp' | 'projects' | 'products' | 'orders' | 'sponsors' | 'quotes'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'erp' | 'ventas' | 'clientes' | 'canales' | 'devoluciones' | 'projects' | 'products' | 'orders' | 'sponsors' | 'quotes'
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'erp', label: 'ERP — Compras & Inv.', icon: Package, badge: 'ERP' },
+    { id: 'erp', label: 'ERP — Compras', icon: Package, badge: 'ERP' },
+    { id: 'ventas', label: 'ERP — Ventas', icon: Store, badge: 'VTA' },
+    { id: 'clientes', label: 'Clientes', icon: Wallet, badge: 'CRM' },
+    { id: 'canales', label: 'Canales', icon: Briefcase },
+    { id: 'devoluciones', label: 'Devoluciones', icon: HandHeart },
     { id: 'projects', label: 'Proyectos', icon: FolderKanban },
     { id: 'products', label: 'Productos y Modelos', icon: Box },
     { id: 'orders', label: 'Control de Pedidos', icon: ShoppingCart },
@@ -84,6 +96,10 @@ export const AdminLayout = ({ onNavigate }) => {
           />
         )}
         {activeTab === 'erp' && <AdminERPLayout onNavigate={onNavigate} />}
+        {activeTab === 'ventas' && <AdminVentas />}
+        {activeTab === 'clientes' && <AdminClientes />}
+        {activeTab === 'canales' && <AdminCanales />}
+        {activeTab === 'devoluciones' && <AdminDevolucions />}
         {activeTab === 'projects' && <AdminProjects />}
         {activeTab === 'products' && <AdminProducts />}
         {activeTab === 'orders' && <AdminOrders />}

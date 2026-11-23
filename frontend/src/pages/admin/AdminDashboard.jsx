@@ -12,7 +12,10 @@ import {
   TrendingUp,
   Layers,
   CheckCircle2,
-  Package
+  Package,
+  Award,
+  Briefcase,
+  HandHeart
 } from 'lucide-react';
 
 export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
@@ -23,7 +26,12 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
     sponsorsCount: 0,
     quotesCount: 0,
     projectsCount: 0,
-    activeProjectsCount: 0
+    activeProjectsCount: 0,
+    clientesTotal: 0,
+    tqsActivos: 0,
+    canalesTotal: 0,
+    devolucionesTotal: 0,
+    devolucionesPendientes: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -33,16 +41,24 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
 
   const fetchStats = async () => {
     try {
-      const [products, orders, sponsors, quotes, projectsSummary, proveedores] = await Promise.all([
+      const [products, orders, sponsors, quotes, projectsSummary, proveedores, clientes, canales, devs] = await Promise.all([
         apiClient.request('/products'),
         apiClient.request('/orders/admin/all'),
         apiClient.request('/sponsors'),
         apiClient.request('/quotes/admin/all'),
         apiClient.request('/projects/summary'),
-        apiClient.request('/proveedores/')
+        apiClient.request('/proveedores/'),
+        apiClient.request('/clientes/'),
+        apiClient.request('/canales'),
+        apiClient.request('/devoluciones/')
       ]);
 
       const pending = orders.filter(o => o.status !== 'Entregado').length;
+      const clientesList = Array.isArray(clientes) ? clientes : (clientes?.clientes || clientes?.data || []);
+      const tqsActivos = clientesList.filter(c => c.tqs).length;
+      const canalesList = Array.isArray(canales) ? canales : (canales?.canales || []);
+      const devsList = Array.isArray(devs) ? devs : (devs?.devoluciones || []);
+      const devsPendientes = devsList.filter(d => d.estado === 'pendiente').length;
 
       setStats({
         productsCount: products.length,
@@ -52,7 +68,12 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
         quotesCount: quotes.length,
         projectsCount: projectsSummary.totalProjects || 0,
         activeProjectsCount: projectsSummary.activeProjects || 0,
-        erpSummary: { proveedoresCount: (proveedores.proveedores || proveedores || []).length }
+        erpSummary: { proveedoresCount: (proveedores.proveedores || proveedores || []).length },
+        clientesTotal: clientesList.length,
+        tqsActivos,
+        canalesTotal: canalesList.length,
+        devolucionesTotal: devsList.length,
+        devolucionesPendientes: devsPendientes
       });
     } catch (err) {
       console.error('Error cargando estadísticas admin:', err);
@@ -109,6 +130,38 @@ export const AdminDashboard = ({ onNavigate, onSelectAdminTab }) => {
       icon: Package,
       color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
       tab: 'erp'
+    },
+    {
+      title: 'Clientes CRM',
+      value: stats.clientesTotal,
+      sub: `${stats.tqsActivos} activos · Lifecycle`,
+      icon: Users,
+      color: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+      tab: 'clientes'
+    },
+    {
+      title: 'Clientes con TQs',
+      value: stats.tqsActivos,
+      sub: `${stats.clientesTotal} clientes · Prometedor+`,
+      icon: Award,
+      color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+      tab: 'clientes'
+    },
+    {
+      title: 'Canales de Venta',
+      value: stats.canalesTotal,
+      sub: 'Store Web, API, WHL, CRM',
+      icon: Briefcase,
+      color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+      tab: 'canales'
+    },
+    {
+      title: 'Devoluciones',
+      value: stats.devolucionesTotal,
+      sub: `${stats.devolucionesPendientes} pendientes`,
+      icon: HandHeart,
+      color: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+      tab: 'devoluciones'
     }
   ];
 
