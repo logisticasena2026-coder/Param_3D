@@ -92,7 +92,10 @@ const defaultData = {
   // Módulos de Facturación / Inventario / Compras (Fase 0 + 1a)
   proveedores: [],
   pedidos_compra: [],
-  lotes: []
+  lotes: [],
+  // Módulo de Ventas (Fase 1b)
+  canales: [],
+  devoluciones: []
 };
 
 class Database {

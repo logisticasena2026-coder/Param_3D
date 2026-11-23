@@ -3,24 +3,69 @@ const db = require('../config/db');
 // Validación básica de correo electrónico
 const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-// Listar todos los clientes con conteo de proyectos asociados (Admin)
+// ---------- Helpers ERP — Clientes CRM (Ventas) ----------
+const calcularLifecycleCliente = (ordersCount, totalVentas) => {
+  if (ordersCount === 0) return { status: 'Sin datos', tqs: false, scoreVentas: 0 };
+  if (ordersCount >= 5 || totalVentas >= 1000000) return { status: 'Fiduciario', tqs: true, scoreVentas: totalVentas + ordersCount * 10000 };
+  if (ordersCount >= 3 || totalVentas >= 500000) return { status: 'Prometedor', tqs: false, scoreVentas: totalVentas + ordersCount * 5000 };
+  if (ordersCount === 1) return { status: 'Primera visita', tqs: false, scoreVentas: totalVentas };
+  return { status: 'Prometedor', tqs: false, scoreVentas: totalVentas + ordersCount * 2000 };
+};
+
+// Recalcular lifecycle del cliente (ordersCount, totalVentas, primeraVisita, status, tqs, scoreVentas)
+const recomputeCliente = (email) => {
+  const orders = db.getCollection('orders').filter(o => o.customerEmail === email);
+  const clientes = db.getCollection('clients');
+  const cliente = clientes.find(c => c.email === email);
+  if (!cliente) return { error: 'Cliente no registrado' };
+  const totalVentas = orders.reduce((acc, o) => acc + (Number(o.subtotal) || 0), 0);
+  const ordersCount = orders.length;
+  const { status, tqs, scoreVentas } = calcularLifecycleCliente(ordersCount, totalVentas);
+  cliente.ordersCount = ordersCount;
+  cliente.totalVentas = totalVentas;
+  cliente.primeraVisita = ordersCount === 1;
+  cliente.tqs = tqs;
+  cliente.status = status;
+  cliente.scoreVentas = scoreVentas;
+  cliente.ultimaVisita = orders.length ? new Date(orders[0].createdAt).toISOString() : null;
+  db.setCollection('clientes', clientes);
+  return { stats: { ordersCount, totalVentas, primeraVisita: cliente.primeraVisita, status, tqs, scoreVentas, ultimaVisita: cliente.ultimaVisita } };
+};
+
+// Enriquecer un cliente con estadísticas de ventas
+const enriquecerCliente = (c) => {
+  const orders = db.getCollection('orders').filter(o => o.customerEmail === c.email);
+  const ordersCount = c.ordersCount || orders.length || 0;
+  const totalVentas = c.totalVentas || orders.reduce((acc, o) => acc + (Number(o.subtotal) || 0), 0);
+  const { status, tqs, scoreVentas } = calcularLifecycleCliente(ordersCount, totalVentas);
+  return {
+    ...c,
+    ordersCount,
+    totalVentas,
+    primeraVisita: c.primeraVisita !== undefined ? c.primeraVisita : orders.length === 1,
+    tqs: c.tqs || false,
+    status: c.status || status,
+    scoreVentas: c.scoreVentas || scoreVentas,
+    ultimaVisita: c.ultimaVisita || (orders.length ? new Date(orders[0].createdAt).toISOString() : null),
+    orders: orders.map(o => ({ id: o.id, orderNumber: o.orderNumber, fecha: o.createdAt, total: o.total, status: o.status, channelName: o.channelName }))
+  };
+};
+
+// Listar todos los clientes con conteo de proyectos y datos de ventas asociados (Admin)
 const getAllClients = (req, res, next) => {
   try {
-    const clients = db.getCollection('clients');
     const projects = db.getCollection('projects');
-
-    const enriched = clients.map(c => ({
-      ...c,
+    const enriched = db.getCollection('clients').map(c => ({
+      ...enriquecerCliente(c),
       projectsCount: projects.filter(p => p.clientId === c.id).length
     }));
-
     res.json(enriched);
   } catch (error) {
     next(error);
   }
 };
 
-// Obtener un cliente por ID con sus proyectos
+// Obtener un cliente por ID con sus proyectos y historial de ventas
 const getClientById = (req, res, next) => {
   try {
     const clients = db.getCollection('clients');
@@ -31,7 +76,8 @@ const getClientById = (req, res, next) => {
     }
 
     const projects = db.getCollection('projects').filter(p => p.clientId === client.id);
-    res.json({ ...client, projects });
+    const orders = db.getCollection('orders').filter(o => o.customerEmail === client.email);
+    res.json({ ...enriquecerCliente(client), projects, pedidos: orders.map(o => ({ id: o.id, orderNumber: o.orderNumber, estado: o.status, fecha: o.createdAt, total: o.total })) });
   } catch (error) {
     next(error);
   }
@@ -109,7 +155,15 @@ const updateClient = (req, res, next) => {
     clients[index].updatedAt = new Date().toISOString();
 
     db.setCollection('clients', clients);
-    res.json({ message: 'Cliente actualizado exitosamente', client: clients[index] });
+
+    // Actualizar lifecycle de ventas
+    const stats = recomputeCliente(clients[index].email);
+
+    res.json({
+      message: 'Cliente actualizado exitosamente',
+      client: clients[index],
+      clientStats: stats?.stats || null
+    });
   } catch (error) {
     next(error);
   }
@@ -142,10 +196,23 @@ const deleteClient = (req, res, next) => {
   }
 };
 
+// Estadísticas completas de un cliente (Clientes CRM)
+const getClientStats = (req, res, next) => {
+  try {
+    const client = db.getCollection('clients').find(c => c.id === req.params.id);
+    if (!client) return res.status(404).json({ error: 'Cliente no encontrado' });
+    const stats = recomputeCliente(client.email);
+    res.json({ client: enriquecerCliente(client), ...stats });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllClients,
   getClientById,
   createClient,
   updateClient,
-  deleteClient
+  deleteClient,
+  getClientStats
 };

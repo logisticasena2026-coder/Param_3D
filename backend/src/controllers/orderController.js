@@ -1,14 +1,83 @@
 const db = require('../config/db');
 
 const ORDER_STATUS_FLOW = ['Pedido', 'Preparado', 'Terminado', 'Entregado'];
+const CANALES_TIPOS = ['Store Web', 'API', 'WHL', 'Lista de proveedor', 'CRM', 'Otros'];
+
+// ---------- Lifecycle de Clientes (Ventas) ----------
+const calcularLifecycle = (ordersCount, totalVentas) => {
+  if (ordersCount === 0) return { status: 'Sin datos', tqs: false, scoreVentas: 0 };
+  if (ordersCount >= 5 || totalVentas >= 1000000) return { status: 'Fiduciario', tqs: true, scoreVentas: totalVentas + ordersCount * 10000 };
+  if (ordersCount >= 3 || totalVentas >= 500000) return { status: 'Prometedor', tqs: false, scoreVentas: totalVentas + ordersCount * 5000 };
+  if (ordersCount === 1) return { status: 'Primera visita', tqs: false, scoreVentas: totalVentas };
+  return { status: 'Prometedor', tqs: false, scoreVentas: totalVentas + ordersCount * 2000 };
+};
+
+// Actualizar orders de un cliente desde la colección de órdenes (Calcular lifecycle recomputando stats)
+const recomputeCliente = (email) => {
+  const orders = db.getCollection('orders').filter(o => o.customerEmail === email);
+  const clientes = db.getCollection('clientes');
+  const cliente = clientes.find(c => c.email === email);
+  if (!cliente) return;
+  const stats = {
+    ordersCount: orders.length,
+    totalVentas: orders.reduce((acc, o) => acc + (Number(o.subtotal) || 0), 0),
+    primeraVisita: orders.length >= 1, // FIXME: detect true primera visita del cliente
+    ultimaVisita: orders.length ? new Date(orders[0].createdAt).toISOString() : null,
+    fechaPrimeraOrden: orders.length ? new Date(orders[0].createdAt).toISOString() : null
+  };
+  cliente.ordersCount = stats.ordersCount;
+  cliente.totalVentas = stats.totalVentas;
+  cliente.primeraVisita = orders.length === 1; // primera visita confirmada al pedir 2+ y no haber pedido antes
+  const { status, tqs, scoreVentas } = calcularLifecycle(stats.ordersCount, stats.totalVentas);
+  cliente.status = status;
+  cliente.tqs = tqs;
+  cliente.scoreVentas = scoreVentas;
+  db.setCollection('clientes', clientes);
+  return { stats, lifecycle: { status, tqs, scoreVentas } };
+};
+
+// ---------- Stock Validación ----------
+const validarStockOrdenes = (items) => {
+  const products = db.getCollection('products');
+  for (const item of items) {
+    const product = products.find(p => p.id === item.productId);
+    if (!product) {
+      throw new Error(`Producto "${item.name}" (${item.productId}) no existe. Regístralo primero.`);
+    }
+    const stockActual = Number(product.stockActual) || 0;
+    const qty = Number(item.quantity) || 0;
+    if (stockActual < qty) {
+      return { error: `"${item.name}" no tiene suficiente stock (solicitado: ${qty}, disponible: ${stockActual}). Genera un pedido de compra primero.` };
+    }
+  }
+  return null;
+};
+
+const decrementStockOrden = (items) => {
+  const products = db.getCollection('products');
+  products.forEach(p => {
+    const item = items.find(i => i.productId === p.id);
+    if (item && p.stockActual !== undefined) {
+      p.stockActual = (Number(p.stockActual) || 0) - Number(item.quantity || 0);
+      p.updatedAt = new Date().toISOString();
+    }
+  });
+  db.setCollection('products', products);
+};
 
 // Crear un nuevo pedido (el usuario debe estar autenticado)
 const createOrder = (req, res, next) => {
   try {
-    const { items, shippingAddress, notes, paymentMethod = 'Contra entrega / Transferencia' } = req.body;
+    const { items, shippingAddress, notes, paymentMethod = 'Contra entrega / Transferencia', channelId = null, notasProduccion = '' } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'El carrito no contiene productos válidos.' });
+    }
+
+    // Validar stock antes de crear (impossible → imposible despedir stock no disponible)
+    const stockError = validarStockOrdenes(items);
+    if (stockError) {
+      return res.status(409).json({ error: stockError.error });
     }
 
     // Validar cada ítem y su combinación material + color
@@ -42,6 +111,12 @@ const createOrder = (req, res, next) => {
     });
 
     const orders = db.getCollection('orders');
+    const clientes = db.getCollection('clientes');
+    const email = req.user.email;
+    const hasOrdersBefore = orders.some(o => o.customerEmail === email);
+    const cliente = clientes.find(c => c.email === email);
+    const channel = channelId ? db.getCollection('canales').find(c => c.id === channelId) : null;
+
     const orderNumber = `MQ3D-${Date.now().toString().slice(-6)}`;
 
     const newOrder = {
@@ -49,7 +124,15 @@ const createOrder = (req, res, next) => {
       orderNumber,
       userId: req.user.id,
       customerName: req.user.name,
-      customerEmail: req.user.email,
+      customerEmail: email,
+      // ErP Ventas — OrdersProductivo
+      primeraVisita: !hasOrdersBefore,
+      canalesId: channelId || null,
+      channelName: channel ? channel.nombre : (channelId ? channelId : 'General'),
+      tqsItems: req.body.tqsItems || [],
+      notasProduccion: notasProduccion || '',
+      totalVentas: subtotal,
+      // Existente
       items: validatedItems,
       subtotal,
       shippingCost: subtotal > 150000 ? 0 : 12000,
@@ -73,12 +156,20 @@ const createOrder = (req, res, next) => {
       createdAt: new Date().toISOString()
     };
 
+    // Guardar pedido
     orders.unshift(newOrder);
     db.setCollection('orders', orders);
 
+    // Decrementar stock (despacho por pedido productivo)
+    decrementStockOrden(newOrder.items);
+
+    // Recalcular lifecycle del cliente afectado
+    const stats = recomputeCliente(email);
+
     res.status(201).json({
       message: 'Pedido realizado con éxito',
-      order: newOrder
+      order: newOrder,
+      clientStats: stats ? stats.stats : null
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -200,9 +291,13 @@ const updateOrderStatus = (req, res, next) => {
     orders[index] = currentOrder;
     db.setCollection('orders', orders);
 
+    // Recalcular lifecycle del cliente del pedido
+    const clientStats = recomputeCliente(currentOrder.customerEmail);
+
     res.json({
       message: `Estado de pedido actualizado a ${status}`,
-      order: currentOrder
+      order: currentOrder,
+      clientStats: clientStats ? clientStats.stats : null
     });
   } catch (error) {
     next(error);

@@ -340,7 +340,7 @@ async function seed() {
     }
   ];
 
-  // 4. Pedido inicial de demostración con seguimiento
+  // 4. Pedido inicial de demostración con seguimiento (OrdersProductivo)
   const orders = [
     {
       id: 'ord-demo-1001',
@@ -348,6 +348,12 @@ async function seed() {
       userId: 'usr-client-1',
       customerName: 'Carlos Mendoza',
       customerEmail: 'cliente@maquinamos3d.com',
+      primeraVisita: true,
+      canalesId: 'cnal-store-web',
+      channelName: 'Store Web',
+      tqsItems: ['gabinete_1u'],
+      notasProduccion: 'CAdulto: cualquier advertencia de vibración OK en placaglass.',
+      devolucionesCount: 0,
       items: [
         {
           productId: 'prod-3d-jarron',
@@ -369,6 +375,8 @@ async function seed() {
         phone: '3109876543'
       },
       paymentMethod: 'Transferencia Bancolombia / Nequi',
+      notes: 'Cliente preguntó sobre garantía.',
+      totalVentas: 57000,
       status: 'Preparado', // Flujo: 'Pedido' -> 'Preparado' -> 'Terminado' -> 'Entregado'
       statusHistory: [
         {
@@ -383,6 +391,35 @@ async function seed() {
         }
       ],
       createdAt: new Date(Date.now() - 3600000 * 5).toISOString()
+    }
+  ];
+
+  // 4b. Canales de venta (OrdersProductivo — Canal de ventas)
+  const canales = [
+    { id: 'cnal-store-web', nombre: 'Store Web', tipo: 'Store Web', descripcion: 'Tienda online integrada Maquinamos 3D', status: 'activo', ultimaVenta: '2026-11-19', fechaCreacion: new Date(Date.now() - 86400000 * 180).toISOString() },
+    { id: 'cnal-api', nombre: 'API', tipo: 'API', descripcion: 'API de sklearn/business — orders.routes', status: 'activo', ultimaVenta: '2026-11-20', fechaCreacion: new Date(Date.now() - 86400000 * 120).toISOString() },
+    { id: 'cnal-lista-proveedor', nombre: 'Lista de proveedor', tipo: 'Lista de proveedor', descripcion: 'Ordenes generadas por proveedores', status: 'activo', ultimaVenta: null, fechaCreacion: new Date(Date.now() - 86400000 * 90).toISOString() },
+    { id: 'cnal-crm', nombre: 'CRM', tipo: 'CRM', descripcion: 'Órdenes del módulo CRM', status: 'activo', ultimaVenta: null, fechaCreacion: new Date(Date.now() - 86400000 * 60).toISOString() },
+    { id: 'cnal-otro', nombre: 'Otro', tipo: 'Otro', descripcion: 'Otros canales de venta', status: 'activo', ultimaVenta: null, fechaCreacion: new Date(Date.now() - 86400000 * 45).toISOString() }
+  ];
+
+  // 4c. Devoluciones de prueba (Ventas)
+  const devoluciones = [
+    {
+      id: 'dev-demo-1',
+      orderId: 'ord-demo-1001',
+      orderNumber: 'MQ3D-882319',
+      cliente: { id: 'usr-client-1', nombre: 'Carlos Mendoza', email: 'cliente@maquinamos3d.com' },
+      productId: 'prod-3d-jarron',
+      productName: 'Jarrón Paramétrico Voronoi',
+      cantidad: 1,
+      motivo: 'El jarrón está agrietado',
+      isGananciaVencida: false,
+      estado: 'pendiente',
+      fisicoUbicado: false,
+      fechaSolicitud: new Date(Date.now() - 86400000 * 3).toISOString(),
+      fechaResolucion: null,
+      precioUnitario: 45000
     }
   ];
 
@@ -592,6 +629,34 @@ async function seed() {
     { id: 'pag-demo-4', proyectoId: 'prj-demo-4', monto: 180000, fechaPago: new Date(Date.now() - 86400000 * 14).toISOString(), metodoPago: 'efectivo', referencia: 'REC-CAJA-045', estado: 'completado', createdAt: new Date(Date.now() - 86400000 * 14).toISOString() }
   ];
 
+  // Helper: recalcular stats de lifecycle de clientes a partir de órdenes
+  const recomputeClienteStats = (clients, orderList) => {
+    const perClient = {};
+    orderList.forEach(o => {
+      if (!perClient[o.customerEmail]) perClient[o.customerEmail] = [];
+      perClient[o.customerEmail].push(o);
+    });
+    clients.forEach(c => {
+      const list = perClient[c.email] || [];
+      const totalVentas = list.reduce((acc, o) => acc + (Number(o.subtotal) || 0), 0);
+      const ordersCount = list.length;
+      const status = ordersCount >= 5 || totalVentas >= 1000000 ? 'Fiduciario' :
+        ordersCount >= 3 || totalVentas >= 500000 ? 'Prometedor' :
+        ordersCount === 1 ? 'Primera visita' :
+        ordersCount > 0 ? 'Prometedor' : 'Sin datos';
+      const tqs = status === 'Fiduciario' || ordersCount >= 5;
+      const scoreVentas = totalVentas + ordersCount * (ordersCount >= 5 ? 10000 : ordersCount >= 3 ? 5000 : ordersCount === 1 ? 0 : 2000);
+      c.ordersCount = ordersCount;
+      c.totalVentas = totalVentas;
+      c.primeraVisita = ordersCount === 1;
+      c.status = status;
+      c.tqs = tqs;
+      c.scoreVentas = scoreVentas;
+      c.ultimaVisita = list.length ? new Date(list[0].createdAt).toISOString() : null;
+    });
+    db.setCollection('clients', clients);
+  };
+
   db.setCollection('users', users);
   db.setCollection('products', products);
   db.setCollection('sponsors', sponsors);
@@ -605,6 +670,9 @@ async function seed() {
   db.setCollection('proveedores', proveedores);
   db.setCollection('pedidos_compra', []);
   db.setCollection('lotes', []);
+  db.setCollection('canales', canales);
+  db.setCollection('devoluciones', devoluciones);
+  recomputeClienteStats(clients, orders);
 
   console.log('✅ Base de datos sembrada con éxito:');
   console.log(` - Usuarios: ${users.length} (Admin: mmontalvova@gmail.com / Admin123*)`);
@@ -613,6 +681,9 @@ async function seed() {
   console.log(` - Pedidos: ${orders.length}`);
   console.log(` - Proyectos: ${projects.length} | Clientes: ${clients.length} | Piezas: ${pieces.length} | Costos: ${costs.length} | Pagos: ${payments.length}`);
   console.log(` - Módulo ERP: ${proveedores.length} proveedores | 0 pedidos de compra | 0 lotes (vacíos por inventario nuevo)`);
+  console.log(` - Módulo Ventas: ${canales.length} canales | ${devoluciones.length} devoluciones`);
+  const statsClientes = clients.map(c => `${c.nombre}: ${c.ordersCount || 0} pedidos, $${(c.totalVentas || 0).toLocaleString('es-CO')}, [${c.status || 'Sin datos'}]`);
+  console.log(` - Lifecycle clientes: ${statsClientes.join(' | ')}`);
 }
 
 seed();

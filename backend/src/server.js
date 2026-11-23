@@ -18,6 +18,9 @@ const projectRoutes = require('./routes/projectRoutes');
 const proveedoresRoutes = require('./routes/proveedoresRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const compraRoutes = require('./routes/compraRoutes');
+const canalesRoutes = require('./routes/canalesRoutes');
+const devolucionesRoutes = require('./routes/devolucionesRoutes');
+const clientesRoutes = require('./routes/clientesRoutes');
 const { MODULE_MANAGER } = require('./erp');
 
 const app = express();
@@ -59,6 +62,9 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/proveedores', proveedoresRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/compras', compraRoutes);
+app.use('/api/canales', canalesRoutes);
+app.use('/api/clientes', clientesRoutes);
+app.use('/api/devoluciones', devolucionesRoutes);
 
 // Servir el frontend compilado (producción / Docker todo-en-uno).
 // En desarrollo el frontend corre aparte con Vite (npm run dev, puerto 3000).

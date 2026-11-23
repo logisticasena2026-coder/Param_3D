@@ -4,7 +4,7 @@
       "id": "usr-admin-1",
       "name": "Mauricio Montalvo (Admin)",
       "email": "mmontalvova@gmail.com",
-      "password": "$2a$10$094GxUeLW.7mSO.Fm.Z2Uu6tbos2kLozfMPhU27AdiU74bpGqjVxW",
+      "password": "$2a$10$r6xPkXeP3RLgo7yKCSbNouBz.WlsoRuJOROYPXAe6DuDhP/pAnA1O",
       "phone": "3005076700",
       "role": "admin",
       "preferences": {
@@ -12,13 +12,13 @@
         "palette": "cyan",
         "fontSize": "md"
       },
-      "createdAt": "2026-11-22T03:09:32.134Z"
+      "createdAt": "2026-11-23T02:04:02.745Z"
     },
     {
       "id": "usr-client-1",
       "name": "Carlos Mendoza",
       "email": "cliente@maquinamos3d.com",
-      "password": "$2a$10$c6swF4Dhg6gglPgLNZODueRgFqbW469kuh.JcyUUVERhp4lRx39ca",
+      "password": "$2a$10$5WReNCiRMx4/wVeye2RhwutbkC6XtPRa0c3e0SVv0adCchUvBN0UW",
       "phone": "3109876543",
       "role": "client",
       "preferences": {
@@ -26,7 +26,7 @@
         "palette": "orange",
         "fontSize": "md"
       },
-      "createdAt": "2026-11-22T03:09:32.135Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     }
   ],
   "categories": [
@@ -183,7 +183,7 @@
         "alto": 22,
         "unit": "cm"
       },
-      "stockActual": 70,
+      "stockActual": 58,
       "stockMin": 10,
       "stockMax": 30,
       "proveedorId": "prov-1",
@@ -211,9 +211,8 @@
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       "model3dUrl": "",
       "meshGeometry": "vase",
-      "createdAt": "2026-11-22T03:09:32.136Z",
-      "ultimaConteo": "2026-11-22T03:09:32.852Z",
-      "updatedAt": "2026-11-22T03:09:32.852Z"
+      "createdAt": "2026-11-23T02:04:02.746Z",
+      "updatedAt": "2026-11-23T02:10:12.150Z"
     },
     {
       "id": "prod-3d-trofeo",
@@ -255,7 +254,7 @@
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
       "model3dUrl": "",
       "meshGeometry": "trophy",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "prod-3d-arbol-navidad",
@@ -301,7 +300,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "tree",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "prod-3d-enclosure",
@@ -343,7 +342,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "prod-3d-robot",
@@ -386,7 +385,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "robot",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "prod-3d-escultura-busto",
@@ -432,7 +431,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "bust",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "prod-cnc-celosia",
@@ -478,7 +477,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "prod-aviso-neon",
@@ -520,7 +519,7 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "prod-metal-placa",
@@ -561,16 +560,148 @@
       "videoUrl": "",
       "model3dUrl": "",
       "meshGeometry": "box",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     }
   ],
   "orders": [
+    {
+      "id": "ord-1795399811902",
+      "orderNumber": "MQ3D-811902",
+      "userId": "usr-admin-1",
+      "customerName": "Mauricio Montalvo (Admin)",
+      "customerEmail": "mmontalvova@gmail.com",
+      "primeraVisita": false,
+      "canalesId": "cnal-store-web",
+      "channelName": "Store Web",
+      "tqsItems": [],
+      "notasProduccion": "Test e2e",
+      "totalVentas": 90000,
+      "items": [
+        {
+          "productId": "prod-3d-jarron",
+          "name": "Jarr??n",
+          "category": "Impresi??n 3D",
+          "material": "PETG",
+          "color": "Azul",
+          "price": 45000,
+          "quantity": 2,
+          "itemTotal": 90000,
+          "imageUrl": ""
+        }
+      ],
+      "subtotal": 90000,
+      "shippingCost": 12000,
+      "total": 102000,
+      "shippingAddress": {
+        "city": "Medellín",
+        "address": "Dirección por confirmar",
+        "phone": "3005076700"
+      },
+      "paymentMethod": "Contra entrega / Transferencia",
+      "notes": "",
+      "status": "Pedido",
+      "statusHistory": [
+        {
+          "status": "Pedido",
+          "timestamp": "2026-11-23T02:10:11.902Z",
+          "note": "Pedido recibido exitosamente en Maquinamos 3D. En cola para revisión técnica de mallas."
+        }
+      ],
+      "createdAt": "2026-11-23T02:10:11.903Z",
+      "devolucionesCount": 0
+    },
+    {
+      "id": "ord-1795399665359",
+      "orderNumber": "MQ3D-665359",
+      "userId": "usr-admin-1",
+      "customerName": "Mauricio Montalvo (Admin)",
+      "customerEmail": "mmontalvova@gmail.com",
+      "items": [
+        {
+          "productId": "prod-3d-jarron",
+          "name": "Jarr??n",
+          "category": "Impresi??n 3D",
+          "material": "PETG",
+          "color": "Azul",
+          "price": 45000,
+          "quantity": 2,
+          "itemTotal": 90000,
+          "imageUrl": ""
+        }
+      ],
+      "subtotal": 90000,
+      "shippingCost": 12000,
+      "total": 102000,
+      "shippingAddress": {
+        "city": "Medellín",
+        "address": "Dirección por confirmar",
+        "phone": "3005076700"
+      },
+      "paymentMethod": "Contra entrega / Transferencia",
+      "notes": "",
+      "status": "Pedido",
+      "statusHistory": [
+        {
+          "status": "Pedido",
+          "timestamp": "2026-11-23T02:07:45.359Z",
+          "note": "Pedido recibido exitosamente en Maquinamos 3D. En cola para revisión técnica de mallas."
+        }
+      ],
+      "createdAt": "2026-11-23T02:07:45.359Z"
+    },
+    {
+      "id": "ord-1795399665301",
+      "orderNumber": "MQ3D-665301",
+      "userId": "usr-admin-1",
+      "customerName": "Mauricio Montalvo (Admin)",
+      "customerEmail": "mmontalvova@gmail.com",
+      "items": [
+        {
+          "productId": "prod-3d-robot",
+          "name": "Robot",
+          "category": "Impresi??n 3D",
+          "material": "PLA",
+          "color": "Negro",
+          "price": 10000,
+          "quantity": 1,
+          "itemTotal": 10000,
+          "imageUrl": ""
+        }
+      ],
+      "subtotal": 10000,
+      "shippingCost": 12000,
+      "total": 22000,
+      "shippingAddress": {
+        "city": "Medellín",
+        "address": "Dirección por confirmar",
+        "phone": "3005076700"
+      },
+      "paymentMethod": "Contra entrega / Transferencia",
+      "notes": "",
+      "status": "Pedido",
+      "statusHistory": [
+        {
+          "status": "Pedido",
+          "timestamp": "2026-11-23T02:07:45.301Z",
+          "note": "Pedido recibido exitosamente en Maquinamos 3D. En cola para revisión técnica de mallas."
+        }
+      ],
+      "createdAt": "2026-11-23T02:07:45.301Z"
+    },
     {
       "id": "ord-demo-1001",
       "orderNumber": "MQ3D-882319",
       "userId": "usr-client-1",
       "customerName": "Carlos Mendoza",
       "customerEmail": "cliente@maquinamos3d.com",
+      "primeraVisita": true,
+      "canalesId": "cnal-store-web",
+      "channelName": "Store Web",
+      "tqsItems": [
+        "gabinete_1u"
+      ],
+      "notasProduccion": "CAdulto: cualquier advertencia de vibración OK en placaglass.",
+      "devolucionesCount": 0,
       "items": [
         {
           "productId": "prod-3d-jarron",
@@ -592,20 +723,22 @@
         "phone": "3109876543"
       },
       "paymentMethod": "Transferencia Bancolombia / Nequi",
+      "notes": "Cliente preguntó sobre garantía.",
+      "totalVentas": 57000,
       "status": "Preparado",
       "statusHistory": [
         {
           "status": "Pedido",
-          "timestamp": "2026-11-21T22:09:32.136Z",
+          "timestamp": "2026-11-22T21:04:02.747Z",
           "note": "Pedido recibido exitosamente en Maquinamos 3D."
         },
         {
           "status": "Preparado",
-          "timestamp": "2026-11-22T01:09:32.136Z",
+          "timestamp": "2026-11-23T00:04:02.747Z",
           "note": "Laminado en OrcaSlicer completado. Calibración de cama y extrusor a 240°C para PETG."
         }
       ],
-      "createdAt": "2026-11-21T22:09:32.136Z"
+      "createdAt": "2026-11-22T21:04:02.747Z"
     }
   ],
   "quotes": [
@@ -885,7 +1018,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Ing. Rodrigo Cárdenas",
       "status": "active",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "spon-2",
@@ -895,7 +1028,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Diana Salazar",
       "status": "active",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     },
     {
       "id": "spon-3",
@@ -905,7 +1038,7 @@
       "logoUrl": "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?w=300&auto=format&fit=crop&q=60",
       "contactPerson": "Carlos Mario Vélez",
       "status": "active",
-      "createdAt": "2026-11-22T03:09:32.136Z"
+      "createdAt": "2026-11-23T02:04:02.746Z"
     }
   ],
   "preferences": {},
@@ -914,10 +1047,18 @@
       "id": "cli-demo-1",
       "nombre": "Carlos Mendoza",
       "email": "cliente@maquinamos3d.com",
-      "telefono": "3109876543",
+      "telefono": "30000099998",
       "direccion": "Calle 10 # 43E-22, El Poblado, Medellín",
       "notas": "Cliente frecuente de prototipos IoT.",
-      "fechaRegistro": "2026-11-02T03:09:32.136Z"
+      "fechaRegistro": "2026-11-03T02:04:02.747Z",
+      "ordersCount": 1,
+      "totalVentas": 45000,
+      "primeraVisita": true,
+      "status": "Primera visita",
+      "tqs": false,
+      "scoreVentas": 45000,
+      "ultimaVisita": "2026-11-22T21:04:02.747Z",
+      "updatedAt": "2026-11-23T02:21:17.711Z"
     },
     {
       "id": "cli-demo-2",
@@ -926,7 +1067,14 @@
       "telefono": "3015558899",
       "direccion": "Cra 70 # 32-15, Laureles, Medellín",
       "notas": "Prefiere pago por transferencia Nequi.",
-      "fechaRegistro": "2026-11-10T03:09:32.136Z"
+      "fechaRegistro": "2026-11-11T02:04:02.747Z",
+      "ordersCount": 0,
+      "totalVentas": 0,
+      "primeraVisita": false,
+      "status": "Sin datos",
+      "tqs": false,
+      "scoreVentas": 0,
+      "ultimaVisita": null
     },
     {
       "id": "cli-demo-3",
@@ -935,7 +1083,14 @@
       "telefono": "6044441020",
       "direccion": "Av. Las Palmas # 120-30, Envigado",
       "notas": "Cliente corporativo: maquetas y avisos.",
-      "fechaRegistro": "2026-10-13T03:09:32.136Z"
+      "fechaRegistro": "2026-10-14T02:04:02.747Z",
+      "ordersCount": 0,
+      "totalVentas": 0,
+      "primeraVisita": false,
+      "status": "Sin datos",
+      "tqs": false,
+      "scoreVentas": 0,
+      "ultimaVisita": null
     }
   ],
   "projects": [
@@ -945,13 +1100,13 @@
       "tipoProyecto": "impresion_3d",
       "nombreProyecto": "Carcasas para sensores IoT",
       "descripcion": "Lote de gabinetes ventilados para red de monitoreo ambiental.",
-      "fechaInicio": "2026-11-12",
-      "fechaEntrega": "2026-11-27",
+      "fechaInicio": "2026-11-13",
+      "fechaEntrega": "2026-11-28",
       "fechaCompletado": null,
       "estado": "en_proceso",
       "prioridad": "alta",
       "notas": "Imprimir en PETG por resistencia térmica.",
-      "createdAt": "2026-11-12T03:09:32.136Z"
+      "createdAt": "2026-11-13T02:04:02.747Z"
     },
     {
       "id": "prj-demo-2",
@@ -959,13 +1114,13 @@
       "tipoProyecto": "diseno_parametrico",
       "nombreProyecto": "Jarrón generativo Voronoi",
       "descripcion": "Diseño paramétrico único para regalo corporativo.",
-      "fechaInicio": "2026-11-20",
-      "fechaEntrega": "2026-11-30",
+      "fechaInicio": "2026-11-21",
+      "fechaEntrega": "2026-12-01",
       "fechaCompletado": null,
       "estado": "pendiente",
       "prioridad": "media",
       "notas": "Cliente aprobará render antes de fabricar.",
-      "createdAt": "2026-11-20T03:09:32.136Z"
+      "createdAt": "2026-11-21T02:04:02.747Z"
     },
     {
       "id": "prj-demo-3",
@@ -973,13 +1128,13 @@
       "tipoProyecto": "avisos",
       "nombreProyecto": "Aviso neón lobby torre empresarial",
       "descripcion": "Letrero neón flex azul hielo 120x50 cm para recepción.",
-      "fechaInicio": "2026-10-23",
-      "fechaEntrega": "2026-11-15",
-      "fechaCompletado": "2026-11-15T03:09:32.136Z",
+      "fechaInicio": "2026-10-24",
+      "fechaEntrega": "2026-11-16",
+      "fechaCompletado": "2026-11-16T02:04:02.747Z",
       "estado": "completado",
       "prioridad": "urgente",
       "notas": "Instalado y facturado.",
-      "createdAt": "2026-10-23T03:09:32.136Z"
+      "createdAt": "2026-10-24T02:04:02.747Z"
     },
     {
       "id": "prj-demo-4",
@@ -987,13 +1142,13 @@
       "tipoProyecto": "router_cnc",
       "nombreProyecto": "Celosía divisoria sala juntas",
       "descripcion": "Panel en MDF lacado blanco, patrón geométrico hexagonal 95x70 cm.",
-      "fechaInicio": "2026-11-07",
-      "fechaEntrega": "2026-11-20",
+      "fechaInicio": "2026-11-08",
+      "fechaEntrega": "2026-11-21",
       "fechaCompletado": null,
       "estado": "cancelado",
       "prioridad": "baja",
       "notas": "Cancelado por rediseño del cliente.",
-      "createdAt": "2026-11-07T03:09:32.136Z"
+      "createdAt": "2026-11-08T02:04:02.747Z"
     }
   ],
   "pieces": [
@@ -1016,7 +1171,7 @@
       "archivoStl": "/uploads/models3d/enclosure.stl",
       "archivoGcode": "/uploads/models3d/enclosure.gcode",
       "notas": "Riel DIN interno incluido.",
-      "createdAt": "2026-11-13T03:09:32.136Z"
+      "createdAt": "2026-11-14T02:04:02.747Z"
     },
     {
       "id": "pza-demo-2",
@@ -1037,7 +1192,7 @@
       "archivoStl": "/uploads/models3d/tapa.stl",
       "archivoGcode": "",
       "notas": "Rejilla de ventilación pasiva.",
-      "createdAt": "2026-11-13T03:09:32.136Z"
+      "createdAt": "2026-11-14T02:04:02.747Z"
     },
     {
       "id": "pza-demo-3",
@@ -1058,7 +1213,7 @@
       "archivoStl": "/uploads/models3d/voronoi.stl",
       "archivoGcode": "",
       "notas": "Modo espiral (vase mode).",
-      "createdAt": "2026-11-20T03:09:32.136Z"
+      "createdAt": "2026-11-21T02:04:02.747Z"
     },
     {
       "id": "pza-demo-4",
@@ -1079,7 +1234,7 @@
       "archivoStl": "",
       "archivoGcode": "",
       "notas": "Corte láser + pulido de bordes.",
-      "createdAt": "2026-10-25T03:09:32.136Z"
+      "createdAt": "2026-10-26T02:04:02.747Z"
     },
     {
       "id": "pza-demo-5",
@@ -1100,7 +1255,7 @@
       "archivoStl": "",
       "archivoGcode": "",
       "notas": "Fuente 12V 5A incluida.",
-      "createdAt": "2026-10-25T03:09:32.136Z"
+      "createdAt": "2026-10-26T02:04:02.747Z"
     }
   ],
   "costs": [
@@ -1121,7 +1276,7 @@
       "costoTotal": 124330,
       "precioVenta": 185000,
       "ganancia": 60670,
-      "updatedAt": "2026-11-22T03:09:32.136Z"
+      "updatedAt": "2026-11-23T02:04:02.747Z"
     },
     {
       "id": "cst-demo-2",
@@ -1140,7 +1295,7 @@
       "costoTotal": 7490,
       "precioVenta": 12000,
       "ganancia": 4510,
-      "updatedAt": "2026-11-22T03:09:32.136Z"
+      "updatedAt": "2026-11-23T02:04:02.747Z"
     },
     {
       "id": "cst-demo-3",
@@ -1159,7 +1314,7 @@
       "costoTotal": 146020,
       "precioVenta": 185000,
       "ganancia": 38980,
-      "updatedAt": "2026-11-22T03:09:32.136Z"
+      "updatedAt": "2026-11-23T02:04:02.747Z"
     },
     {
       "id": "cst-demo-4",
@@ -1178,7 +1333,7 @@
       "costoTotal": 1718450,
       "precioVenta": 1950000,
       "ganancia": 231550,
-      "updatedAt": "2026-11-22T03:09:32.136Z"
+      "updatedAt": "2026-11-23T02:04:02.747Z"
     },
     {
       "id": "cst-demo-5",
@@ -1197,7 +1352,7 @@
       "costoTotal": 564680,
       "precioVenta": 720000,
       "ganancia": 155320,
-      "updatedAt": "2026-11-22T03:09:32.136Z"
+      "updatedAt": "2026-11-23T02:04:02.747Z"
     }
   ],
   "projectFiles": [
@@ -1207,7 +1362,7 @@
       "tipoArchivo": "render",
       "descripcion": "Render del gabinete en visor OrcaSlicer",
       "rutaArchivo": "/uploads/images/enclosure-render.webp",
-      "fechaSubida": "2026-11-14T03:09:32.136Z"
+      "fechaSubida": "2026-11-15T02:04:02.747Z"
     },
     {
       "id": "fil-demo-2",
@@ -1215,7 +1370,7 @@
       "tipoArchivo": "foto",
       "descripcion": "Primera unidad impresa en PETG negro",
       "rutaArchivo": "/uploads/images/enclosure-foto.jpg",
-      "fechaSubida": "2026-11-16T03:09:32.136Z"
+      "fechaSubida": "2026-11-17T02:04:02.747Z"
     },
     {
       "id": "fil-demo-3",
@@ -1223,7 +1378,7 @@
       "tipoArchivo": "render",
       "descripcion": "Vista previa del jarrón en modo espiral",
       "rutaArchivo": "/uploads/images/voronoi-render.png",
-      "fechaSubida": "2026-11-21T03:09:32.136Z"
+      "fechaSubida": "2026-11-22T02:04:02.747Z"
     },
     {
       "id": "fil-demo-4",
@@ -1231,7 +1386,7 @@
       "tipoArchivo": "plano",
       "descripcion": "Plano de corte del acrílico cristal",
       "rutaArchivo": "/uploads/images/aviso-plano.png",
-      "fechaSubida": "2026-10-28T03:09:32.136Z"
+      "fechaSubida": "2026-10-29T02:04:02.747Z"
     },
     {
       "id": "fil-demo-5",
@@ -1239,7 +1394,7 @@
       "tipoArchivo": "foto",
       "descripcion": "Prueba de encendido del neón flex",
       "rutaArchivo": "/uploads/images/neon-prueba.jpg",
-      "fechaSubida": "2026-11-02T03:09:32.136Z"
+      "fechaSubida": "2026-11-03T02:04:02.747Z"
     }
   ],
   "payments": [
@@ -1247,41 +1402,41 @@
       "id": "pag-demo-1",
       "proyectoId": "prj-demo-1",
       "monto": 250000,
-      "fechaPago": "2026-11-13T03:09:32.136Z",
+      "fechaPago": "2026-11-14T02:04:02.747Z",
       "metodoPago": "transferencia",
       "referencia": "NEQUI-88231",
       "estado": "completado",
-      "createdAt": "2026-11-13T03:09:32.136Z"
+      "createdAt": "2026-11-14T02:04:02.747Z"
     },
     {
       "id": "pag-demo-2",
       "proyectoId": "prj-demo-1",
       "monto": 200000,
-      "fechaPago": "2026-11-21T03:09:32.136Z",
+      "fechaPago": "2026-11-22T02:04:02.747Z",
       "metodoPago": "transferencia",
       "referencia": "BANC-00981234",
       "estado": "pendiente",
-      "createdAt": "2026-11-21T03:09:32.136Z"
+      "createdAt": "2026-11-22T02:04:02.747Z"
     },
     {
       "id": "pag-demo-3",
       "proyectoId": "prj-demo-3",
       "monto": 1130000,
-      "fechaPago": "2026-11-02T03:09:32.136Z",
+      "fechaPago": "2026-11-03T02:04:02.747Z",
       "metodoPago": "tarjeta",
       "referencia": "VISA-****4582",
       "estado": "completado",
-      "createdAt": "2026-11-02T03:09:32.136Z"
+      "createdAt": "2026-11-03T02:04:02.747Z"
     },
     {
       "id": "pag-demo-4",
       "proyectoId": "prj-demo-4",
       "monto": 180000,
-      "fechaPago": "2026-11-08T03:09:32.136Z",
+      "fechaPago": "2026-11-09T02:04:02.747Z",
       "metodoPago": "efectivo",
       "referencia": "REC-CAJA-045",
       "estado": "completado",
-      "createdAt": "2026-11-08T03:09:32.136Z"
+      "createdAt": "2026-11-09T02:04:02.747Z"
     }
   ],
   "proveedores": [
@@ -1295,7 +1450,7 @@
       "categoria": "filamentos",
       "descripcion": "Filamentos técnicos: PETG, ABS ignífugo, TPU y Nylon grado industrial.",
       "nota": "¡Mejores precios para volúmenes grandes!",
-      "fechaAlta": "2026-08-24T03:09:32.135Z",
+      "fechaAlta": "2026-08-25T02:04:02.746Z",
       "estado": "activo"
     },
     {
@@ -1308,7 +1463,7 @@
       "categoria": "moldes",
       "descripcion": "Moldes para placas de malla, embudos y tuercas de timón para impresoras FDM tamaño mediano.",
       "nota": "Requiere pedido mínimo de 12 unidades.",
-      "fechaAlta": "2026-07-25T03:09:32.135Z",
+      "fechaAlta": "2026-07-26T02:04:02.746Z",
       "estado": "activo"
     },
     {
@@ -1321,7 +1476,7 @@
       "categoria": "utensilios",
       "descripcion": "Boquillas de carburo, superes ER20 y lubricantes para routers CNC de impresión.",
       "nota": "Tiempo de entrega 5-10 días.",
-      "fechaAlta": "2026-09-23T03:09:32.135Z",
+      "fechaAlta": "2026-09-24T02:04:02.746Z",
       "estado": "activo"
     },
     {
@@ -1334,31 +1489,130 @@
       "categoria": "servicios",
       "descripcion": "Suministro interno de Productos: filamentos y accesorios del taller.",
       "nota": "",
-      "fechaAlta": "2026-05-26T03:09:32.135Z",
+      "fechaAlta": "2026-05-27T02:04:02.746Z",
       "estado": "activo"
     }
   ],
-  "pedidos_compra": [
+  "pedidos_compra": [],
+  "lotes": [],
+  "canales": [
     {
-      "id": "pco-1795316972686",
-      "numero": "PCO-972686",
-      "proveedorId": "prov-1",
-      "proveedorNombre": "Polímeros Industriales del Valle",
-      "productId": "prod-3d-jarron",
-      "productNombre": "Jarrón Paramétrico Voronoi",
-      "cantidad": 10,
-      "precioUnitario": 150000,
-      "subtotal": 1500000,
-      "estado": "recibido",
-      "fechaPromesa": null,
-      "fechaRecepcion": "2026-11-22T03:09:32.852Z",
-      "fechaConfirmada": "2026-11-22T03:09:32.752Z",
-      "nota": "",
-      "mensajesDeConfirmacion": [],
-      "fechaCreacion": "2026-11-22T03:09:32.686Z",
-      "notaDeConfirmacion": "",
-      "updatedAt": "2026-11-22T03:09:32.852Z"
+      "id": "cnal-store-web",
+      "nombre": "Store Web",
+      "tipo": "Store Web",
+      "descripcion": "Tienda online integrada Maquinamos 3D",
+      "status": "activo",
+      "ultimaVenta": "2026-11-19",
+      "fechaCreacion": "2026-05-27T02:04:02.747Z"
+    },
+    {
+      "id": "cnal-api",
+      "nombre": "API",
+      "tipo": "API",
+      "descripcion": "API de sklearn/business — orders.routes",
+      "status": "activo",
+      "ultimaVenta": "2026-11-20",
+      "fechaCreacion": "2026-07-26T02:04:02.747Z"
+    },
+    {
+      "id": "cnal-lista-proveedor",
+      "nombre": "Lista de proveedor",
+      "tipo": "Lista de proveedor",
+      "descripcion": "Ordenes generadas por proveedores",
+      "status": "activo",
+      "ultimaVenta": null,
+      "fechaCreacion": "2026-08-25T02:04:02.747Z"
+    },
+    {
+      "id": "cnal-crm",
+      "nombre": "CRM",
+      "tipo": "CRM",
+      "descripcion": "Órdenes del módulo CRM",
+      "status": "activo",
+      "ultimaVenta": null,
+      "fechaCreacion": "2026-09-24T02:04:02.747Z"
+    },
+    {
+      "id": "cnal-otro",
+      "nombre": "Otro",
+      "tipo": "Otro",
+      "descripcion": "Otros canales de venta",
+      "status": "activo",
+      "ultimaVenta": null,
+      "fechaCreacion": "2026-10-09T02:04:02.747Z"
     }
   ],
-  "lotes": []
+  "devoluciones": [
+    {
+      "id": "dev-demo-1",
+      "orderId": "ord-demo-1001",
+      "orderNumber": "MQ3D-882319",
+      "cliente": {
+        "id": "usr-client-1",
+        "nombre": "Carlos Mendoza",
+        "email": "cliente@maquinamos3d.com"
+      },
+      "productId": "prod-3d-jarron",
+      "productName": "Jarrón Paramétrico Voronoi",
+      "cantidad": 1,
+      "motivo": "El jarrón está agrietado",
+      "isGananciaVencida": false,
+      "estado": "pendiente",
+      "fisicoUbicado": false,
+      "fechaSolicitud": "2026-11-20T02:04:02.747Z",
+      "fechaResolucion": null,
+      "precioUnitario": 45000
+    }
+  ],
+  "clientes": [
+    {
+      "id": "cli-demo-1",
+      "nombre": "Carlos Mendoza",
+      "email": "cliente@maquinamos3d.com",
+      "telefono": "30000099998",
+      "direccion": "Calle 10 # 43E-22, El Poblado, Medellín",
+      "notas": "Cliente frecuente de prototipos IoT.",
+      "fechaRegistro": "2026-11-03T02:04:02.747Z",
+      "ordersCount": 1,
+      "totalVentas": 45000,
+      "primeraVisita": true,
+      "status": "Primera visita",
+      "tqs": false,
+      "scoreVentas": 45000,
+      "ultimaVisita": "2026-11-22T21:04:02.747Z",
+      "updatedAt": "2026-11-23T02:21:17.711Z"
+    },
+    {
+      "id": "cli-demo-2",
+      "nombre": "Laura Cifuentes",
+      "email": "laura.cifuentes@correo.com",
+      "telefono": "3015558899",
+      "direccion": "Cra 70 # 32-15, Laureles, Medellín",
+      "notas": "Prefiere pago por transferencia Nequi.",
+      "fechaRegistro": "2026-11-11T02:04:02.747Z",
+      "ordersCount": 0,
+      "totalVentas": 0,
+      "primeraVisita": false,
+      "status": "Sin datos",
+      "tqs": false,
+      "scoreVentas": 0,
+      "ultimaVisita": null
+    },
+    {
+      "id": "cli-demo-3",
+      "nombre": "Arquitectura Viva SAS",
+      "email": "proyectos@arqviva.co",
+      "telefono": "6044441020",
+      "direccion": "Av. Las Palmas # 120-30, Envigado",
+      "notas": "Cliente corporativo: maquetas y avisos.",
+      "fechaRegistro": "2026-10-14T02:04:02.747Z",
+      "ordersCount": 0,
+      "totalVentas": 0,
+      "primeraVisita": false,
+      "status": "Sin datos",
+      "tqs": false,
+      "scoreVentas": 0,
+      "ultimaVisita": null
+    }
+  ]
 }
