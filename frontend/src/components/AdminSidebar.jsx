@@ -35,7 +35,7 @@ export const AdminSidebar = ({ activeTab, setActiveTab, onNavigate }) => {
 
   return (
     <aside
-      className="block fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] z-30 border-r border-slate-800/60 bg-slate-950/95 backdrop-blur-md"
+      className="sticky top-16 w-64 h-[calc(100vh-4rem)] z-30 border-r border-slate-800/60 bg-slate-950/95 backdrop-blur-md shrink-0"
       aria-label="Menu vertical del panel de administración"
     >
       <div className="flex flex-col h-full">

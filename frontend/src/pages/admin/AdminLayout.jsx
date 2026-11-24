@@ -17,7 +17,7 @@ export const AdminLayout = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'erp' | 'ventas' | 'clientes' | 'canales' | 'devoluciones' | 'projects' | 'products' | 'orders' | 'sponsors' | 'quotes'
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 flex min-h-[calc(100vh-10rem)] gap-6">
+    <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8 flex min-h-[calc(100vh-10rem)] gap-6">
       {/* Sidebar vertical de la izquierda, estilo ERP (siempre visible) */}
       <AdminSidebar
         activeTab={activeTab}
